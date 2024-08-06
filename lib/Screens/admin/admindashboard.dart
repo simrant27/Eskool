@@ -4,7 +4,9 @@ import 'package:eskool/constants/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../controllers/drawerController.dart';
 import 'components/drawerMenu.dart';
+import 'package:provider/provider.dart';
 
 class Admindashboard extends StatefulWidget {
   const Admindashboard({super.key});
@@ -18,6 +20,8 @@ class _AdmindashboardState extends State<Admindashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: bgColor,
+        drawer: DrawerMenu(),
+        key: context.read<Controller>().scaffoldKey,
         body: SafeArea(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,

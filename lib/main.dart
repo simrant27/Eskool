@@ -2,7 +2,7 @@ import 'package:eskool/Screens/admin/admindashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'constants/drawerController.dart';
+import 'controllers/drawerController.dart';
 
 void main() {
   runApp(const MyApp());
