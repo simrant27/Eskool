@@ -34,7 +34,7 @@ class AnalyticInfoCard extends StatelessWidget {
             Text(
               "${info.count}",
               style: TextStyle(
-                  color: textColor, fontSize: 18, fontWeight: FontWeight.w300),
+                  color: textColor, fontSize: 20, fontWeight: FontWeight.w300),
             ),
             Container(
               padding: EdgeInsets.all(appPadding / 2),
@@ -42,11 +42,18 @@ class AnalyticInfoCard extends StatelessWidget {
               width: 40,
               decoration: BoxDecoration(
                   color: info.color!.withOpacity(0.1), shape: BoxShape.circle),
-              // child: ,
+              child: Icon(
+                info.icon!,
+                color: info.color,
+              ),
             ),
           ]),
-          Container(
-            child: Text("sd"),
+          Text(
+            info.title!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 18, color: textColor, fontWeight: FontWeight.w400),
           )
         ],
       ),

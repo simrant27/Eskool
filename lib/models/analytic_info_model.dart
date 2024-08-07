@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AnalyticInfo {
-  final String? svgSrc, title;
+  final String? title;
+  final IconData? icon;
   final int? count;
   final Color? color;
 
   AnalyticInfo({
-    this.svgSrc,
+    this.icon,
     this.title,
     this.count,
     this.color,

@@ -3,6 +3,8 @@
 // import 'package:responsive_admin_dashboard/models/discussions_info_model.dart';
 // import 'package:responsive_admin_dashboard/models/referal_info_model.dart';
 
+import 'package:flutter/material.dart';
+
 import '../constants/constants.dart';
 import '../models/analytic_info_model.dart';
 import '../models/discussions_info_model.dart';
@@ -10,21 +12,21 @@ import '../models/referal_info_model.dart';
 
 List analyticData = [
   AnalyticInfo(
-    title: "Subscribers",
+    title: "Employee",
     count: 720,
-    svgSrc: "assets/icons/Subscribers.svg",
+    icon: Icons.work_history_outlined,
     color: primaryColor,
   ),
   AnalyticInfo(
-    title: "Post",
+    title: "Parents",
     count: 820,
-    svgSrc: "assets/icons/Post.svg",
+    icon: Icons.people_alt,
     color: purple,
   ),
   AnalyticInfo(
-    title: "Pages",
+    title: "Students",
     count: 920,
-    svgSrc: "assets/icons/Pages.svg",
+    icon: Icons.people,
     color: orange,
   ),
 ];
