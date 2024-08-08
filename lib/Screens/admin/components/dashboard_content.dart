@@ -1,8 +1,10 @@
 import 'package:eskool/Screens/admin/components/customAppbar.dart';
 import 'package:eskool/constants/constants.dart';
+import 'package:eskool/constants/responsive.dart';
 import 'package:flutter/material.dart';
 
 import 'analyticCards.dart';
+import 'calenderWidget.dart';
 
 class DashboardContent extends StatelessWidget {
   const DashboardContent({super.key});
@@ -19,12 +21,29 @@ class DashboardContent extends StatelessWidget {
               height: appPadding,
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(flex: 4, child: AnalyticCards()),
                 Expanded(
-                  flex: 2,
-                  child: Container(),
-                )
+                    flex: 4,
+                    child: Column(
+                      children: [
+                        AnalyticCards(),
+                        if (Responsive.isMobile(context))
+                          SizedBox(
+                            height: appPadding,
+                          ),
+                        if (Responsive.isMobile(context)) CalenderWidget()
+                      ],
+                    )),
+                if (!Responsive.isMobile(context))
+                  SizedBox(
+                    width: appPadding,
+                  ),
+                if (!Responsive.isMobile(context))
+                  Expanded(
+                    flex: 2,
+                    child: CalenderWidget(),
+                  )
               ],
             ),
           ],
