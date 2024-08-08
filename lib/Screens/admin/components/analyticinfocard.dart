@@ -11,13 +11,11 @@ class AnalyticInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.symmetric(
           horizontal: appPadding, vertical: appPadding / 2),
       decoration: BoxDecoration(
-        // color: info.color!.withOpacity(0.1),
-        color: secondaryColor,
+        color: info.color!.withOpacity(0.1),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -29,40 +27,34 @@ class AnalyticInfoCard extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(
-            info.icon!,
-            color: info.color!.withOpacity(0.8),
-            size: size.width * 0.06,
-          ),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(
               "${info.count}",
               style: TextStyle(
                   color: textColor, fontSize: 20, fontWeight: FontWeight.w300),
             ),
-            Text(
-              info.title!,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 18, color: textColor, fontWeight: FontWeight.w400),
-            )
-
-            // Container(
-            //   padding: EdgeInsets.all(appPadding / 2),
-            //   height: 40,
-            //   width: 40,
-            //   decoration: BoxDecoration(
-            //       color: info.color!.withOpacity(0.1), shape: BoxShape.circle),
-            //   child: Icon(
-            //     info.icon!,
-            //     color: info.color,
-            //   ),
-            // ),
+            Container(
+              padding: EdgeInsets.all(appPadding / 2),
+              height: 40,
+              width: 40,
+              decoration: BoxDecoration(
+                  color: info.color!.withOpacity(0.1), shape: BoxShape.circle),
+              child: Icon(
+                info.icon!,
+                color: info.color,
+              ),
+            ),
           ]),
+          Text(
+            info.title!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 18, color: textColor, fontWeight: FontWeight.w400),
+          )
         ],
       ),
     );
