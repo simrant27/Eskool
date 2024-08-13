@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 
 import '../data/data.dart';
+import '../data/menuItems.dart';
 import 'boxDesign.dart';
 
 Drawer drawerlist() {
@@ -22,53 +22,16 @@ Drawer drawerlist() {
             ],
           ),
         ),
-        ListTile(
-          leading: Icon(Icons.dashboard),
-          title: Text('Dashboard'),
-          onTap: () {
-            // Handle the tap event
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.person),
-          title: Text('Profile'),
-          onTap: () {
-            // Handle the tap event
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.notifications_active_sharp),
-          title: Text('Notification'),
-          onTap: () {
-            // Handle the tap event
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.assignment),
-          title: Text('Assignment'),
-          onTap: () {
-            // Handle the tap event
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.attach_money_sharp),
-          title: Text('Finance'),
-          onTap: () {
-            // Handle the tap event
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.chat),
-          title: Text('Chat'),
-          onTap: () {
-            // Handle the tap event
-          },
-        ),
-        ListTile(
-          leading: Icon(Icons.logout),
-          title: Text('Logout'),
-          onTap: () {
-            // Handle the tap event
+        ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: menuItems.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Icon(menuItems[index].icon),
+              title: Text(menuItems[index].title),
+              onTap: menuItems[index].onTap,
+            );
           },
         ),
       ],
