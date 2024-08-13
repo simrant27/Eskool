@@ -49,7 +49,7 @@ class _CalenderWidgetState extends State<CalenderWidget> {
                       onTap: () {
                         setState(() {
                           _focusedDay =
-                              DateTime(_focusedDay.year, _focusedDay.month - 1);
+                              DateTime(_focusedDay.year, _focusedDay.month + 1);
                         });
                       },
                       child: Icon(

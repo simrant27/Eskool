@@ -16,9 +16,9 @@ class AnalyticCards extends StatelessWidget {
     return Container(
       child: Responsive(
         mobile: AnalyticInfoCardGridView(
-            // crossAxisCount: size.width < 800 ? 2 : 3,
-            // childAspectRatio: size.width < 800 ? 1.7 : 1.5,
-            ),
+          // crossAxisCount: size.width < 800 ? 2 : 3,
+          childAspectRatio: size.width < 500 ? 1.2 : 1.7,
+        ),
         tablet: AnalyticInfoCardGridView(),
         desktop: AnalyticInfoCardGridView(),
       ),

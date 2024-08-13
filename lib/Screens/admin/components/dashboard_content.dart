@@ -1,10 +1,12 @@
 import 'package:eskool/Screens/admin/components/customAppbar.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/constants/responsive.dart';
+import 'package:eskool/data/noticedata.dart';
 import 'package:flutter/material.dart';
 
 import 'analyticCards.dart';
 import 'calenderWidget.dart';
+import 'noticewidget.dart';
 
 class DashboardContent extends StatelessWidget {
   const DashboardContent({super.key});
@@ -32,7 +34,10 @@ class DashboardContent extends StatelessWidget {
                           SizedBox(
                             height: appPadding,
                           ),
-                        if (Responsive.isMobile(context)) CalenderWidget()
+                        if (Responsive.isMobile(context)) CalenderWidget(),
+                        NoticeWidget(
+                          noticeData: noticeData,
+                        ),
                       ],
                     )),
                 if (!Responsive.isMobile(context))
@@ -43,7 +48,7 @@ class DashboardContent extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: CalenderWidget(),
-                  )
+                  ),
               ],
             ),
           ],
