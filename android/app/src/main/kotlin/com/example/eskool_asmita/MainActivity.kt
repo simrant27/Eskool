@@ -1,4 +1,4 @@
-package com.example.eskool
+package com.example.eskool_asmita
 
 import io.flutter.embedding.android.FlutterActivity
 
