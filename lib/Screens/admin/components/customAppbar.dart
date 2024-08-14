@@ -8,11 +8,13 @@ import 'profileInfo.dart';
 import 'searchField.dart';
 
 class CustomAppbar extends StatelessWidget {
-  const CustomAppbar({super.key});
+  final hinttext;
+  const CustomAppbar({super.key, required this.hinttext});
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         if (!Responsive.isDesktop(context))
           IconButton(
@@ -20,7 +22,10 @@ class CustomAppbar extends StatelessWidget {
             icon: Icon(Icons.menu),
             color: textColor.withOpacity(0.5),
           ),
-        Expanded(child: SearchField()),
+        Expanded(
+            child: SearchField(
+          hintext: hinttext,
+        )),
         ProfileInfo()
       ],
     );

@@ -13,20 +13,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Controller(),
+        ),
+      ],
+      child: MaterialApp(
         theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.white,
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-              create: (context) => Controller(),
-            )
-          ],
-          child: Admindashboard(),
-        ));
+        home: Admindashboard(), // Ensure this is wrapped in MultiProvider
+      ),
+    );
   }
 }

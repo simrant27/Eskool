@@ -1,4 +1,5 @@
 import 'package:eskool/Screens/admin/components/customAppbar.dart';
+import 'package:eskool/Screens/admin/components/gender_pie_chart.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/constants/responsive.dart';
 import 'package:eskool/data/noticedata.dart';
@@ -18,7 +19,9 @@ class DashboardContent extends StatelessWidget {
         padding: EdgeInsets.all(appPadding),
         child: Column(
           children: [
-            CustomAppbar(),
+            CustomAppbar(
+              hinttext: "students",
+            ),
             SizedBox(
               height: appPadding,
             ),
@@ -37,6 +40,7 @@ class DashboardContent extends StatelessWidget {
                         if (Responsive.isMobile(context)) CalenderWidget(),
                         NoticeWidget(
                           noticeData: noticeData,
+                          showViewAllButton: true,
                         ),
                       ],
                     )),
@@ -47,7 +51,17 @@ class DashboardContent extends StatelessWidget {
                 if (!Responsive.isMobile(context))
                   Expanded(
                     flex: 2,
-                    child: CalenderWidget(),
+                    child: Column(
+                      children: [
+                        CalenderWidget(),
+                        SizedBox(height: appPadding),
+                        GenderPieChart(
+                          boysCount: 500,
+                          girlsCount: 600,
+                          othersCount: 2,
+                        ),
+                      ],
+                    ),
                   ),
               ],
             ),

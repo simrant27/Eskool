@@ -1,17 +1,22 @@
-import 'package:eskool/Screens/admin/components/noticeDetailPage.dart';
 import 'package:eskool/Screens/admin/create_notice_page.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:eskool/models/notice_info_model.dart';
-import 'package:intl/intl.dart';
+import 'full_notice_list_page.dart';
+import 'notice_list.dart'; // Import the new NoticeList widget
 
 class NoticeWidget extends StatelessWidget {
   final List<NoticeInfoModel> noticeData;
+  final bool showViewAllButton;
 
-  const NoticeWidget({super.key, required this.noticeData});
+  const NoticeWidget(
+      {super.key, required this.noticeData, required this.showViewAllButton});
 
   @override
   Widget build(BuildContext context) {
+    // Get only the latest 4 notices
+    final latestNotices = noticeData.take(4).toList();
+
     return Card(
       color: secondaryColor,
       margin: EdgeInsets.symmetric(vertical: appPadding),
@@ -59,74 +64,33 @@ class NoticeWidget extends StatelessWidget {
               height: 16,
             ),
             Divider(),
-            Column(
-              children: noticeData.asMap().entries.map((entry) {
-                final index = entry.key;
-                final notice = entry.value;
-
-                return Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                NoticeDetailsPage(notice: notice),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    notice.title,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8.0),
-                                  Text(
-                                    notice.description,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                                flex: 1,
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    DateFormat('hh:mm a').format(notice.date),
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ))
-                          ],
+            NoticeList(noticeData: latestNotices), // Use the new widget here
+            if (showViewAllButton && noticeData.length > 4)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    onTap: () {
+                      // Navigate to the full notice list page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              FullNoticeListPage(noticeData: noticeData),
                         ),
+                      );
+                    },
+                    child: Text(
+                      "View All",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    if (index < noticeData.length - 1) Divider(),
-                  ],
-                );
-              }).toList(),
-            )
+                  ),
+                ),
+              ),
           ],
         ),
       ),

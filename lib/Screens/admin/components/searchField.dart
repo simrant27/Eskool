@@ -2,13 +2,14 @@ import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
+  final hintext;
+  const SearchField({super.key, required this.hintext});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       decoration: InputDecoration(
-          hintText: "Search for students",
+          hintText: "Search for $hintext",
           helperStyle:
               TextStyle(color: textColor.withOpacity(0.5), fontSize: 15),
           fillColor: secondaryColor,

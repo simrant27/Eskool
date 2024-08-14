@@ -1,5 +1,4 @@
 import 'package:eskool/models/notice_info_model.dart';
-import 'package:flutter/material.dart';
 
 List<NoticeInfoModel> noticeData = [
   NoticeInfoModel(
