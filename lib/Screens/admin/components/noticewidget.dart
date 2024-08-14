@@ -15,7 +15,8 @@ class NoticeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get only the latest 4 notices
-    final latestNotices = noticeData.take(4).toList();
+    final noticesToShow =
+        showViewAllButton ? noticeData.take(4).toList() : noticeData;
 
     return Card(
       color: secondaryColor,
@@ -64,7 +65,7 @@ class NoticeWidget extends StatelessWidget {
               height: 16,
             ),
             Divider(),
-            NoticeList(noticeData: latestNotices), // Use the new widget here
+            NoticeList(noticeData: noticesToShow), // Use the new widget here
             if (showViewAllButton && noticeData.length > 4)
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),

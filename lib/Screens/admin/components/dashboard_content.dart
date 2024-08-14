@@ -14,6 +14,7 @@ class DashboardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final topNotices = noticeData.take(4).toList();
     return SafeArea(
       child: SingleChildScrollView(
         padding: EdgeInsets.all(appPadding),

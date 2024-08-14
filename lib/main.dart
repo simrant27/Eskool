@@ -1,4 +1,5 @@
 import 'package:eskool/Screens/admin/admindashboard.dart';
+import 'package:eskool/Screens/admin/create_notice_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: Admindashboard(), // Ensure this is wrapped in MultiProvider
+        home: CreateNoticePage(), // Ensure this is wrapped in MultiProvider
       ),
     );
   }

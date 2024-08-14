@@ -61,7 +61,7 @@ class NoticeList extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            DateFormat('hh:mm a').format(notice.date),
+                            DateFormat('dd MMM yyyy').format(notice.date),
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],
