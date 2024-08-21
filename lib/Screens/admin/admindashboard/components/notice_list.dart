@@ -1,7 +1,8 @@
+import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eskool/models/notice_info_model.dart';
-import 'package:eskool/Screens/admin/components/noticeDetailPage.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/noticeDetailPage.dart';
 
 class NoticeList extends StatelessWidget {
   final List<NoticeInfoModel> noticeData;
@@ -22,7 +23,9 @@ class NoticeList extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => NoticeDetailsPage(notice: notice),
+                    builder: (context) => NoticeDetailsPage(
+                      notice: notice,
+                    ),
                   ),
                 );
               },

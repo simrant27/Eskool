@@ -2,7 +2,7 @@ import 'package:eskool/constants/constants.dart';
 import 'package:eskool/models/analytic_info_model.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/constants.dart';
+import '../../../../constants/constants.dart';
 
 class AnalyticInfoCard extends StatelessWidget {
   const AnalyticInfoCard({super.key, required this.info});

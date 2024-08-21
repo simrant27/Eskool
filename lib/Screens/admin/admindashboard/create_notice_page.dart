@@ -1,5 +1,5 @@
-import 'package:eskool/Screens/admin/components/calenderWidget.dart';
-import 'package:eskool/Screens/admin/components/customAppbar.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/calenderWidget.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/constants/responsive.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +58,7 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
               children: [
                 CustomAppbar(
                   hinttext: "notices",
-                  whichpage: "createPost",
+                  showSearch: false,
                 ),
                 SizedBox(height: 20),
                 Row(

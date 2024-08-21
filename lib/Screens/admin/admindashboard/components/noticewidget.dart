@@ -1,4 +1,4 @@
-import 'package:eskool/Screens/admin/create_notice_page.dart';
+import 'package:eskool/Screens/admin/admindashboard/create_notice_page.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:eskool/models/notice_info_model.dart';

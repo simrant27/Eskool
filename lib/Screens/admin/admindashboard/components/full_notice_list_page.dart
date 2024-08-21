@@ -1,9 +1,9 @@
-import 'package:eskool/Screens/admin/components/noticewidget.dart';
-import 'package:eskool/Screens/admin/components/responsive_drawer_layout.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/noticewidget.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
 import 'package:flutter/material.dart';
 
-import '../../../constants/constants.dart';
-import '../../../models/notice_info_model.dart';
+import '../../../../constants/constants.dart';
+import '../../../../models/notice_info_model.dart';
 import 'customAppbar.dart';
 // Import the new NoticeCard widget
 

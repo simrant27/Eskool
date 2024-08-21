@@ -1,5 +1,5 @@
-import 'package:eskool/Screens/admin/components/customAppbar.dart';
-import 'package:eskool/Screens/admin/components/gender_pie_chart.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
+import 'package:eskool/Screens/admin/admindashboard/components/gender_pie_chart.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/constants/responsive.dart';
 import 'package:eskool/data/noticedata.dart';
