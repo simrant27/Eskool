@@ -1,6 +1,7 @@
 import 'package:eskool/Screens/admin/components/calenderWidget.dart';
 import 'package:eskool/Screens/admin/components/customAppbar.dart';
 import 'package:eskool/constants/constants.dart';
+import 'package:eskool/constants/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'components/responsive_drawer_layout.dart'; // Import the new widget
@@ -57,6 +58,7 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
               children: [
                 CustomAppbar(
                   hinttext: "notices",
+                  whichpage: "createPost",
                 ),
                 SizedBox(height: 20),
                 Row(
@@ -133,7 +135,8 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
                         ),
                       ),
                     ),
-                    Expanded(flex: 2, child: CalenderWidget())
+                    if (!Responsive.isMobile(context))
+                      Expanded(flex: 2, child: CalenderWidget())
                   ],
                 ),
               ],

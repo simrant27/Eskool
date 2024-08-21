@@ -9,25 +9,6 @@ class ProfileInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(appPadding),
-          child: Stack(
-            children: [
-              Icon(
-                Icons.notifications,
-                color: textColor.withOpacity(0.8),
-              ),
-              Positioned(
-                right: 0,
-                child: Container(
-                  height: 10,
-                  width: 10,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: red),
-                ),
-              )
-            ],
-          ),
-        ),
         Container(
           // margin: EdgeInsets.only(left: appPadding),
           padding: EdgeInsets.symmetric(

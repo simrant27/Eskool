@@ -9,7 +9,8 @@ import 'searchField.dart';
 
 class CustomAppbar extends StatelessWidget {
   final hinttext;
-  const CustomAppbar({super.key, required this.hinttext});
+  final String? whichpage;
+  const CustomAppbar({super.key, required this.hinttext, this.whichpage});
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +23,11 @@ class CustomAppbar extends StatelessWidget {
             icon: Icon(Icons.menu),
             color: textColor.withOpacity(0.5),
           ),
-        Expanded(
-            child: SearchField(
-          hintext: hinttext,
-        )),
+        if (whichpage != "createPost")
+          Expanded(
+              child: SearchField(
+            hintext: hinttext,
+          )),
         ProfileInfo()
       ],
     );

@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: CreateNoticePage(), // Ensure this is wrapped in MultiProvider
+        home: CreateNoticePage(),
       ),
     );
   }
