@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../component/Drawerlist.dart';
 import '../component/boxDesign.dart';
 import '../component/customAppBar.dart';
+import '../component/customBottomAppBar.dart';
 import '../component/customBox.dart';
 import '../data/colorCombination.dart';
 import '../data/data.dart';
@@ -143,37 +144,7 @@ class Studentdashboard extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                // Handle Home button press
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.chat),
-              onPressed: () {
-                // Handle Chat button press
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // Handle Notifications button press
-              },
-            ),
-            IconButton(
-              icon: Icon(Icons.person_2_rounded),
-              onPressed: () {
-                // Handle Notifications button press
-              },
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: CustomBottomAppBar(),
     );
   }
 }
