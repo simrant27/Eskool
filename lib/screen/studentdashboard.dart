@@ -17,13 +17,16 @@ class Studentdashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(),
-      drawer: drawerlist(),
+      appBar:
+          customAppBar("Dashboard", MediaQuery.of(context).size.height / 40),
+      drawer: drawerlist(context),
       body: Column(
         children: [
           Stack(
             children: [
               Container(
+                width: double.infinity, // Use full width
+                height: MediaQuery.of(context).size.height / 4,
                 decoration: boxDesign(),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                 child: Column(
@@ -35,7 +38,7 @@ class Studentdashboard extends StatelessWidget {
                           text: "Wed",
                           style: TextStyle(
                             color: Color.fromARGB(255, 46, 121, 214),
-                            fontSize: 14,
+                            fontSize: MediaQuery.of(context).size.height / 45,
                             fontWeight: FontWeight.w900,
                           ),
                           children: [
@@ -43,7 +46,8 @@ class Studentdashboard extends StatelessWidget {
                               text: " 10 Oct",
                               style: TextStyle(
                                 color: Color(0XFF263064),
-                                fontSize: 14,
+                                fontSize:
+                                    MediaQuery.of(context).size.height / 50,
                                 fontWeight: FontWeight.normal,
                               ),
                             ),
@@ -56,8 +60,8 @@ class Studentdashboard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          width: 40,
-                          height: 40,
+                          width: MediaQuery.of(context).size.height / 15,
+                          height: MediaQuery.of(context).size.height / 15,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             border: Border.all(width: 1, color: Colors.white),
@@ -80,11 +84,12 @@ class Studentdashboard extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            introduction['greeting']!,
+                            introduction['greeting'] ??
+                                Text(''), // Ensure fallback values
                             SizedBox(height: 10),
-                            introduction['RegNO']!,
+                            introduction['RegNO'] ?? Text(''),
                             SizedBox(height: 6),
-                            introduction['Standard']!,
+                            introduction['Standard'] ?? Text(''),
                             SizedBox(height: 8),
                           ],
                         ),
@@ -93,52 +98,30 @@ class Studentdashboard extends StatelessWidget {
                   ],
                 ),
               ),
-              Positioned(
-                top: 185,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: MediaQuery.of(context).size.height - 245,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: ListView(
-                    children: [
-                      // You can add content here or remove this ListView if not needed
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(10),
-                    child: GridView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 20,
-                        mainAxisSpacing: 30,
-                        childAspectRatio: 1.5 / 1.5,
-                      ),
-                      itemCount: menuItems.length - 2,
-                      itemBuilder: (context, index) {
-                        // Cycle through the gradients or use a different logic
-                        return customBox(
-                          menuItems[index + 1],
-                          boxGradients[index % boxGradients.length],
-                        );
-                      },
-                    ),
+              child: Padding(
+                padding: EdgeInsets.all(15),
+                child: GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 30,
+                    childAspectRatio: 1.0, // Adjusted for square items
                   ),
-                ],
+                  itemCount: menuItems(context).length - 2,
+                  itemBuilder: (context, index) {
+                    return customBox(
+                      menuItems(context)[index + 1], // Adjust for context
+                      boxGradients[index % boxGradients.length],
+                    );
+                  },
+                ),
               ),
             ),
           ),

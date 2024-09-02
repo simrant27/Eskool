@@ -1,6 +1,6 @@
-import 'package:eskool_asmita/screen/studentdashboard.dart';
 import 'package:flutter/material.dart';
 import '../data/menuItems.dart';
+import '../screen/studentdashboard.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({
@@ -10,7 +10,7 @@ class CustomBottomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // List of specific items to be displayed in reverse order
-    List<MenuItem> reversedItems = menuItems.where((item) {
+    List<MenuItem> reversedItems = menuItems(context).where((item) {
       return item.title == 'Chat' ||
           item.title == 'Notification' ||
           item.title == 'Profile';
@@ -41,7 +41,7 @@ class CustomBottomAppBar extends StatelessWidget {
               children: reversedItems.map((menuItem) {
                 return IconButton(
                   icon: Icon(menuItem.icon, size: 30),
-                  onPressed: menuItem.onTap,
+                  onPressed: () => menuItem.onTap(),
                 );
               }).toList(),
             ),
