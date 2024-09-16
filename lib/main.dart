@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool_asmita/screen/studentdashboard.dart';
+import 'package:eskool_asmita/screen/parentsdashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -35,6 +35,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: Studentdashboard());
+        home: parentsdashboard());
   }
 }

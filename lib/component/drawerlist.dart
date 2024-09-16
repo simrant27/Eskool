@@ -23,8 +23,6 @@ Drawer drawerlist(BuildContext context) {
               introduction['RegNO'] ??
                   Text('Registration Number not available'),
               SizedBox(height: 6),
-              introduction['Standard'] ?? Text('Standard not available'),
-              SizedBox(height: 8),
             ],
           ),
         ),

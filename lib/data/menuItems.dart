@@ -1,5 +1,6 @@
+import '../screen/StudentListScreen.dart';
 import '../screen/profile.dart';
-import '../screen/studentdashboard.dart';
+import '../screen/parentsdashboard.dart';
 import 'package:flutter/material.dart';
 
 class MenuItem {
@@ -22,7 +23,7 @@ List<MenuItem> menuItems(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Studentdashboard()),
+          MaterialPageRoute(builder: (context) => parentsdashboard()),
         );
       },
     ),
@@ -58,10 +59,27 @@ List<MenuItem> menuItems(BuildContext context) {
       },
     ),
     MenuItem(
+      icon: Icons.details,
+      title: 'Child Details',
+      onTap: () {
+        // Handle the tap event
+      },
+    ),
+    MenuItem(
+      icon: Icons.book_online_rounded,
+      title: 'Materials',
+      onTap: () {
+        // Handle the tap event
+      },
+    ),
+    MenuItem(
       icon: Icons.attach_money_sharp,
       title: 'Finance',
       onTap: () {
-        // Handle the tap event
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => StudentListScreen()),
+        );
       },
     ),
     MenuItem(

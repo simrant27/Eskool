@@ -26,3 +26,8 @@ final Map<String, Widget> introduction = {
     ),
   ),
 };
+final Map<String, Widget> details = {
+  'name': Text(" Jackie", style: TextStyle(fontSize: 18)),
+  'email': Text(" Email : asmita@gmail", style: TextStyle(fontSize: 18)),
+  'number': Text("number : 98111111", style: TextStyle(fontSize: 18)),
+};

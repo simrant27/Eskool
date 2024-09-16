@@ -11,8 +11,8 @@ import '../data/colorCombination.dart';
 import '../data/data.dart';
 import '../data/menuItems.dart';
 
-class Studentdashboard extends StatelessWidget {
-  const Studentdashboard({super.key});
+class parentsdashboard extends StatelessWidget {
+  const parentsdashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,15 +116,20 @@ class Studentdashboard extends StatelessWidget {
                   ),
                   itemCount: menuItems(context).length - 2,
                   itemBuilder: (context, index) {
-                    return customBox(
-                      menuItems(context)[index + 1], // Adjust for context
-                      boxGradients[index % boxGradients.length],
+                    final menuItem =
+                        menuItems(context)[index + 1]; // Adjust for context
+                    return GestureDetector(
+                      onTap: menuItem.onTap,
+                      child: customBox(
+                        menuItem,
+                        boxGradients[index % boxGradients.length],
+                      ),
                     );
                   },
                 ),
               ),
             ),
-          ),
+          )
         ],
       ),
       bottomNavigationBar: CustomBottomAppBar(),

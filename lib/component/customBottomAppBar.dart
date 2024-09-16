@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/menuItems.dart';
-import '../screen/studentdashboard.dart';
+import '../screen/parentsdashboard.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({
@@ -27,7 +27,7 @@ class CustomBottomAppBar extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Studentdashboard()),
+                MaterialPageRoute(builder: (context) => parentsdashboard()),
               );
             },
           ),
