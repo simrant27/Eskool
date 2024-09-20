@@ -1,4 +1,5 @@
 import 'package:eskool/Screens/admin/admindashboard/create_notice_page.dart';
+import 'package:eskool/Screens/admin/components/custon_button.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:eskool/models/notice_info_model.dart';
@@ -33,32 +34,16 @@ class NoticeWidget extends StatelessWidget {
                   "Notices",
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                InkWell(
-                  onTap: () {
+                CustomButton(
+                  label: "Create Notice",
+                  color: Colors.blue.shade100,
+                  onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => CreateNoticePage()));
                   },
-                  child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      decoration: BoxDecoration(
-                          color: Colors.blue[100], // Button color
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 2),
-                            )
-                          ]),
-                      child: Text(
-                        "Create Notice",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                ),
+                )
               ],
             ),
             SizedBox(
@@ -77,8 +62,9 @@ class NoticeWidget extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              FullNoticeListPage(noticeData: noticeData),
+                          builder: (context) => FullNoticeListPage(
+                            noticeData: noticeData,
+                          ),
                         ),
                       );
                     },
