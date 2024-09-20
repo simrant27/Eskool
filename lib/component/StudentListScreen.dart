@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
-import '../component/customAppBar.dart';
-import '../component/customBottomAppBar.dart';
 import '../data/student.dart';
-import 'finance.dart';
+import 'customAppBar2.dart';
+import 'customBottomAppBar.dart';
 
-class StudentListScreen extends StatelessWidget {
+class StudentListWidget extends StatelessWidget {
+  final Widget Function(Map<String, dynamic> student) onSelectRoute;
+
+  StudentListWidget({required this.onSelectRoute});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar(
-          "Finance - Select Student", MediaQuery.of(context).size.height / 40),
+      appBar: customAppBar2("Select Student"),
       body: Column(
         children: [
           SizedBox(height: 40),
@@ -33,12 +35,7 @@ class StudentListScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FinanceBillScreen(
-                          studentName: student['name'],
-                          billItems: student['items'],
-                          totalAmount: student['fees'],
-                        ),
-                      ),
+                          builder: (context) => onSelectRoute(student)),
                     );
                   },
                   child: Container(

@@ -1,3 +1,4 @@
+import 'package:eskool_asmita/data/userImage.dart';
 import 'package:flutter/material.dart';
 import '../component/boxDesign.dart';
 import '../component/Drawerlist.dart';
@@ -20,7 +21,7 @@ class Profile extends StatelessWidget {
         menuItems(context).where((item) => item.title == 'Logout').toList();
 
     return Scaffold(
-      appBar: customAppBar("Profile", MediaQuery.of(context).size.height / 40),
+      appBar: customAppBar("Profile"),
       drawer: drawerlist(context),
       body: ListView(
         padding: EdgeInsets.all(16.0),
@@ -31,22 +32,16 @@ class Profile extends StatelessWidget {
               width: MediaQuery.of(context).size.width / 3,
               height: MediaQuery.of(context).size.width / 3,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                border: Border.all(width: 1, color: Colors.white),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueGrey.withOpacity(0.2),
-                    blurRadius: 12,
-                    spreadRadius: 8,
-                  ),
-                ],
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80",
-                  ),
-                ),
-              ),
+                  borderRadius: BorderRadius.circular(100),
+                  border: Border.all(width: 1, color: Colors.white),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blueGrey.withOpacity(0.2),
+                      blurRadius: 12,
+                      spreadRadius: 8,
+                    ),
+                  ],
+                  image: userImage()),
             ),
           ),
 
@@ -56,8 +51,43 @@ class Profile extends StatelessWidget {
           buildProfileSection("Personal Information", context),
           SizedBox(height: 16),
 
-          // Linked Students Section
-          _buildLinkedStudentsSection(context),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Linked Students",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 10),
+              ListView.builder(
+                shrinkWrap: true,
+                physics:
+                    NeverScrollableScrollPhysics(), // Prevent inner scrolling
+                itemCount: students.length,
+                itemBuilder: (context, index) {
+                  final student = students[index];
+                  return ListTile(
+                    leading: Icon(Icons.child_care, color: Colors.blue),
+                    title:
+                        Text(student['name'], style: TextStyle(fontSize: 18)),
+                    subtitle: Text('Grade : ${student['grade']}'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentDetailScreen(
+                            studentName: student['name'],
+                            studentGrade: student['grade'].toString(),
+                            studentDetails: student,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
           SizedBox(height: 16),
 
           // Security & Privacy
@@ -91,45 +121,6 @@ class Profile extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: CustomBottomAppBar(),
-    );
-  }
-
-  // Build Linked Students Section
-  Widget _buildLinkedStudentsSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Linked Students",
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: 10),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(), // Prevent inner scrolling
-          itemCount: students.length,
-          itemBuilder: (context, index) {
-            final student = students[index];
-            return ListTile(
-              leading: Icon(Icons.child_care, color: Colors.blue),
-              title: Text(student['name'], style: TextStyle(fontSize: 18)),
-              subtitle: Text(student['grade']),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => StudentDetailScreen(
-                      studentName: student['name'],
-                      studentGrade: student['grade'],
-                      studentDetails: student['details'],
-                    ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ],
     );
   }
 }

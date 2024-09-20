@@ -1,3 +1,4 @@
+import 'package:eskool_asmita/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
 
 class StudentDetailScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class StudentDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Details for $studentName')),
+      appBar: customAppBar2(studentName),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -29,7 +30,6 @@ class StudentDetailScreen extends StatelessWidget {
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 20),
-            // Display additional student details here
             Text(
               'Details:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

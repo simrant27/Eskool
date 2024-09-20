@@ -9,7 +9,7 @@ class Customappbar extends StatelessWidget {
   }
 }
 
-AppBar customAppBar(title, size) {
+AppBar customAppBar(title) {
   return AppBar(
     backgroundColor: Color.fromARGB(255, 196, 232, 248),
     toolbarHeight: 80,
@@ -17,7 +17,7 @@ AppBar customAppBar(title, size) {
       title,
       style: TextStyle(
         color: Colors.black,
-        fontSize: size,
+        fontSize: 24,
         fontWeight: FontWeight.bold,
       ),
     ),

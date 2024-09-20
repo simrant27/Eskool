@@ -1,4 +1,8 @@
-import '../screen/StudentListScreen.dart';
+import 'package:eskool_asmita/screen/StudentDetail.dart';
+
+import '../component/CustomAlertDialogBox.dart';
+import '../component/StudentListScreen.dart';
+import '../screen/finance.dart';
 import '../screen/profile.dart';
 import '../screen/parentsdashboard.dart';
 import 'package:flutter/material.dart';
@@ -52,24 +56,30 @@ List<MenuItem> menuItems(BuildContext context) {
       },
     ),
     MenuItem(
-      icon: Icons.assignment,
-      title: 'Assignment',
-      onTap: () {
-        // Handle the tap event
-      },
-    ),
-    MenuItem(
       icon: Icons.details,
       title: 'Child Details',
       onTap: () {
-        // Handle the tap event
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => StudentListWidget(
+                    onSelectRoute: (student) => StudentDetailScreen(
+                      studentName: student['name'],
+                      studentGrade: student['grade'].toString(),
+                      studentDetails: student,
+                    ),
+                  )),
+        );
       },
     ),
     MenuItem(
-      icon: Icons.book_online_rounded,
-      title: 'Materials',
+      icon: Icons.assignment,
+      title: 'Assignment',
       onTap: () {
-        // Handle the tap event
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => StudentListWidget()),
+        // );
       },
     ),
     MenuItem(
@@ -78,15 +88,46 @@ List<MenuItem> menuItems(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => StudentListScreen()),
+          MaterialPageRoute(
+              builder: (context) => StudentListWidget(
+                    onSelectRoute: (student) => FinanceBillScreen(
+                      studentName: student['name'],
+                      billItems: student['items'],
+                      totalAmount: student['fees'],
+                    ),
+                  )),
         );
       },
+    ),
+    MenuItem(
+      icon: Icons.book_online_rounded,
+      title: 'Materials',
+      onTap: () {},
     ),
     MenuItem(
       icon: Icons.logout,
       title: 'Logout',
       onTap: () {
-        // Handle the tap event
+        CustomAlertDialogBox(
+          context,
+          "Log Out",
+          "Are You Sure?!",
+          [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Add logout functionality here
+                Navigator.pop(context); // Close the dialog
+              },
+              child: Text('Logout'),
+            ),
+          ],
+        );
       },
     ),
   ];

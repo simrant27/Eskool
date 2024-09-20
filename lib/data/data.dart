@@ -11,15 +11,15 @@ final Map<String, Widget> introduction = {
       color: Color(0XFF343E87),
     ),
   ),
-  'RegNO': Text(
-    " Reg No: 1234",
+  'email': Text(
+    "Email : asmita@gmail",
     style: TextStyle(
       fontSize: 18,
       color: Colors.blueGrey,
     ),
   ),
-  'Standard': Text(
-    "Standard : 6th",
+  'number': Text(
+    "Number : 98111111",
     style: TextStyle(
       fontSize: 16,
       color: Colors.blueGrey,

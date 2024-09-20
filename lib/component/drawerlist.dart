@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../data/data.dart';
@@ -17,12 +19,11 @@ Drawer drawerlist(BuildContext context) {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              introduction['greeting'] ??
-                  Text('Welcome!'), // Added a default message
+              introduction['greeting'] ?? Text(''), // Ensure fallback values
               SizedBox(height: 10),
-              introduction['RegNO'] ??
-                  Text('Registration Number not available'),
+              introduction['email'] ?? Text(''),
               SizedBox(height: 6),
+              introduction['number'] ?? Text(''),
             ],
           ),
         ),
@@ -32,8 +33,14 @@ Drawer drawerlist(BuildContext context) {
           itemCount: items.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Icon(items[index].icon), // Use 'items' variable here
-              title: Text(items[index].title),
+              leading: Icon(items[index].icon,
+                  color: Colors.black87), // Use 'items' variable here
+              title: Text(
+                items[index].title,
+                style: TextStyle(
+                  fontSize: 22,
+                ),
+              ),
               onTap: items[index].onTap,
             );
           },

@@ -10,6 +10,7 @@ import '../component/customBox.dart';
 import '../data/colorCombination.dart';
 import '../data/data.dart';
 import '../data/menuItems.dart';
+import '../data/userImage.dart';
 
 class parentsdashboard extends StatelessWidget {
   const parentsdashboard({super.key});
@@ -17,8 +18,7 @@ class parentsdashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          customAppBar("Dashboard", MediaQuery.of(context).size.height / 40),
+      appBar: customAppBar("Dashboard"),
       drawer: drawerlist(context),
       body: Column(
         children: [
@@ -72,12 +72,7 @@ class parentsdashboard extends StatelessWidget {
                                 spreadRadius: 8,
                               ),
                             ],
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80",
-                              ),
-                            ),
+                            image: userImage(),
                           ),
                         ),
                         SizedBox(width: 20),
@@ -87,9 +82,9 @@ class parentsdashboard extends StatelessWidget {
                             introduction['greeting'] ??
                                 Text(''), // Ensure fallback values
                             SizedBox(height: 10),
-                            introduction['RegNO'] ?? Text(''),
+                            introduction['email'] ?? Text(''),
                             SizedBox(height: 6),
-                            introduction['Standard'] ?? Text(''),
+                            introduction['number'] ?? Text(''),
                             SizedBox(height: 8),
                           ],
                         ),
