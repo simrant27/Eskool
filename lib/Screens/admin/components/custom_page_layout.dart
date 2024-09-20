@@ -26,7 +26,7 @@ class CustomPageLayout extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomAppbar(
-                  hinttext: hinttext,
+                  hinttext: hinttext!,
                   showSearch: showSearch,
                 ),
                 SizedBox(height: 20),

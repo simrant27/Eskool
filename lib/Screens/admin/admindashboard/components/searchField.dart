@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
   final hintext;
-  const SearchField({super.key, required this.hintext});
+  final Function(String)? onChanged;
+  const SearchField({super.key, required this.hintext, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       decoration: InputDecoration(
           hintText: "Search for $hintext",
           helperStyle:

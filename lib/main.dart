@@ -1,3 +1,4 @@
+import 'package:eskool/Screens/admin/classes/student_deatail.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
@@ -18,7 +19,9 @@ class MyApp extends StatelessWidget {
       ),
       title: "Eskool",
       debugShowCheckedModeBanner: false,
-      home: Admindashboard(),
+      home: StudentDetail(
+        className: "Class 1",
+      ),
     );
   }
 }

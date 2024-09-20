@@ -22,6 +22,7 @@ class DashboardContent extends StatelessWidget {
           children: [
             CustomAppbar(
               hinttext: "students",
+              // onChanged: ,
             ),
             SizedBox(
               height: appPadding,
