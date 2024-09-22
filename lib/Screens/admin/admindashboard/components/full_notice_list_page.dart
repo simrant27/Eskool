@@ -7,11 +7,16 @@ import '../../../../models/notice_info_model.dart';
 
 // Import the new NoticeCard widget
 
-class FullNoticeListPage extends StatelessWidget {
+class FullNoticeListPage extends StatefulWidget {
   final List<NoticeInfoModel> noticeData;
 
   const FullNoticeListPage({super.key, required this.noticeData});
 
+  @override
+  State<FullNoticeListPage> createState() => _FullNoticeListPageState();
+}
+
+class _FullNoticeListPageState extends State<FullNoticeListPage> {
   @override
   Widget build(BuildContext context) {
     return CustomPageLayout(
@@ -20,7 +25,7 @@ class FullNoticeListPage extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: NoticeWidget(
-          noticeData: noticeData, // Pass all notices
+          noticeData: widget.noticeData, // Pass all notices
           showViewAllButton: false, // Do not show the View All button here
         ),
       ),
