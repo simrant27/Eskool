@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/gender_pie_chart.dart';
 import 'package:eskool/constants/constants.dart';
