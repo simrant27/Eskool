@@ -1,6 +1,7 @@
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/drawer_list_title.dart';
+import 'package:eskool/Screens/admin/billing/billing_page.dart';
 import 'package:eskool/Screens/admin/classes/student_deatail.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/data/class_list.dart';
@@ -56,6 +57,14 @@ class DrawerMenu extends StatelessWidget {
               );
             }).toList(),
           ),
+          DrawerListTitle(
+              title: "Billing",
+              icon: Icons.file_copy_sharp,
+              tap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => BillingPage()));
+              }),
+
           DrawerListTitle(title: "Logout", icon: Icons.logout, tap: () {}),
         ],
       ),
