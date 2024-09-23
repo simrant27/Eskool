@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool/screen/parentsdashboard.dart';
 import 'package:flutter/material.dart';
+
+import 'users/screen/parentsdashboard.dart';
 
 void main() {
   runApp(const MyApp());

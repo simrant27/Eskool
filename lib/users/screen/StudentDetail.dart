@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
+
+import '../component/customAppBar2.dart';
 
 class StudentDetailScreen extends StatelessWidget {
   final String studentName;

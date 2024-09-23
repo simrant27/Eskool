@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool/screen/StudentDetail.dart';
 
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
+import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
 import '../screen/parentsdashboard.dart';

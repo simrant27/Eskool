@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool/data/userImage.dart';
 import 'package:flutter/material.dart';
 import '../component/Drawerlist.dart';
 import '../component/buildProfileSection.dart';
@@ -9,6 +8,7 @@ import '../component/customAppBar.dart';
 import '../component/customBottomAppBar.dart';
 import '../data/menuItems.dart';
 import '../data/student.dart';
+import '../data/userImage.dart';
 import 'StudentDetail.dart'; 
 
 class Profile extends StatelessWidget {
