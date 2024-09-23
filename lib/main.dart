@@ -26,8 +26,9 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: parentsdashboard()
-        //  StudentDetail(
+        home: Admindashboard()
+        // parentsdashboard()
+        //     StudentDetail(
         //   className: "Class 1",
         // ),
         );

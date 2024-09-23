@@ -33,6 +33,7 @@ class CustomPageLayout extends StatelessWidget {
                 CustomAppbar(
                   hinttext: hinttext,
                   showSearch: showSearch,
+                  onChanged: onChanged,
                 ),
                 SizedBox(height: 20),
                 child, // The content of the page

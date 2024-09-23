@@ -17,15 +17,50 @@ class FullNoticeListPage extends StatefulWidget {
 }
 
 class _FullNoticeListPageState extends State<FullNoticeListPage> {
+  List<NoticeInfoModel> filteredNotices = [];
+
+  // Store the search query
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Initially, all notices will be shown
+    filteredNotices = widget.noticeData;
+  }
+
+  // This method filters the notices based on the search query
+  void _filterNotices(String query) {
+    setState(() {
+      _searchQuery = query;
+
+      if (query.isEmpty) {
+        // If the search query is empty, show all notices
+        filteredNotices = widget.noticeData;
+      } else {
+        // Filter the notices by title or description
+        filteredNotices = widget.noticeData.where((notice) {
+          final titleLower = notice.title.toLowerCase();
+          final descriptionLower = notice.description.toLowerCase();
+          final searchLower = query.toLowerCase();
+
+          return titleLower.contains(searchLower) ||
+              descriptionLower.contains(searchLower);
+        }).toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomPageLayout(
       showSearch: true,
       hinttext: "notices",
+      onChanged: _filterNotices,
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: NoticeWidget(
-          noticeData: widget.noticeData, // Pass all notices
+          noticeData: filteredNotices, // Pass all notices
           showViewAllButton: false, // Do not show the View All button here
         ),
       ),
