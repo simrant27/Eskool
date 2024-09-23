@@ -32,7 +32,7 @@ class parentsdashboard extends StatelessWidget {
             children: [
               Container(
                 width: double.infinity, // Use full width
-                height: MediaQuery.of(context).size.height / 4,
+                height: MediaQuery.of(context).size.height / 3.7,
                 decoration: boxDesign(),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                 child: Column(

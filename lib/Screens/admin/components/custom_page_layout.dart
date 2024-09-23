@@ -5,13 +5,18 @@ import '../admindashboard/components/responsive_drawer_layout.dart';
 
 class CustomPageLayout extends StatelessWidget {
   final String? hinttext;
+  final Function(String)? onChanged;
   final bool? showSearch;
+  final bool? showBackButton;
+
   final Widget child;
 
   const CustomPageLayout({
     super.key,
     this.hinttext,
     this.showSearch,
+    this.onChanged,
+    this.showBackButton,
     required this.child,
   });
 
@@ -26,7 +31,7 @@ class CustomPageLayout extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomAppbar(
-                  hinttext: hinttext!,
+                  hinttext: hinttext,
                   showSearch: showSearch,
                 ),
                 SizedBox(height: 20),
