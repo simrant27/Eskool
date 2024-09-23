@@ -1,7 +1,14 @@
+
 import 'package:eskool/Screens/admin/classes/student_deatail.dart';
 import 'package:flutter/material.dart';
 
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
+
+
+
+
+import 'users/screen/parentsdashboard.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
@@ -23,5 +31,6 @@ class MyApp extends StatelessWidget {
         className: "Class 1",
       ),
     );
+
   }
 }
