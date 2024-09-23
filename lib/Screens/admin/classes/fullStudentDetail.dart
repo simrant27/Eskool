@@ -13,7 +13,11 @@ class FullStudentDetail extends StatelessWidget {
     return ResponsiveDrawerLayout(
       content: Column(
         children: [
-          CustomAppbar(hinttext: "hi", showSearch: false),
+          CustomAppbar(
+            hinttext: "hi",
+            showSearch: false,
+            showBackButton: true,
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(

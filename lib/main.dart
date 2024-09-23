@@ -1,4 +1,8 @@
+import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
+import 'package:eskool/Screens/admin/billing/billing_page.dart';
 import 'package:eskool/Screens/admin/classes/student_deatail.dart';
+import 'package:eskool/Screens/admin/hellopage.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
@@ -13,15 +17,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      title: "Eskool",
-      debugShowCheckedModeBanner: false,
-      home: StudentDetail(
-        className: "Class 1",
-      ),
-    );
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        title: "Eskool",
+        debugShowCheckedModeBanner: false,
+        home: Admindashboard()
+        // StudentDetail(
+        //   className: "Class 1",
+        // ),
+        );
   }
 }
