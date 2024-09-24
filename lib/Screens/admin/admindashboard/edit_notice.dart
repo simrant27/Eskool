@@ -19,16 +19,16 @@
 //     return NoticeForm(
 //       initialTitle: initialTitle,
 //       initialDescription: initialDescription,
-//        initialFiles: initialFile != null ? [initialFile!] : null,
+//       //  initialFiles: initialFile != null ? [initialFile!] : null,
 //       onSubmit: (title, description, file) {
 //         // Handle the updated notice data
 //         print("Edit - Title: $title");
 //         print("Edit - Description: $description");
-//         if (files != null) {
-//           for (var file in files) {
-//             print("Edit - Media: ${file.name}");
-//           }
-//         }
+//         // if (files != null) {
+//         //   for (var file in files) {
+//         //     print("Edit - Media: ${file.name}");
+//         //   }
+//         // }
 
 //         // Navigate back to previous page
 //         Navigator.pop(context);

@@ -34,6 +34,7 @@ class CustomPageLayout extends StatelessWidget {
                   hinttext: hinttext,
                   showSearch: showSearch,
                   onChanged: onChanged,
+                  showBackButton: showBackButton,
                 ),
                 SizedBox(height: 20),
                 child, // The content of the page

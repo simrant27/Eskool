@@ -1,3 +1,4 @@
+import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:eskool/Screens/admin/components/custon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -72,8 +73,10 @@ class _NoticeFormState extends State<NoticeForm> {
   Future<void> _submitToBackend(
       String title, String description, PlatformFile? file) async {
     try {
+      // await http.get(Uri.parse('http://192.168.18.56:3000/api/notices'));
+
       var request = http.MultipartRequest(
-          'POST', Uri.parse('http://192.168.18.121:3000/api/notices'));
+          'POST', Uri.parse('http://192.168.18.56:3000/api/notices'));
 
       // Add title and description fields
       request.fields['title'] = title;
@@ -196,7 +199,7 @@ class _NoticeFormState extends State<NoticeForm> {
                       CustomButton(
                         label: "Submit",
                         color: Colors.green.shade200,
-                        onPressed: () {
+                        onPressed: () async {
                           _submitToBackend(
                             _titleController.text,
                             _descriptionController.text,
@@ -204,6 +207,7 @@ class _NoticeFormState extends State<NoticeForm> {
                                 ? _mediaFiles![0]
                                 : null,
                           );
+                          Navigator.pop(context, true);
                         },
                       ),
                       SizedBox(width: 20),
@@ -216,11 +220,16 @@ class _NoticeFormState extends State<NoticeForm> {
                   ),
                   SizedBox(height: 20),
                   CustomButton(
-                    label: "Cancel",
-                    color: Colors.grey.shade300,
-                    onPressed: () => Navigator.pop(
-                        context), // Navigates back to the previous page
-                  ),
+                      label: "Cancel",
+                      color: Colors.grey.shade300,
+                      onPressed: () => Navigator.pop(context)
+                      //  Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => DashboardContent()))
+                      //  Navigator.pop(
+                      //       context), // Navigates back to the previous page
+                      ),
                 ],
               ),
             ),

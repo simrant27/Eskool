@@ -15,6 +15,7 @@ class NoticeDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomPageLayout(
+      showBackButton: true,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Container(
