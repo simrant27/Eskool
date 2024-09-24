@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../data/class_list.dart';
 import '../../../data/feeList.dart'; // Fee list containing available fees
 import '../../../data/student_data.dart'; // Contains student data
 import '../../../models/Students_model.dart';
@@ -6,10 +7,6 @@ import '../admindashboard/components/customAppbar.dart';
 import '../admindashboard/components/responsive_drawer_layout.dart';
 
 class FeeAssignPage extends StatefulWidget {
-  final List<Student> students; // Students passed from the previous page
-
-  FeeAssignPage({required this.students});
-
   @override
   _FeeAssignPageState createState() => _FeeAssignPageState();
 }
@@ -21,16 +18,26 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
   Map<String, double> globalAmounts = {};
   // Store checkbox selections for each fee
   Map<String, bool> feeSelections = {};
+  // Selected class from dropdown
+  String selectedClass = 'Class 1';
 
   @override
   void initState() {
     super.initState();
-    // Initialize amounts and selections
-    for (var student in widget.students) {
+    // Initialize amounts and selections for the default selected class (Class 1)
+    initializeFeeAmountsForClass(selectedClass);
+  }
+
+  void initializeFeeAmountsForClass(String className) {
+    List<Student> students = classWiseStudents[className] ?? [];
+    feeAmounts.clear();
+
+    for (var student in students) {
       feeAmounts[student] = {
         for (var fee in fees) fee: 0.0
       }; // Initialize amounts
     }
+
     for (var fee in fees) {
       globalAmounts[fee] = 0.0; // Initialize global amounts
       feeSelections[fee] = false; // Initialize checkbox selections
@@ -38,7 +45,8 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
   }
 
   void updateFeeAmounts() {
-    for (var student in widget.students) {
+    List<Student> students = classWiseStudents[selectedClass] ?? [];
+    for (var student in students) {
       for (var fee in fees) {
         if (feeSelections[fee] == true) {
           // If the checkbox is selected, update with the global amount
@@ -50,6 +58,8 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<Student> students = classWiseStudents[selectedClass] ?? [];
+
     return ResponsiveDrawerLayout(
       content: SingleChildScrollView(
         child: Column(
@@ -60,6 +70,33 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
               onChanged: (value) {
                 // Implement search logic if needed
               },
+            ),
+            // Class Selection Dropdown
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DropdownButton<String>(
+                value: selectedClass,
+                icon: Icon(Icons.arrow_downward),
+                iconSize: 24,
+                elevation: 16,
+                style: TextStyle(color: Colors.deepPurple),
+                underline: Container(
+                  height: 2,
+                  color: Colors.deepPurpleAccent,
+                ),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedClass = newValue!;
+                    initializeFeeAmountsForClass(selectedClass);
+                  });
+                },
+                items: classList.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
             ),
             // Global Amounts Input
             Padding(
@@ -138,7 +175,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                         ),
                       )), // Create a column for each fee
                 ],
-                rows: widget.students.map((student) {
+                rows: students.map((student) {
                   return DataRow(cells: [
                     DataCell(
                       Text(
@@ -175,7 +212,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
             ElevatedButton(
               onPressed: () {
                 // Collect amounts for each student
-                widget.students.forEach((student) {
+                students.forEach((student) {
                   var amounts = feeAmounts[student];
                   print('Amounts for ${student.name}: $amounts');
                   // Handle the logic to proceed with these amounts (save to backend, etc.)

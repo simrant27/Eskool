@@ -1,3 +1,4 @@
+import 'package:eskool/users/component/customButtonStyle.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/class_list.dart';
@@ -101,40 +102,6 @@ class _BillingPageState extends State<BillingPage> {
                                 return ShowFeeDialog(
                                   fees: fees,
                                   student: student,
-                                  confirm: (feeSelections) {
-                                    // Get selected fees
-                                    List<String> selectedFees = feeSelections
-                                        .entries
-                                        .where((entry) => entry.value)
-                                        .map((entry) => entry.key)
-                                        .toList();
-
-                                    if (selectedFees.isEmpty) {
-                                      // Show an error message if no fees are selected
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Please select at least one fee.'),
-                                        ),
-                                      );
-                                      return; // Exit if no fees are selected
-                                    }
-
-                                    Navigator.pop(
-                                        context); // Close the selection dialog
-
-                                    // Show the amount entry dialog
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return ShowAmountEntryDialog(
-                                          selectedFees: selectedFees,
-                                          student: student,
-                                        );
-                                      },
-                                    );
-                                  },
                                 );
                               },
                             );
@@ -147,27 +114,14 @@ class _BillingPageState extends State<BillingPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {
-              // Fetch all students from the selected class
-              final selectedStudents = getStudentsByClass(selectedClass);
-
-              if (selectedStudents.isNotEmpty) {
-                // Show the fee dialog for all students in the selected class
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FeeAssignPage(
-                        students: selectedStudents), // Pass actual students
-                  ),
-                );
-              } else {
-                // Show an error message if no students are found
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('No students in selected class.'),
-                  ),
-                );
-              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FeeAssignPage(),
+                ),
+              );
             },
+            style: customButtonStyle,
             child: const Text('For All'),
           ),
         ],

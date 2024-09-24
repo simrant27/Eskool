@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../../../models/Students_model.dart';
+import 'showAmountDilog.dart';
 
 class ShowFeeDialog extends StatefulWidget {
   final List<String> fees; // List of available fees
   final Student student;
-  final Function(Map<String, bool>) confirm; // Function to handle confirmation
 
   ShowFeeDialog({
     Key? key,
     required this.fees,
     required this.student,
-    required this.confirm,
   }) : super(key: key);
 
   @override
@@ -71,15 +70,52 @@ class _ShowFeeDialogState extends State<ShowFeeDialog> {
           onPressed: () {
             Navigator.pop(context); // Close dialog without saving
           },
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         ElevatedButton(
           onPressed: () {
-            // Call the confirm function with the selected fees
-            widget.confirm(feeSelections);
-            Navigator.pop(context); // Close dialog after confirmation
+            // Get selected fees
+            List<String> selectedFees = feeSelections.entries
+                .where((entry) => entry.value)
+                .map((entry) => entry.key)
+                .toList();
+
+            if (selectedFees.isEmpty) {
+              // Show an error message if no fees are selected
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Please select at least one fee.'),
+                ),
+              );
+              return; // Exit early if no fees are selected
+            }
+
+            Navigator.pop(context); // Close current dialog
+
+            // Show the amount entry dialog for selected fees
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return ShowAmountEntryDialog(
+                  selectedFees: selectedFees,
+                  student: widget.student,
+                  onSubmit: (feeAmounts) {
+                    // Handle the submitted fee amounts here
+                    print('Submitted amounts: $feeAmounts');
+                    // Do something with the feeAmounts, e.g., saving to database
+                  },
+                );
+              },
+            );
+
+            // Show a SnackBar with the selected fees
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Selected Fees: ${selectedFees.join(", ")}'),
+              ),
+            );
           },
-          child: Text('Confirm'),
+          child: const Text('Confirm'),
         ),
       ],
     );
