@@ -52,6 +52,7 @@ class NoticeDetailsPage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: Colors.black87),
               ),
               SizedBox(height: 24),
+              // Text(notice.files!),
               if (notice.files != null && notice.files!.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,17 +99,20 @@ class NoticeDetailsPage extends StatelessWidget {
                   ),
                   SizedBox(width: 10),
                   CustomButton(
-                      label: "Delete",
-                      color: Colors.red,
-                      onPressed: () {
-                        showDeleteConfirmationDialog(context, () {
-                          // Handle delete logic here
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text('Notice deleted successfully')),
-                          );
-                        });
-                      }),
+                    label: "Delete",
+                    color: Colors.red,
+                    onPressed: () {
+                      showDeleteConfirmationDialog(
+                        context,
+                        notice.id, // Pass the notice ID to delete
+                        () {
+                          Navigator.pop(context);
+                          // Callback to handle UI update after deletion
+                          // You can refresh the notice list or navigate accordingly
+                        },
+                      );
+                    },
+                  ),
                 ],
               ),
             ],
