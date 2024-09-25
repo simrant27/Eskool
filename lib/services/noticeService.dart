@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'package:eskool/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import '../models/notice_info_model.dart';
 // Import your model
 
 class NoticeService {
-  final String apiUrl =
-      'http://192.168.1.3:3000/api/notices'; // Replace with your API URL
+  final String apiUrl = '$url/api/notices'; // Replace with your API URL
 
   Future<List<NoticeInfoModel>> fetchNotices() async {
     final response = await http.get(Uri.parse(apiUrl)); // Make a GET request

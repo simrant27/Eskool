@@ -1,9 +1,8 @@
 import 'dart:convert';
 
 import 'package:eskool/constants/constants.dart';
+import 'package:eskool/data/noticedata.dart';
 import 'package:eskool/models/notice_info_model.dart';
-
-import '../data/noticedata.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<NoticeInfoModel>> fetchNotices() async {

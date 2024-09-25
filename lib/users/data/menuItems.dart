@@ -6,7 +6,7 @@ import '../screen/FetchNoticeByUser.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
-import '../screen/parentsdashboard.dart';
+import '../screen/Parentsdashboard.dart';
 import 'package:flutter/material.dart';
 
 class MenuItem {
@@ -29,7 +29,7 @@ List<MenuItem> menuItems(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => parentsdashboard()),
+          MaterialPageRoute(builder: (context) => Parentsdashboard()),
         );
       },
     ),
@@ -51,7 +51,6 @@ List<MenuItem> menuItems(BuildContext context) {
           context,
           MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
         );
-        
       },
     ),
     MenuItem(

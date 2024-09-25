@@ -29,7 +29,7 @@ class CustomBottomAppBar extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => parentsdashboard()),
+                MaterialPageRoute(builder: (context) => Parentsdashboard()),
               );
             },
           ),

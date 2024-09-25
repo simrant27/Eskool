@@ -75,8 +75,8 @@ class _NoticeFormState extends State<NoticeForm> {
     try {
       // await http.get(Uri.parse('http://192.168.18.56:3000/api/notices'));
 
-      var request = http.MultipartRequest(
-          'POST', Uri.parse('http://192.168.18.56:3000/api/notices'));
+      var request =
+          http.MultipartRequest('POST', Uri.parse('$url/api/notices'));
 
       // Add title and description fields
       request.fields['title'] = title;
