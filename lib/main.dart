@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         title: "Eskool",
         debugShowCheckedModeBanner: false,
         home: Admindashboard()
+
         // FullNoticeListPage()
         // NoticeListScreen()
         // Parentsdashboard()

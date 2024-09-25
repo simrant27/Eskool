@@ -1,3 +1,5 @@
+import 'package:eskool/Create%20account/screens/parent_page.dart';
+import 'package:eskool/Create%20account/screens/teacher_page.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/drawer_list_title.dart';
@@ -32,9 +34,20 @@ class DrawerMenu extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Admindashboard()));
               }),
-          DrawerListTitle(title: "Teacher", icon: Icons.person_2, tap: () {}),
           DrawerListTitle(
-              title: "Parents", icon: Icons.people_alt_sharp, tap: () {}),
+              title: "Teacher",
+              icon: Icons.person_2,
+              tap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TeacherPage()));
+              }),
+          DrawerListTitle(
+              title: "Parents",
+              icon: Icons.people_alt_sharp,
+              tap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ParentPage()));
+              }),
           // DrawerListTitle(
           //     title: "Classes", icon: Icons.class_outlined, tap: () {}),
           ExpansionTile(

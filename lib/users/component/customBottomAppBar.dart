@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../data/menuItems.dart';
-import '../screen/parentsdashboard.dart';
+import '../screen/Parentsdashboard.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({

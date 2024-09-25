@@ -17,4 +17,4 @@ const red = Colors.red;
 //default app padding
 const appPadding = 16.0;
 
-const String url = 'http://192.168.29.239:3000/';
+const String url = 'http://192.168.29.239:3000';

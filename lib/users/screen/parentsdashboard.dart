@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:eskool/models/notice_info_model.dart';
-import 'package:eskool/services/fetchNotice.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,27 +13,8 @@ import '../data/data.dart';
 import '../data/menuItems.dart';
 import '../data/userImage.dart';
 
-class Parentsdashboard extends StatefulWidget {
+class Parentsdashboard extends StatelessWidget {
   const Parentsdashboard({super.key});
-
-  @override
-  State<Parentsdashboard> createState() => _ParentsdashboardState();
-}
-
-class _ParentsdashboardState extends State<Parentsdashboard> {
-  late Future<List<NoticeInfoModel>> futureNotices;
-
-  @override
-  void initState() {
-    super.initState();
-    futureNotices = fetchNotices(); // Call the fetch method
-  }
-
-  void refreshNotices() {
-    setState(() {
-      futureNotices = fetchNotices(); // Refresh the notices
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

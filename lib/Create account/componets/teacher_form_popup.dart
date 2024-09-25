@@ -13,7 +13,16 @@ class TeacherFormPopup extends StatefulWidget {
 
 class _TeacherFormPopupState extends State<TeacherFormPopup> {
   final _formKey = GlobalKey<FormState>();
-  String? fullName, email, phone, address, subjects, teacherID, employmentDate, qualification, username, password;
+  String? fullName,
+      email,
+      phone,
+      address,
+      subjects,
+      teacherID,
+      employmentDate,
+      qualification,
+      username,
+      password;
   File? teacherPhoto;
   final ImagePicker picker = ImagePicker();
   bool isLoading = false;
@@ -30,34 +39,50 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                buildFormField('Full Name', Icons.person, (value) => fullName = value),
+                buildFormField(
+                    'Full Name', Icons.person, (value) => fullName = value),
                 SizedBox(height: 10),
-                buildFormField('Email Address', Icons.email, (value) => email = value, emailValidator: true),
+                buildFormField(
+                    'Email Address', Icons.email, (value) => email = value,
+                    emailValidator: true),
                 SizedBox(height: 10),
-                buildFormField('Phone Number', Icons.phone, (value) => phone = value, phoneValidator: true),
+                buildFormField(
+                    'Phone Number', Icons.phone, (value) => phone = value,
+                    phoneValidator: true),
                 SizedBox(height: 10),
-                buildFormField('Address', Icons.home, (value) => address = value),
+                buildFormField(
+                    'Address', Icons.home, (value) => address = value),
                 SizedBox(height: 10),
-                buildFormField('Subjects Taught', Icons.book, (value) => subjects = value),
+                buildFormField(
+                    'Subjects Taught', Icons.book, (value) => subjects = value),
                 SizedBox(height: 10),
-                buildFormField('Teacher ID', Icons.badge, (value) => teacherID = value),
+                buildFormField(
+                    'Teacher ID', Icons.badge, (value) => teacherID = value),
                 SizedBox(height: 10),
-                buildFormField('Employment Date', Icons.calendar_today, (value) => employmentDate = value),
+                buildFormField('Employment Date', Icons.calendar_today,
+                    (value) => employmentDate = value),
                 SizedBox(height: 10),
-                buildFormField('Qualification', Icons.school, (value) => qualification = value),
+                buildFormField('Qualification', Icons.school,
+                    (value) => qualification = value),
                 SizedBox(height: 10),
-                buildFormField('Username', Icons.person_outline, (value) => username = value),
+                buildFormField('Username', Icons.person_outline,
+                    (value) => username = value),
                 SizedBox(height: 10),
-                buildFormField('Password', Icons.lock, (value) => password = value, isPassword: true),
+                buildFormField(
+                    'Password', Icons.lock, (value) => password = value,
+                    isPassword: true),
                 SizedBox(height: 10),
 
                 // Add Photo Button
                 ElevatedButton.icon(
-                  icon: isLoading ? CircularProgressIndicator() : Icon(Icons.photo),
+                  icon: isLoading
+                      ? CircularProgressIndicator()
+                      : Icon(Icons.photo),
                   label: Text('Add Photo'),
                   onPressed: () async {
                     setState(() => isLoading = true);
-                    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+                    final pickedFile =
+                        await picker.pickImage(source: ImageSource.gallery);
                     if (pickedFile != null) {
                       setState(() {
                         teacherPhoto = File(pickedFile.path);
@@ -101,7 +126,11 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
     );
   }
 
-  TextFormField buildFormField(String label, IconData icon, Function(String?) onSave, {bool emailValidator = false, bool phoneValidator = false, bool isPassword = false}) {
+  TextFormField buildFormField(
+      String label, IconData icon, Function(String?) onSave,
+      {bool emailValidator = false,
+      bool phoneValidator = false,
+      bool isPassword = false}) {
     return TextFormField(
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.deepPurple),
