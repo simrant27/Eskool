@@ -3,5 +3,5 @@ final List<String> fees = [
   'Tuition Fee',
   'Sports Fee',
   'Library Fee',
-  'Lab Fee',
+  'Extra Fee',
 ];

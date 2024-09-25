@@ -3,6 +3,7 @@ import '../../../data/class_list.dart';
 import '../../../data/feeList.dart'; // Fee list containing available fees
 import '../../../data/student_data.dart'; // Contains student data
 import '../../../models/Students_model.dart';
+import '../../../users/component/customButtonStyle.dart';
 import '../admindashboard/components/customAppbar.dart';
 import '../admindashboard/components/responsive_drawer_layout.dart';
 
@@ -26,6 +27,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
     super.initState();
     // Initialize amounts and selections for the default selected class (Class 1)
     initializeFeeAmountsForClass(selectedClass);
+    updateFeeAmounts();
   }
 
   void initializeFeeAmountsForClass(String className) {
@@ -74,30 +76,49 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
             // Class Selection Dropdown
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: DropdownButton<String>(
-                value: selectedClass,
-                icon: Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[
+                      50], // Light background color for the container
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  border: Border.all(
+                    color: Colors.deepPurple, // Border color
+                    width: 2, // Border width
+                  ),
                 ),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedClass = newValue!;
-                    initializeFeeAmountsForClass(selectedClass);
-                  });
-                },
-                items: classList.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                child: DropdownButton<String>(
+                  value: selectedClass,
+                  icon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple),
+                  iconSize: 24,
+                  elevation: 16,
+                  dropdownColor:
+                      Colors.deepPurple[50], // Dropdown background color
+                  underline: SizedBox(), // Removes the default underline
+                  style: TextStyle(
+                    color: Colors.deepPurple, // Text color
+                    fontSize: 18, // Font size for the dropdown items
+                    fontWeight: FontWeight.bold, // Font weight
+                  ),
+                  borderRadius:
+                      BorderRadius.circular(12), // Dropdown border radius
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedClass = newValue!;
+                      initializeFeeAmountsForClass(selectedClass);
+                    });
+                  },
+                  items:
+                      classList.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
               ),
             ),
+
             // Global Amounts Input
             Padding(
               padding: const EdgeInsets.all(16.0),
@@ -124,24 +145,11 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                           },
                         ),
                       ),
-                      Row(
-                        children: [
-                          Text("For All: "),
-                          Checkbox(
-                            value: feeSelections[fee],
-                            onChanged: (value) {
-                              setState(() {
-                                feeSelections[fee] = value ?? false;
-                              });
-                            },
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              updateFeeAmounts(); // Update amounts when button is pressed
-                            },
-                            child: Text('Done'),
-                          ),
-                        ],
+                      ElevatedButton(
+                        onPressed: () {
+                          updateFeeAmounts(); // Update amounts when button is pressed
+                        },
+                        child: Text('Done'),
                       ),
                     ],
                   );
@@ -209,16 +217,20 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                 }).toList(),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                // Collect amounts for each student
-                students.forEach((student) {
-                  var amounts = feeAmounts[student];
-                  print('Amounts for ${student.name}: $amounts');
-                  // Handle the logic to proceed with these amounts (save to backend, etc.)
-                });
-              },
-              child: const Text('Confirm Selections'),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Collect amounts for each student
+                    },
+                    style: customButtonStyle,
+                    child: const Text('Update Fee'),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

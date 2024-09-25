@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:eskool/users/screen/fetchNotice.dart';
 
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
@@ -47,7 +48,10 @@ List<MenuItem> menuItems(BuildContext context) {
       icon: Icons.notifications_active_sharp,
       title: 'Notification',
       onTap: () {
-        // Handle the tap event
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FetchNotice()),
+        );
       },
     ),
     MenuItem(
