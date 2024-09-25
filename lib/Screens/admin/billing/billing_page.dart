@@ -1,9 +1,17 @@
-import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
-import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
+import 'package:eskool/users/component/customButtonStyle.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/class_list.dart';
+import '../../../data/feeList.dart';
+import '../admindashboard/components/customAppbar.dart';
+import '../admindashboard/components/responsive_drawer_layout.dart';
+import 'FeeAssignPage.dart';
+import 'component/showAmountDilog.dart';
+import 'component/showFeeDilog.dart';
+import 'data/studentList.dart';
+
 class BillingPage extends StatefulWidget {
-  const BillingPage({super.key});
+  const BillingPage({Key? key}) : super(key: key);
 
   @override
   _BillingPageState createState() => _BillingPageState();
@@ -11,35 +19,13 @@ class BillingPage extends StatefulWidget {
 
 class _BillingPageState extends State<BillingPage> {
   String? selectedClass;
-  final List<String> classes = [
-    'Class 1',
-    'Class 2',
-    'Class 3',
-    'Class 4',
-    'Class 5'
-  ];
 
-  // Sample student data, replace with your backend API call
-  final Map<String, List<Map<String, dynamic>>> studentsData = {
-    'Class 1': [
-      {'name': 'John Doe', 'status': 'Paid', 'dueAmount': 0},
-      {'name': 'Jane Doe', 'status': 'Due', 'dueAmount': 5000},
-    ],
-    'Class 2': [
-      {'name': 'Alice Smith', 'status': 'Paid', 'dueAmount': 0},
-      {'name': 'Bob Brown', 'status': 'Overdue', 'dueAmount': 7000},
-    ],
-    'Class 3': [
-      {'name': 'Charlie Adams', 'status': 'Paid', 'dueAmount': 0},
-    ],
-    // Add more students for other classes
-  };
-
-  List<Map<String, dynamic>> getStudentsByClass(String? className) {
-    if (className == null || !studentsData.containsKey(className)) {
+  // Fetch students by selected class from classWiseStudents
+  List<Student> getStudentsByClass(String? className) {
+    if (className == null || !classWiseStudents.containsKey(className)) {
       return [];
     }
-    return studentsData[className]!;
+    return classWiseStudents[className]!;
   }
 
   @override
@@ -54,17 +40,17 @@ class _BillingPageState extends State<BillingPage> {
               // Implement search logic here if needed
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           // Class Selection Dropdown
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Select Class',
                 border: OutlineInputBorder(),
               ),
               value: selectedClass,
-              items: classes.map((className) {
+              items: classList.map((className) {
                 return DropdownMenuItem(
                   value: className,
                   child: Text(className),
@@ -77,11 +63,11 @@ class _BillingPageState extends State<BillingPage> {
               },
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           // Display students based on the selected class
           Expanded(
             child: selectedClass == null
-                ? Center(
+                ? const Center(
                     child: Text(
                       'Please select a class to view students',
                       style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -92,28 +78,50 @@ class _BillingPageState extends State<BillingPage> {
                     itemBuilder: (context, index) {
                       final student = getStudentsByClass(selectedClass)[index];
                       return Card(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         child: ListTile(
-                          title: Text(student['name']),
-                          subtitle: Text('Status: ${student['status']}'),
+                          title: Text(student.name),
+                          subtitle: Text('Status: ${student.status}'),
                           trailing: Text(
-                            student['status'] == 'Paid'
+                            student.status == 'Paid'
                                 ? 'Paid'
-                                : 'Due: ${student['dueAmount']}',
+                                : 'Due: ${student.dueAmount}',
                             style: TextStyle(
-                              color: student['status'] == 'Paid'
+                              color: student.status == 'Paid'
                                   ? Colors.green
                                   : Colors.red,
                             ),
                           ),
                           onTap: () {
-                            // Handle student details tap, for example show payment history
+                            // Navigate to the ShowFeeDialog for the individual student
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ShowFeeDialog(
+                                  fees: fees,
+                                  student: student,
+                                );
+                              },
+                            );
                           },
                         ),
                       );
                     },
                   ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FeeAssignPage(),
+                ),
+              );
+            },
+            style: customButtonStyle,
+            child: const Text('For All'),
           ),
         ],
       ),

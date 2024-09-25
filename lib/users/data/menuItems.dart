@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
+import '../screen/FetchNoticeByUser.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
@@ -47,7 +47,11 @@ List<MenuItem> menuItems(BuildContext context) {
       icon: Icons.notifications_active_sharp,
       title: 'Notification',
       onTap: () {
-        // Handle the tap event
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
+        );
+        
       },
     ),
     MenuItem(
