@@ -8,6 +8,9 @@ import 'package:eskool/data/class_list.dart';
 import 'package:eskool/models/Students_model.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../services/loginService.dart';
+import '../../../../users/component/CustomAlertDialogBox.dart';
+
 class DrawerMenu extends StatelessWidget {
   const DrawerMenu({super.key});
 
@@ -65,7 +68,32 @@ class DrawerMenu extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => BillingPage()));
               }),
 
-          DrawerListTitle(title: "Logout", icon: Icons.logout, tap: () {}),
+          DrawerListTitle(
+              title: "Logout",
+              icon: Icons.logout,
+              tap: () {
+                customAlertDialogBox(
+                  context,
+                  "Log Out",
+                  "Are You Sure?!",
+                  [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close the dialog
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () async {
+                        await LoginService().logout(); // Call the logout method
+                        Navigator.pushReplacementNamed(
+                            context, '/login'); // Navigate to login page
+                      },
+                      child: Text('Logout'),
+                    ),
+                  ],
+                );
+              }),
         ],
       ),
     );
