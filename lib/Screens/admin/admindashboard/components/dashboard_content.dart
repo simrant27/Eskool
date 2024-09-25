@@ -8,12 +8,8 @@ import 'package:eskool/data/noticedata.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/notice_info_model.dart';
-<<<<<<< HEAD
-import '../../../../services/fetchNotice.dart';
-=======
 import '../../../../services/fetch_notice.dart';
 import '../../components/notice_future_builder.dart';
->>>>>>> temp1
 import 'analyticCards.dart';
 import 'calenderWidget.dart';
 import 'noticewidget.dart';
@@ -23,27 +19,6 @@ class DashboardContent extends StatelessWidget {
   const DashboardContent({super.key});
 
   @override
-<<<<<<< HEAD
-  State<DashboardContent> createState() => _DashboardContentState();
-}
-
-class _DashboardContentState extends State<DashboardContent> {
-  late Future<List<NoticeInfoModel>> futureNotices;
-  @override
-  void initState() {
-    super.initState();
-    futureNotices = fetchNotices(); // Call the fetch method
-  }
-
-  void refreshNotices() {
-    setState(() {
-      futureNotices = fetchNotices(); // Refresh the notices
-    });
-  }
-
-  @override
-=======
->>>>>>> temp1
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
