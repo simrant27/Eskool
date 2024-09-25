@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:eskool/Screens/admin/admindashboard/components/noticewidget.dart';
+import 'package:eskool/data/noticedata.dart';
 
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
-import '../screen/parentsdashboard.dart';
+import '../screen/Parentsdashboard.dart';
 import 'package:flutter/material.dart';
 
 class MenuItem {
@@ -29,7 +31,7 @@ List<MenuItem> menuItems(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => parentsdashboard()),
+          MaterialPageRoute(builder: (context) => Parentsdashboard()),
         );
       },
     ),
@@ -47,7 +49,11 @@ List<MenuItem> menuItems(BuildContext context) {
       icon: Icons.notifications_active_sharp,
       title: 'Notification',
       onTap: () {
-        // Handle the tap event
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NoticeWidget(
+                    noticeData: noticeData, showViewAllButton: false)));
       },
     ),
     MenuItem(

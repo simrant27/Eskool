@@ -22,20 +22,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      title: "Eskool",
-      debugShowCheckedModeBanner: false,
-      home:
-          //  Admindashboard()
-          // FullNoticeListPage()
-          // NoticeListScreen()
-          // parentsdashboard()
-          StudentDetail(
-        className: "2",
-      ),
-    );
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        title: "Eskool",
+        debugShowCheckedModeBanner: false,
+        home:
+            //  Admindashboard()
+            // FullNoticeListPage()
+            // NoticeListScreen()
+            Parentsdashboard()
+        //     StudentDetail(
+        //   className: "2",
+        // ),
+        );
   }
 }
