@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
-    );
-  }
-}
+import 'dart:convert'; // For encoding and decoding JSON
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   @override
@@ -21,15 +9,77 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _password = '';
 
-  void _login() {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
+  String errorMessage = "";
+
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      print('Email: $_email, Password: $_password');
-      // Implement your login logic here
+      setState(() {
+        isLoading = true;
+      });
+
+      String username = _usernameController.text.trim();
+      String password = _passwordController.text.trim();
+
+      try {
+        // Define your API URL
+        var url = Uri.parse(
+            'http://192.168.18.56:3000/api/login'); // Change with your server IP and endpoint
+
+        // Send login request
+        var response = await http.post(
+          url,
+          headers: {"Content-Type": "application/json"},
+          body: json.encode({
+            'username': username,
+            'password': password,
+          }),
+        );
+
+        // Check the response
+        if (response.statusCode == 200) {
+          // Successfully logged in
+          var data = json.decode(response.body);
+          String token = data['token']; // Assuming your backend sends a token
+          _showSuccessDialog(); // Navigate to the dashboard or show success message
+        } else {
+          setState(() {
+            errorMessage = "Invalid username or password!";
+          });
+        }
+      } catch (e) {
+        setState(() {
+          errorMessage = "An error occurred. Please try again.";
+        });
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Login Successful"),
+        content: Text("You have successfully logged in."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close dialog
+              Navigator.pushReplacementNamed(
+                  context, '/parents'); // Redirect to dashboard
+            },
+            child: Text("OK"),
+          )
+        ],
+      ),
+    );
   }
 
   void _showForgotPasswordDialog() {
@@ -40,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Forgot Password', style: TextStyle(color: Colors.teal[800])),
+          title: Text('Forgot Password',
+              style: TextStyle(color: Colors.teal[800])),
           content: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
@@ -86,7 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: Text('Send Reset Link'),
                     style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -113,7 +165,10 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.purpleAccent.shade100, Colors.blueAccent.shade400],
+                colors: [
+                  Colors.purpleAccent.shade100,
+                  Colors.blueAccent.shade400
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
@@ -157,9 +212,11 @@ class _LoginPageState extends State<LoginPage> {
                           child: Column(
                             children: <Widget>[
                               TextFormField(
+                                controller: _usernameController,
                                 decoration: InputDecoration(
-                                  labelText: 'Email',
-                                  prefixIcon: Icon(Icons.email, color: Colors.teal),
+                                  labelText: 'UserName',
+                                  prefixIcon:
+                                      Icon(Icons.email, color: Colors.teal),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -169,19 +226,18 @@ class _LoginPageState extends State<LoginPage> {
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'Please enter your email';
+                                    return 'Please enter your username';
                                   }
                                   return null;
-                                },
-                                onSaved: (value) {
-                                  _email = value!;
                                 },
                               ),
                               SizedBox(height: 20),
                               TextFormField(
+                                controller: _passwordController,
                                 decoration: InputDecoration(
                                   labelText: 'Password',
-                                  prefixIcon: Icon(Icons.lock, color: Colors.teal),
+                                  prefixIcon:
+                                      Icon(Icons.lock, color: Colors.teal),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
@@ -195,27 +251,36 @@ class _LoginPageState extends State<LoginPage> {
                                   }
                                   return null;
                                 },
-                                onSaved: (value) {
-                                  _password = value!;
-                                },
+                                // onSaved: (value) {
+                                //   _password = value!;
+                                // },
                               ),
                               SizedBox(height: 30),
-                              ElevatedButton(
-                                onPressed: _login,
-                                child: Text(
-                                  'Login',
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  shadowColor: Colors.black54,
-                                  elevation: 8,
-                                ),
-                              ),
+                              isLoading
+                                  ? CircularProgressIndicator()
+                                  : ElevatedButton(
+                                      onPressed: _login,
+                                      child: Text(
+                                        'Login',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 50, vertical: 15),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        shadowColor: Colors.black54,
+                                        elevation: 8,
+                                      ),
+                                    ),
                               SizedBox(height: 15),
+                              if (errorMessage.isNotEmpty)
+                                Text(
+                                  errorMessage,
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               TextButton(
                                 onPressed: _showForgotPasswordDialog,
                                 child: Text(
