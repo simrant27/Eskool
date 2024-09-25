@@ -54,6 +54,7 @@ class _FullNoticeListPageState extends State<FullNoticeListPage> {
   @override
   Widget build(BuildContext context) {
     return CustomPageLayout(
+      showBackButton: true,
       showSearch: true,
       hinttext: "notices",
       onChanged: _filterNotices,

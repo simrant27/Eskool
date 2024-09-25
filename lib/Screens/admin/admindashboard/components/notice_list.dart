@@ -1,4 +1,3 @@
-import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:eskool/models/notice_info_model.dart';
@@ -18,8 +17,9 @@ class NoticeList extends StatelessWidget {
 
         return Column(
           children: [
-            GestureDetector(
+            InkWell(
               onTap: () {
+                print("Tapped on notice: ${notice.title}");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -64,7 +64,7 @@ class NoticeList extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
-                            DateFormat('dd MMM yyyy').format(notice.date),
+                            DateFormat('dd MMM yyyy').format(notice.createdAt!),
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.grey[600],

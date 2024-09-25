@@ -1,17 +1,29 @@
-// lib/models/student.dart
-
 class Student {
-  final String name;
-  final String rollNo;
-  final String grade;
+  final String studentId;
+  final String fullName;
+  final String classAssigned;
   final String parentName;
-  final String className; // Add this line
+  String? rollNumber;
+  String? imageUrl; // Add rollNumber as a nullable field
 
   Student({
-    required this.name,
-    required this.rollNo,
-    required this.grade,
+    required this.studentId,
+    required this.fullName,
+    required this.classAssigned,
     required this.parentName,
-    required this.className, // Add this line
+    this.rollNumber,
+    this.imageUrl, // Include rollNumber in the constructor
   });
+
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
+      studentId: json['studentId'],
+      rollNumber: json['rollNumber'],
+      fullName: json['fullName'],
+      classAssigned: json['classAssigned'],
+      parentName:
+          json['parentID'] != null ? json['parentID']['fullName'] : 'Unknown',
+      imageUrl: json['imageUrl'],
+    );
+  }
 }

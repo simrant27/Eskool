@@ -23,10 +23,12 @@ class FullStudentDetail extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Roll No: ${student.rollNo}",
+                Text("Name: ${student.fullName}"),
+                Text("Roll No: ${student.rollNumber}",
                     style: TextStyle(fontSize: 18)),
                 SizedBox(height: 10),
-                Text("Grade: ${student.grade}", style: TextStyle(fontSize: 18)),
+                Text("Grade: ${student.classAssigned}",
+                    style: TextStyle(fontSize: 18)),
                 SizedBox(height: 10),
                 Text("Parent Name: ${student.parentName}",
                     style: TextStyle(fontSize: 18)),
