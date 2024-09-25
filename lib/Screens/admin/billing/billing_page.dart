@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 
 import '../../../data/class_list.dart';
 import '../../../data/feeList.dart';
-import '../../../data/student_data.dart';
-import '../../../models/Students_model.dart';
 import '../admindashboard/components/customAppbar.dart';
 import '../admindashboard/components/responsive_drawer_layout.dart';
 import 'FeeAssignPage.dart';
 import 'component/showAmountDilog.dart';
 import 'component/showFeeDilog.dart';
+import 'data/studentList.dart';
 
 class BillingPage extends StatefulWidget {
   const BillingPage({Key? key}) : super(key: key);

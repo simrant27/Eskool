@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../models/Students_model.dart';
+import '../data/studentList.dart';
 import 'showAmountDilog.dart';
 
 class ShowFeeDialog extends StatefulWidget {

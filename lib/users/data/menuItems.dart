@@ -1,9 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool/users/screen/fetchNotice.dart';
-
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
+import '../screen/FetchNoticeByUser.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
@@ -50,8 +49,9 @@ List<MenuItem> menuItems(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FetchNotice()),
+          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
         );
+        
       },
     ),
     MenuItem(

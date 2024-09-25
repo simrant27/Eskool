@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../data/class_list.dart';
 import '../../../data/feeList.dart'; // Fee list containing available fees
-import '../../../data/student_data.dart'; // Contains student data
-import '../../../models/Students_model.dart';
 import '../../../users/component/customButtonStyle.dart';
 import '../admindashboard/components/customAppbar.dart';
 import '../admindashboard/components/responsive_drawer_layout.dart';
+import 'data/studentList.dart';
 
 class FeeAssignPage extends StatefulWidget {
   @override

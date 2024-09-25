@@ -14,6 +14,51 @@ import 'noticewidget.dart';
 class DashboardContent extends StatelessWidget {
   const DashboardContent({super.key});
 
+  Future<State<DashboardContent>> createState() async =>
+      _DashboardContentState();
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+}
+
+class _DashboardContentState extends State<DashboardContent> {
+  late Future<List<NoticeInfoModel>> futureNotices;
+  @override
+  void initState() {
+    super.initState();
+    futureNotices = fetchNotices(); // Call the fetch method
+  }
+
+  Future<List<NoticeInfoModel>> fetchNotices() async {
+    final response =
+        await http.get(Uri.parse('http://192.168.18.56:3000/api/notices'));
+
+    if (response.statusCode == 200) {
+      // Parse the JSON response
+      List<dynamic> jsonResponse = json.decode(response.body);
+      List<NoticeInfoModel> notices = jsonResponse
+          .map((notice) => NoticeInfoModel.fromJson(notice))
+          .toList();
+
+      // Update the global noticeData list
+      noticeData.clear(); // Clear previous data if needed
+      noticeData.addAll(notices); // Add fetched notices to the global list
+
+      return notices; // Return the fetched notices
+    } else {
+      throw Exception('Failed to load notices');
+    }
+  }
+
+  void refreshNotices() {
+    setState(() {
+      futureNotices = fetchNotices(); // Refresh the notices
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final topNotices = noticeData.take(4).toList();

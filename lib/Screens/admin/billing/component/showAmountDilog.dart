@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../models/Students_model.dart';
+
+import '../data/studentList.dart';
 
 class ShowAmountEntryDialog extends StatefulWidget {
   final List<String> selectedFees;

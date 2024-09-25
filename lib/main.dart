@@ -28,10 +28,10 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home:
+        home: Admindashboard()
 
-            // BillingPage()
-            parentsdashboard()
+        // BillingPage()
+        // parentsdashboard()
         //  StudentDetail(
         //   className: "Class 1",
         // ),
