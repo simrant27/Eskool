@@ -1,3 +1,4 @@
+import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -57,7 +58,7 @@ Future<void> deleteNotice(String noticeId) async {
   print("Notice ID: $noticeId");
 
   final response = await http.delete(
-    Uri.parse('http://192.168.18.56:3000/api/notices/$noticeId'),
+    Uri.parse('$url/api/notices/$noticeId'),
     headers: {
       'Content-Type': 'application/json',
     },

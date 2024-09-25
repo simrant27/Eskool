@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
 
   const MyApp({super.key, required this.initialRoute});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         '/login': (context) => LoginPage(),
-        '/parent-dashboard': (context) => parentsdashboard(),
+        '/parent-dashboard': (context) => Parentsdashboard(),
         '/admin-dashboard': (context) => Admindashboard(),
         // Add other routes as necessary
       },
