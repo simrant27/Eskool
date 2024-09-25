@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:eskool/Screens/admin/admindashboard/components/noticewidget.dart';
-import 'package:eskool/data/noticedata.dart';
-
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
+import '../screen/FetchNoticeByUser.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
@@ -50,10 +48,9 @@ List<MenuItem> menuItems(BuildContext context) {
       title: 'Notification',
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => NoticeWidget(
-                    noticeData: noticeData, showViewAllButton: false)));
+          context,
+          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
+        );
       },
     ),
     MenuItem(

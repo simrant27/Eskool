@@ -5,7 +5,7 @@ import 'package:eskool/models/notice_info_model.dart';
 
 class NoticeService {
   // Define the backend URL
-  static const String baseUrl = 'http://192.168.18.121:3000/api/notices';
+  static const String baseUrl = 'http://192.168.1.3:3000/api/notices';
 
   // Fetch notices from backend
   Future<List<NoticeInfoModel>> fetchNotices() async {

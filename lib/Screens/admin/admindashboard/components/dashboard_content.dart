@@ -8,16 +8,22 @@ import 'package:eskool/data/noticedata.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/notice_info_model.dart';
+<<<<<<< HEAD
 import '../../../../services/fetchNotice.dart';
+=======
+import '../../../../services/fetch_notice.dart';
+import '../../components/notice_future_builder.dart';
+>>>>>>> temp1
 import 'analyticCards.dart';
 import 'calenderWidget.dart';
 import 'noticewidget.dart';
 import 'package:http/http.dart' as http;
 
-class DashboardContent extends StatefulWidget {
+class DashboardContent extends StatelessWidget {
   const DashboardContent({super.key});
 
   @override
+<<<<<<< HEAD
   State<DashboardContent> createState() => _DashboardContentState();
 }
 
@@ -36,6 +42,8 @@ class _DashboardContentState extends State<DashboardContent> {
   }
 
   @override
+=======
+>>>>>>> temp1
   Widget build(BuildContext context) {
     return SafeArea(
       child: SingleChildScrollView(
@@ -54,39 +62,22 @@ class _DashboardContentState extends State<DashboardContent> {
               children: [
                 Expanded(
                     flex: 4,
-                    child: Column(
-                      children: [
-                        AnalyticCards(),
-                        if (Responsive.isMobile(context))
-                          SizedBox(
-                            height: appPadding,
-                          ),
-                        if (Responsive.isMobile(context)) CalenderWidget(),
-                        FutureBuilder<List<NoticeInfoModel>>(
-                          future: futureNotices,
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Center(
-                                  child: Text('Error: ${snapshot.error}'));
-                            } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
-                              return Center(child: Text('No notices found'));
-                            }
-                            final notice = snapshot.data!;
-
-                            // Display the list of notices
-                            return NoticeWidget(
-                                showCreateButton: true,
-                                noticeData: notice,
-                                showViewAllButton: true,
-                                onNoticeCreated: refreshNotices);
-                          },
+                    child: Column(children: [
+                      AnalyticCards(),
+                      if (Responsive.isMobile(context))
+                        SizedBox(
+                          height: appPadding,
                         ),
-                      ],
-                    )),
+                      if (Responsive.isMobile(context)) CalenderWidget(),
+                      NoticeListBuilder(
+                        isAdmin: true,
+                        showCreateButton: true,
+                        showViewAllButton: true,
+                        // onNoticeCreated: () {
+                        //   // Add any actions you want to trigger when a notice is created.
+                        // },
+                      ),
+                    ])),
                 if (!Responsive.isMobile(context))
                   SizedBox(
                     width: appPadding,

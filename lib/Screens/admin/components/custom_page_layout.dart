@@ -1,3 +1,4 @@
+import 'package:eskool/users/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
 
 import '../admindashboard/components/customAppbar.dart';
@@ -8,6 +9,7 @@ class CustomPageLayout extends StatelessWidget {
   final Function(String)? onChanged;
   final bool? showSearch;
   final bool? showBackButton;
+  final bool? showCustomLayout;
 
   final Widget child;
 
@@ -18,6 +20,7 @@ class CustomPageLayout extends StatelessWidget {
     this.onChanged,
     this.showBackButton,
     required this.child,
+    this.showCustomLayout = true,
   });
 
   @override

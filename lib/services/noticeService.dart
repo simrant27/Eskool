@@ -5,7 +5,7 @@ import '../models/notice_info_model.dart';
 
 class NoticeService {
   final String apiUrl =
-      'http://192.168.18.121:3000/api/notices'; // Replace with your API URL
+      'http://192.168.1.3:3000/api/notices'; // Replace with your API URL
 
   Future<List<NoticeInfoModel>> fetchNotices() async {
     final response = await http.get(Uri.parse(apiUrl)); // Make a GET request
