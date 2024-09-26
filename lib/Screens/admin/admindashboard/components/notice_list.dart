@@ -7,9 +7,9 @@ import 'package:eskool/Screens/admin/admindashboard/components/noticeDetailPage.
 
 class NoticeList extends StatelessWidget {
   final List<NoticeInfoModel> noticeData;
-  final bool? isAdmin;
+  final bool? admin;
 
-  const NoticeList({super.key, required this.noticeData, this.isAdmin = true});
+  const NoticeList({super.key, required this.noticeData, this.admin = true});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,11 @@ class NoticeList extends StatelessWidget {
             InkWell(
               onTap: () {
                 print("Tapped on notice: ${notice.title}");
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => isAdmin!
+                    builder: (context) => admin!
                         ? NoticeDetailsPage(
                             showCustomLayout: false,
                             notice: notice,

@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
-
+import '../../services/loginService.dart';
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
 import '../screen/FetchNoticeByUser.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
 import '../screen/profile.dart';
-import '../screen/parentsdashboard.dart';
+import '../screen/Parentsdashboard.dart';
 import 'package:flutter/material.dart';
 
 class MenuItem {
@@ -29,7 +29,7 @@ List<MenuItem> menuItems(BuildContext context) {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => parentsdashboard()),
+          MaterialPageRoute(builder: (context) => Parentsdashboard()),
         );
       },
     ),
@@ -51,7 +51,6 @@ List<MenuItem> menuItems(BuildContext context) {
           context,
           MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
         );
-        
       },
     ),
     MenuItem(
@@ -130,9 +129,10 @@ List<MenuItem> menuItems(BuildContext context) {
               child: Text('Cancel'),
             ),
             TextButton(
-              onPressed: () {
-                // Add logout functionality here
-                Navigator.pop(context); // Close the dialog
+              onPressed: () async {
+                await LoginService().logout(); // Call the logout method
+                Navigator.pushReplacementNamed(
+                    context, '/login'); // Navigate to login page
               },
               child: Text('Logout'),
             ),

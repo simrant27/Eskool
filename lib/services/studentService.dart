@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:eskool/constants/constants.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/Students_model.dart';
 
 class StudentService {
-  static const String baseUrl = 'http://192.168.18.56:3000/api';
+  static const String baseUrl = '$url/api';
 
   static Future<List<Student>> fetchStudentsByClass(String className) async {
     final response =
