@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
@@ -25,6 +26,8 @@ class LoginService {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
         await prefs.setString('token', token);
+        Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+        await prefs.setString('role', decodedToken['role'] ?? 'No role found');
 
         // Return success and redirect path
         return {'success': true, 'redirect': redirect};

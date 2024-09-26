@@ -1,5 +1,7 @@
+import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:open_file/open_file.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class ViewNoticeFile extends StatelessWidget {
   final String title;
@@ -14,6 +16,13 @@ class ViewNoticeFile extends StatelessWidget {
   }) : super(key: key);
 
   void _openFile() async {
+    if (fileUrl != null) {
+      // Open the PDF file using the URL
+      await OpenFile.open(fileUrl!);
+    }
+  }
+
+  void _openpdf() async {
     if (fileUrl != null) {
       // Open the PDF file using the URL
       await OpenFile.open(fileUrl!);
@@ -42,15 +51,13 @@ class ViewNoticeFile extends StatelessWidget {
                   fileUrl!.endsWith('.png') ||
                   fileUrl!.endsWith('.jpeg')) ...[
                 Image.network(
-                  fileUrl!,
+                  "$NoticeImage/$fileUrl",
                   fit: BoxFit.cover,
                 ),
               ] else if (fileUrl!.endsWith('.pdf')) ...[
                 // For PDF files
-                ElevatedButton(
-                  onPressed: _openFile,
-                  child: Text("Open PDF"),
-                ),
+
+                Expanded(child: PDFView(filePath: "$NoticeImage/$fileUrl"))
               ],
             ],
           ],

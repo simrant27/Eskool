@@ -15,7 +15,7 @@ void main() async {
 
   runApp(MyApp(
       initialRoute: isLoggedIn
-          ? (userRole == 'admin' ? '/admin' : '/parent')
+          ? (userRole == 'admin' ? '/admin-dashboard' : '/parent-dashboard')
           : '/login'));
 }
 
