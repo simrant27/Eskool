@@ -30,7 +30,7 @@ class _ShowFeeDialogState extends State<ShowFeeDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Select Fees for ${widget.student.name}'),
+      title: Text('Select Fees for ${widget.student.fullName}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -108,12 +108,7 @@ class _ShowFeeDialogState extends State<ShowFeeDialog> {
               },
             );
 
-            // Show a SnackBar with the selected fees
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Selected Fees: ${selectedFees.join(", ")}'),
-              ),
-            );
+            
           },
           child: const Text('Confirm'),
         ),
