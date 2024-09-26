@@ -15,7 +15,7 @@ void main() async {
 
   runApp(MyApp(
       initialRoute: isLoggedIn
-          ? (userRole == 'admin' ? '/admin' : '/parents')
+          ? (userRole == 'admin' ? '/admin' : '/parent')
           : '/login'));
 }
 
@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: initialRoute,
       routes: {
+        '/': (context) => LoginPage(),
+
         '/login': (context) => LoginPage(),
         '/parent-dashboard': (context) => Parentsdashboard(),
         '/admin-dashboard': (context) => Admindashboard(),
