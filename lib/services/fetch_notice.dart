@@ -12,8 +12,10 @@ Future<List<NoticeInfoModel>> fetchNotices() async {
   if (response.statusCode == 200) {
     // Parse the JSON response
     List<dynamic> jsonResponse = json.decode(response.body);
-    List<NoticeInfoModel> notices =
-        jsonResponse.map((notice) => NoticeInfoModel.fromJson(notice)).toList();
+    List<NoticeInfoModel> notices = jsonResponse.map((notice) {
+      // Ensure the model includes file or image URL
+      return NoticeInfoModel.fromJson(notice);
+    }).toList();
 
     // Update the global noticeData list
     noticeData.clear(); // Clear previous data if needed

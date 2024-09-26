@@ -2,25 +2,26 @@ class NoticeInfoModel {
   final DateTime? createdAt; // Nullable date
   final String title;
   final String description;
-  final List<String>? files;
-  final String id; // Specify the type of files as List<String>
+  final String? file; // Keep this as a String, not List<String>
+  final String id;
 
-  NoticeInfoModel(
-      {this.createdAt,
-      required this.title,
-      required this.description,
-      this.files,
-      required this.id});
+  NoticeInfoModel({
+    this.createdAt,
+    required this.title,
+    required this.description,
+    this.file,
+    required this.id,
+  });
 
   factory NoticeInfoModel.fromJson(Map<String, dynamic> json) {
     return NoticeInfoModel(
-        createdAt: DateTime.parse(json['createdAt']),
-        title: json['title'] ?? '',
-        description: json['description'] ?? '',
-        files: json['files'] != null
-            ? List<String>.from(json['files']) // Ensure type consistency
-            : null,
-        id: json['_id']);
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      file: json['file'], // Directly assign the file as a String
+      id: json['_id'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -28,8 +29,8 @@ class NoticeInfoModel {
       'createdAt': createdAt?.toIso8601String(),
       'title': title,
       'description': description,
-      'files': files,
-      'id': 'id'
+      'file': file, // Keep this as a String
+      'id': id, // Correctly use the id
     };
   }
 }

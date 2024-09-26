@@ -23,6 +23,7 @@ class NoticeList extends StatelessWidget {
             InkWell(
               onTap: () {
                 print("Tapped on notice: ${notice.title}");
+
                 Navigator.push(
                   context,
                   MaterialPageRoute(

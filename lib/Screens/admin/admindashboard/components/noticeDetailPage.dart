@@ -1,8 +1,10 @@
 import 'package:eskool/Screens/admin/admindashboard/edit_notice.dart';
+import 'package:eskool/Screens/admin/admindashboard/viewNorticefile.dart';
 import 'package:eskool/Screens/admin/components/custon_button.dart';
 import 'package:eskool/Screens/admin/components/custom_page_layout.dart';
 
 import 'package:eskool/models/notice_info_model.dart';
+import 'package:eskool/services/FileLauncher.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../utility/delete_dialog_utils.dart';
@@ -80,29 +82,27 @@ class NoticeDetailPageBody extends StatelessWidget {
             style: TextStyle(fontSize: 16, color: Colors.black87),
           ),
           SizedBox(height: 24),
+
           // Text(notice.files!),
-          if (notice.files != null && notice.files!.isNotEmpty)
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: notice.files!.length,
-                  itemBuilder: (context, index) {
-                    final media = notice.files![index];
-                    return ListTile(
-                      leading: Icon(media.endsWith('.pdf')
-                          ? Icons.picture_as_pdf
-                          : Icons.image),
-                      title: Text(media),
-                      onTap: () {
-                        // Handle media file opening logic here
-                      },
-                    );
-                  },
-                ),
-              ],
+          if (notice.file!.isNotEmpty) // Check if the file is not empty
+            ListTile(
+              leading: Icon(notice.file!.endsWith('.pdf')
+                  ? Icons.picture_as_pdf
+                  : Icons.file_present),
+              title: Text(notice.file!.split('\\').last), // Get the file name
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewNoticeFile(
+                      title: notice.title,
+                      description: notice.description,
+                      fileUrl: notice.file,
+                    ),
+                  ),
+                );
+                // Handle media file opening logic here
+              },
             ),
 
           // Edit and Delete Buttons
