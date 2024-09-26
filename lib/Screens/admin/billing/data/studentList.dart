@@ -1,104 +1,52 @@
-// lib/data/student_data.dart
-
-import 'package:eskool/models/Students_model.dart';
-
-final Map<String, List<Student>> classWiseStudents = {
-  'Class 1': [
-    Student(
-      name: "John Doe",
-      rollNo: "1",
-      grade: "A",
-      parentName: "Jane Doe",
-      className: 'Class 1',
-      status: 'Paid',
-      dueAmount: 0,
-    ),
-    Student(
-      name: "Charlie Adams",
-      rollNo: "5",
-      grade: "A",
-      parentName: "Alice Adams",
-      className: 'Class 1',
-      status: 'Paid',
-      dueAmount: 0,
-    ),
-    Student(
-      name: "Sophia Brown",
-      rollNo: "6",
-      grade: "B",
-      parentName: "David Brown",
-      className: 'Class 1',
-      status: 'Overdue',
-      dueAmount: 3000,
-    ),
-    Student(
-      name: "Emma Watson",
-      rollNo: "2",
-      grade: "B",
-      parentName: "Richard Watson",
-      className: 'Class 1',
-      status: 'Due',
-      dueAmount: 5000,
-    ),
-  ],
-  'Class 2': [
-    Student(
-      name: "Chris Evans",
-      rollNo: "3",
-      grade: "A",
-      parentName: "Lisa Evans",
-      className: 'Class 2',
-      status: 'Paid',
-      dueAmount: 0,
-    ),
-    Student(
-      name: "Scarlett Johansson",
-      rollNo: "4",
-      grade: "B",
-      parentName: "Paul Johansson",
-      className: 'Class 2',
-      status: 'Due',
-      dueAmount: 7000,
-    ),
-  ],
-  'Class 3': [
-    Student(
-      name: "Charlie Adams",
-      rollNo: "5",
-      grade: "A",
-      parentName: "Alice Adams",
-      className: 'Class 3',
-      status: 'Paid',
-      dueAmount: 0,
-    ),
-    Student(
-      name: "Sophia Brown",
-      rollNo: "6",
-      grade: "B",
-      parentName: "David Brown",
-      className: 'Class 3',
-      status: 'Overdue',
-      dueAmount: 3000,
-    ),
-  ],
-  // Add more classes and students here...
-};
 class Student {
-  final String name;
-  final String rollNo;
-  final String grade;
-  final String parentName;
-  final String className;
-  final String status;
-  final int dueAmount;
+  final String id; // Corresponds to studentId in backend
+  final String fullName;
+  final String classAssigned;
+  final String address;
+  final String? parentID; // Nullable in case no parent is assigned
+  final String? image;
+  final bool? status;
+  final DateTime createdAt;
+  final List<String> fees; // List of Fee IDs
 
   Student({
-    required this.name,
-    required this.rollNo,
-    required this.grade,
-    required this.parentName,
-    required this.className,
-    required this.status,
-    required this.dueAmount,
+    required this.id,
+    required this.fullName,
+    required this.classAssigned,
+    required this.address,
+    this.parentID,
+    this.image,
+    this.status,
+    required this.createdAt,
+    required this.fees,
   });
+
+  // Factory method to create a Student object from JSON
+  factory Student.fromJson(Map<String, dynamic> json) {
+    return Student(
+      id: json['_id'],
+      fullName: json['fullName'],
+      classAssigned: json['classAssigned'],
+      address: json['address'],
+      parentID: json['parentID'],
+      image: json['image'],
+      status: json['paid'],
+      createdAt: DateTime.parse(json['createdAt']),
+      fees: List<String>.from(json['fees']),
+    );
+  }
+
+  // Method to convert a Student object to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'studentId': id,
+      'fullName': fullName,
+      'classAssigned': classAssigned,
+      'address': address,
+      'parentID': parentID,
+      'image': image,
+      'createdAt': createdAt.toIso8601String(),
+      'fees': fees,
+    };
+  }
 }
