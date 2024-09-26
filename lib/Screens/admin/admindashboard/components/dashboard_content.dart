@@ -45,7 +45,7 @@ class DashboardContent extends StatelessWidget {
                         ),
                       if (Responsive.isMobile(context)) CalenderWidget(),
                       NoticeListBuilder(
-                        isAdmin: true,
+                        admin: true,
                         showCreateButton: true,
                         showViewAllButton: true,
                         // onNoticeCreated: () {

@@ -18,3 +18,4 @@ const red = Colors.red;
 const appPadding = 16.0;
 
 const String url = 'http://192.168.18.56:3000';
+const NoticeImage = "${url}/notice_upload";

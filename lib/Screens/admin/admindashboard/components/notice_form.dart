@@ -13,8 +13,8 @@ import 'package:http_parser/http_parser.dart';
 class NoticeForm extends StatefulWidget {
   final String? initialTitle;
   final String? initialDescription;
-  final List<PlatformFile>? initialFiles;
-  final Function(String title, String description, List<PlatformFile>? files)
+  final PlatformFile? initialFiles;
+  final Function(String title, String description, PlatformFile? files)
       onSubmit;
 
   const NoticeForm({
@@ -32,14 +32,14 @@ class NoticeForm extends StatefulWidget {
 class _NoticeFormState extends State<NoticeForm> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  List<PlatformFile>? _mediaFiles;
+  PlatformFile? _mediaFile;
 
   @override
   void initState() {
     super.initState();
     _titleController.text = widget.initialTitle ?? '';
     _descriptionController.text = widget.initialDescription ?? '';
-    _mediaFiles = widget.initialFiles ?? [];
+    _mediaFile = widget.initialFiles;
   }
 
   Future<void> _pickMediaFiles() async {
@@ -51,7 +51,7 @@ class _NoticeFormState extends State<NoticeForm> {
 
     if (result != null) {
       setState(() {
-        _mediaFiles = result.files;
+        _mediaFile = result.files.first;
       });
     }
   }
@@ -60,13 +60,13 @@ class _NoticeFormState extends State<NoticeForm> {
     setState(() {
       _titleController.clear();
       _descriptionController.clear();
-      _mediaFiles = null;
+      _mediaFile = null;
     });
   }
 
   void _removeFile(int index) {
     setState(() {
-      _mediaFiles!.removeAt(index);
+      _mediaFile = null;
     });
   }
 
@@ -172,25 +172,21 @@ class _NoticeFormState extends State<NoticeForm> {
                     color: Colors.blue.shade100,
                     onPressed: _pickMediaFiles,
                   ),
-                  if (_mediaFiles != null) ...[
+                  if (_mediaFile != null) ...[
                     SizedBox(height: 10),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _mediaFiles!.length,
-                      itemBuilder: (context, index) {
-                        final file = _mediaFiles![index];
-                        return ListTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: Icon(file.extension == 'pdf'
-                              ? Icons.picture_as_pdf
-                              : Icons.image),
-                          title: Text(file.name),
-                          trailing: IconButton(
-                            icon: Icon(Icons.close, color: Colors.red),
-                            onPressed: () => _removeFile(index),
-                          ),
-                        );
-                      },
+                    ListTile(
+                      leading: Icon(_mediaFile!.extension == 'pdf'
+                          ? Icons.picture_as_pdf
+                          : Icons.image),
+                      title: Text(_mediaFile!.name),
+                      trailing: IconButton(
+                        icon: Icon(Icons.close, color: Colors.red),
+                        onPressed: () {
+                          setState(() {
+                            _mediaFile = null; // Remove the file
+                          });
+                        },
+                      ),
                     ),
                   ],
                   SizedBox(height: 20),
@@ -203,9 +199,7 @@ class _NoticeFormState extends State<NoticeForm> {
                           _submitToBackend(
                             _titleController.text,
                             _descriptionController.text,
-                            _mediaFiles != null && _mediaFiles!.isNotEmpty
-                                ? _mediaFiles![0]
-                                : null,
+                            _mediaFile != null ? _mediaFile : null,
                           );
                           Navigator.pop(context, true);
                         },
@@ -222,14 +216,7 @@ class _NoticeFormState extends State<NoticeForm> {
                   CustomButton(
                       label: "Cancel",
                       color: Colors.grey.shade300,
-                      onPressed: () => Navigator.pop(context)
-                      //  Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => DashboardContent()))
-                      //  Navigator.pop(
-                      //       context), // Navigates back to the previous page
-                      ),
+                      onPressed: () => Navigator.pop(context)),
                 ],
               ),
             ),

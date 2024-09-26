@@ -7,14 +7,14 @@ class NoticeListBuilder extends StatefulWidget {
   final bool showCreateButton;
   final bool showViewAllButton;
   final Function? onNoticeCreated;
-  final bool? isAdmin;
+  final bool? admin;
 
   const NoticeListBuilder({
     Key? key,
     this.showCreateButton = true,
     this.showViewAllButton = true,
     this.onNoticeCreated,
-    this.isAdmin,
+    this.admin,
   }) : super(key: key);
 
   @override
@@ -51,7 +51,7 @@ class _NoticeListBuilderState extends State<NoticeListBuilder> {
         final notice = snapshot.data!;
 
         return NoticeWidget(
-          isAdmin: widget.isAdmin,
+          admin: widget.admin,
           showCreateButton: widget.showCreateButton,
           noticeData: notice,
           showViewAllButton: widget.showViewAllButton,
