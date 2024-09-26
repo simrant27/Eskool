@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../../../constants/constants.dart';
 import '../data/studentList.dart';
 
 Future<List<Student>> fetchStudentsByClass(String className) async {
@@ -9,7 +10,7 @@ Future<List<Student>> fetchStudentsByClass(String className) async {
         "Fetching students for class: $className"); // Print before calling API
 
     final response = await http.get(
-      Uri.parse('http://localhost:3000/api/student/$className'),
+      Uri.parse('$url/api/student/$className'),
       headers: {'Content-Type': 'application/json'},
     );
 
