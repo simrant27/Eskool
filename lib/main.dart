@@ -4,10 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
 
 import 'package:eskool/loginpage/login.dart';
+import 'users/data/userImage.dart';
 import 'users/screen/parentsdashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await UserImageLoader.initialize();
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // Check if the user is logged in and fetch their role

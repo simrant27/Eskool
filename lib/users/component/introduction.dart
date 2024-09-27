@@ -35,7 +35,7 @@ Column Introduction(bool profile, String fullName, String email, String phone) {
           color: profile ? Colors.black : Colors.blueGrey,
         ),
       ),
-      SizedBox(height: 8),
+      // SizedBox(height: 8),
     ],
   );
 }
