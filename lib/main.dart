@@ -6,6 +6,8 @@ import 'package:eskool/Screens/admin/billing/billing_page.dart';
 
 import 'package:eskool/Screens/admin/classes/student_deatail.dart';
 import 'package:eskool/Screens/admin/hellopage.dart';
+import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
+import 'package:eskool/data/teacher_data.dart';
 
 import 'package:flutter/material.dart';
 
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: parentsboard()
+        home: TeacherListScreen(teachers: teachers)
 
         // parentsdashboard()
         //     StudentDetail(

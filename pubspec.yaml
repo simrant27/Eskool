@@ -45,9 +45,6 @@ dependencies:
   http: ^1.2.2
   image_picker: ^1.1.2
 
-
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,6 +70,7 @@ flutter:
   assets:
     - assets/images/logowithtext.png
     - assets/images/me.jpg
+    - assets/images/default_profile.jpg
 
   #   - images/a_dot_ham.jpeg
 
