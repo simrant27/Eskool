@@ -12,6 +12,7 @@ class NoticeWidget extends StatelessWidget {
   final bool showViewAllButton;
   final bool? showBackButton;
   final bool? showCreateButton;
+  final bool? admin;
 
   final VoidCallback? onNoticeCreated;
 
@@ -21,6 +22,7 @@ class NoticeWidget extends StatelessWidget {
       required this.showViewAllButton,
       this.onNoticeCreated,
       this.showCreateButton,
+      this.admin,
       this.showBackButton});
 
   @override
@@ -68,7 +70,10 @@ class NoticeWidget extends StatelessWidget {
               height: 16,
             ),
             Divider(),
-            NoticeList(noticeData: noticesToShow),
+            NoticeList(
+              noticeData: noticesToShow,
+              admin: admin,
+            ),
 
             // Use the new widget here
             if (showViewAllButton && noticeData.length > 4)
