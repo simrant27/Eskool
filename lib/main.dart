@@ -1,3 +1,4 @@
+import 'package:eskool/users/screen/teacherdashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
@@ -14,9 +15,16 @@ void main() async {
   String userRole = prefs.getString('role') ?? 'parent'; // Default to 'parent'
 
   runApp(MyApp(
-      initialRoute: isLoggedIn
-          ? (userRole == 'admin' ? '/admin-dashboard' : '/parent-dashboard')
-          : '/login'));
+    initialRoute: isLoggedIn
+        ? (userRole == 'admin'
+            ? '/admin-dashboard'
+            : userRole == 'parent'
+                ? '/parent-dashboard'
+                : userRole == 'teacher'
+                    ? '/teacher-dashboard'
+                    : '/login')
+        : '/login',
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,6 +49,8 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginPage(),
         '/parent-dashboard': (context) => Parentsdashboard(),
         '/admin-dashboard': (context) => Admindashboard(),
+        '/teacher-dashboard': (context) => Teacherdashboard(),
+
         // Add other routes as necessary
       },
     );

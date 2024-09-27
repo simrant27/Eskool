@@ -3,13 +3,15 @@ import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../constants/constants.dart';
+
 class LoginService {
   Future<Map<String, dynamic>> login(String username, String password) async {
-    var url = Uri.parse('http://192.168.18.56:3000/api/login');
+    var url1 = Uri.parse('$url/api/login');
 
     try {
       var response = await http.post(
-        url,
+        url1,
         headers: {"Content-Type": "application/json"},
         body: json.encode({
           'username': username,
