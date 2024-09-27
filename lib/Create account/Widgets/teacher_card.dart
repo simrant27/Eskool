@@ -1,4 +1,6 @@
+import 'package:eskool/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
 class TeacherCard extends StatelessWidget {
   final Map<String, dynamic> teacher;
@@ -38,10 +40,11 @@ class TeacherCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Name: ${teacher['fullName']}', style: TextStyle(fontWeight: FontWeight.bold)),
+              Text('Name: ${teacher['fullName']}',
+                  style: TextStyle(fontWeight: FontWeight.bold)),
               Text('Email: ${teacher['email']}'),
               Text('Phone: ${teacher['phone']}'),
-              Text('Subjects: ${teacher['subjects']}'),
+              Text('subjectsTaught: ${teacher['subjectsTaught']}'),
             ],
           ),
         ),
@@ -63,6 +66,8 @@ class TeacherDetailPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Uint8List? imageBytes = teacher['image'];
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(16),
@@ -70,7 +75,7 @@ class TeacherDetailPopup extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Teacher photo and details inside a blue box layout
+            // Teacher image and details inside a blue box layout
             Container(
               padding: EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -80,11 +85,11 @@ class TeacherDetailPopup extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (teacher['photoUrl'] != null)
+                  if (teacher['image'] != null)
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(
-                        teacher['photoUrl'],
+                      child: Image.file(
+                        teacher['image'],
                         height: 150,
                         width: 150,
                         fit: BoxFit.cover,
@@ -97,18 +102,25 @@ class TeacherDetailPopup extends StatelessWidget {
                   ),
                   Text('Email: ${teacher['email']}'),
                   Text('Phone: ${teacher['phone']}'),
-                  Text('Subjects: ${teacher['subjects']}'),
+                  Text('subjectsTaught: ${teacher['subjectsTaught']}'),
                   Text('Address: ${teacher['address'] ?? 'N/A'}'),
-                      Text('TeacherID: ${teacher['teacherID']}'),
-                          Text('EmploymentDate: ${teacher['employmentDate']}'),
-                              Text('Qualification: ${teacher['qualification']}'),
-                                  Text('Username: ${teacher['username']}'),
-                                      Text('Password: ${teacher['password']}'),
-
+                  Text('TeacherID: ${teacher['teacherID']}'),
+                  Text('EmploymentDate: ${teacher['employmentDate']}'),
+                  Text('qualifications: ${teacher['qualifications']}'),
+                  Text('Username: ${teacher['username']}'),
+                  Text('Password: ${teacher['password']}'),
                 ],
               ),
             ),
             SizedBox(height: 16),
+            if (imageBytes != null)
+              Column(
+                children: [
+                  Text('image:'),
+                  SizedBox(height: 10),
+                  Image.memory(imageBytes), // Display the uploaded image
+                ],
+              ),
 
             // Buttons for editing and deleting
             Row(
@@ -123,7 +135,8 @@ class TeacherDetailPopup extends StatelessWidget {
                         return TeacherEditForm(
                           teacher: teacher,
                           onSave: (updatedTeacher) {
-                            onEdit(updatedTeacher); // Update with edited details
+                            onEdit(
+                                updatedTeacher); // Update with edited details
                           },
                         );
                       },
@@ -176,27 +189,35 @@ class _TeacherEditFormState extends State<TeacherEditForm> {
   late TextEditingController fullNameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
-  late TextEditingController subjectsController;
+  late TextEditingController subjectsTaughtController;
   late TextEditingController addressController;
   late TextEditingController teacherIDController;
-    late TextEditingController employmentDateController;
-      late TextEditingController qualificationController;
-        late TextEditingController usernameController;
-          late TextEditingController passwordController;
+  late TextEditingController employmentDateController;
+  late TextEditingController qualificationsController;
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
   @override
   void initState() {
     super.initState();
     // Initialize controllers with current teacher details
-    fullNameController = TextEditingController(text: widget.teacher['fullName']);
+    fullNameController =
+        TextEditingController(text: widget.teacher['fullName']);
     emailController = TextEditingController(text: widget.teacher['email']);
     phoneController = TextEditingController(text: widget.teacher['phone']);
-    subjectsController = TextEditingController(text: widget.teacher['subjects']);
-    addressController = TextEditingController(text: widget.teacher['address'] ?? '');
-    teacherIDController = TextEditingController(text: widget.teacher['teacherID']);
-    employmentDateController = TextEditingController(text: widget.teacher['employmentDate']);
-    qualificationController = TextEditingController(text: widget.teacher['qualification']);
-    usernameController = TextEditingController(text: widget.teacher['username']);
-    passwordController = TextEditingController(text: widget.teacher['password']);
+    subjectsTaughtController =
+        TextEditingController(text: widget.teacher['subjectsTaught']);
+    addressController =
+        TextEditingController(text: widget.teacher['address'] ?? '');
+    teacherIDController =
+        TextEditingController(text: widget.teacher['teacherID']);
+    employmentDateController =
+        TextEditingController(text: widget.teacher['employmentDate']);
+    qualificationsController =
+        TextEditingController(text: widget.teacher['qualifications']);
+    usernameController =
+        TextEditingController(text: widget.teacher['username']);
+    passwordController =
+        TextEditingController(text: widget.teacher['password']);
   }
 
   @override
@@ -205,15 +226,14 @@ class _TeacherEditFormState extends State<TeacherEditForm> {
     fullNameController.dispose();
     emailController.dispose();
     phoneController.dispose();
-    subjectsController.dispose();
+    subjectsTaughtController.dispose();
     addressController.dispose();
     teacherIDController.dispose();
     employmentDateController.dispose();
-    qualificationController.dispose();
+    qualificationsController.dispose();
     usernameController.dispose();
     passwordController.dispose();
     super.dispose();
-
   }
 
   @override
@@ -236,8 +256,8 @@ class _TeacherEditFormState extends State<TeacherEditForm> {
               decoration: InputDecoration(labelText: 'Phone'),
             ),
             TextField(
-              controller: subjectsController,
-              decoration: InputDecoration(labelText: 'Subjects'),
+              controller: subjectsTaughtController,
+              decoration: InputDecoration(labelText: 'subjectsTaught'),
             ),
             TextField(
               controller: addressController,
@@ -252,14 +272,14 @@ class _TeacherEditFormState extends State<TeacherEditForm> {
               decoration: InputDecoration(labelText: 'employmentDate'),
             ),
             TextField(
-              controller: qualificationController,
-              decoration: InputDecoration(labelText: 'qualification'),
+              controller: qualificationsController,
+              decoration: InputDecoration(labelText: 'qualifications'),
             ),
             TextField(
               controller: usernameController,
               decoration: InputDecoration(labelText: 'username'),
             ),
-             TextField(
+            TextField(
               controller: passwordController,
               decoration: InputDecoration(labelText: 'password'),
             ),
@@ -274,11 +294,11 @@ class _TeacherEditFormState extends State<TeacherEditForm> {
               'fullName': fullNameController.text,
               'email': emailController.text,
               'phone': phoneController.text,
-              'subjects': subjectsController.text,
+              'subjectsTaught': subjectsTaughtController.text,
               'address': addressController.text,
               'teacherID': teacherIDController.text,
               'employmentDate': employmentDateController.text,
-              'qualification': qualificationController.text,
+              'qualifications': qualificationsController.text,
               'username': usernameController.text,
               'password': passwordController.text,
             };

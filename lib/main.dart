@@ -1,3 +1,4 @@
+import 'package:eskool/Create%20account/screens/teacher_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
@@ -34,15 +35,16 @@ class MyApp extends StatelessWidget {
       ),
       title: "Eskool",
       debugShowCheckedModeBanner: false,
-      initialRoute: initialRoute,
-      routes: {
-        '/': (context) => LoginPage(),
+      home: TeacherPage(),
+      // initialRoute: initialRoute,
+      // routes: {
+      //   '/': (context) => LoginPage(),
 
-        '/login': (context) => LoginPage(),
-        '/parent-dashboard': (context) => Parentsdashboard(),
-        '/admin-dashboard': (context) => Admindashboard(),
-        // Add other routes as necessary
-      },
+      //   '/login': (context) => LoginPage(),
+      //   '/parent-dashboard': (context) => Parentsdashboard(),
+      //   '/admin-dashboard': (context) => Admindashboard(),
+      //   // Add other routes as necessary
+      // },
     );
   }
 }

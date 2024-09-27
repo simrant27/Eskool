@@ -1,6 +1,7 @@
-import 'dart:io';
+import 'dart:typed_data';
+import 'package:eskool/Create%20account/services/teacher_api.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
 class TeacherFormPopup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSubmit;
@@ -17,14 +18,33 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
       email,
       phone,
       address,
-      subjects,
+      subjectsTaught,
       teacherID,
       employmentDate,
-      qualification,
+      qualifications,
       username,
       password;
-  File? teacherPhoto;
-  final ImagePicker picker = ImagePicker();
+
+  PlatformFile? _image;
+  Uint8List? webImage;
+
+  Future<void> _pickMediaFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg'],
+      allowMultiple: false,
+    );
+
+    if (result != null) {
+      setState(() {
+        _image = result.files.first;
+        if (_image != null && _image!.bytes != null) {
+          webImage = _image!.bytes; // Store bytes for web
+        }
+      });
+    }
+  }
+
   bool isLoading = false;
 
   @override
@@ -53,8 +73,8 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
                 buildFormField(
                     'Address', Icons.home, (value) => address = value),
                 SizedBox(height: 10),
-                buildFormField(
-                    'Subjects Taught', Icons.book, (value) => subjects = value),
+                buildFormField('subjectsTaught Taught', Icons.book,
+                    (value) => subjectsTaught = value),
                 SizedBox(height: 10),
                 buildFormField(
                     'Teacher ID', Icons.badge, (value) => teacherID = value),
@@ -62,8 +82,8 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
                 buildFormField('Employment Date', Icons.calendar_today,
                     (value) => employmentDate = value),
                 SizedBox(height: 10),
-                buildFormField('Qualification', Icons.school,
-                    (value) => qualification = value),
+                buildFormField('qualifications', Icons.school,
+                    (value) => qualifications = value),
                 SizedBox(height: 10),
                 buildFormField('Username', Icons.person_outline,
                     (value) => username = value),
@@ -73,27 +93,36 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
                     isPassword: true),
                 SizedBox(height: 10),
 
-                // Add Photo Button
+                // Add image Button
                 ElevatedButton.icon(
                   icon: isLoading
                       ? CircularProgressIndicator()
-                      : Icon(Icons.photo),
-                  label: Text('Add Photo'),
-                  onPressed: () async {
-                    setState(() => isLoading = true);
-                    final pickedFile =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      setState(() {
-                        teacherPhoto = File(pickedFile.path);
-                        isLoading = false;
-                      });
-                    }
-                  },
+                      : Icon(Icons.image),
+                  label: Text('Add image'),
+                  onPressed: _pickMediaFiles,
                 ),
-                teacherPhoto != null
-                    ? Image.file(teacherPhoto!, height: 100, width: 100)
-                    : Container(),
+
+                if (_image != null) ...[
+                  SizedBox(height: 10),
+                  ListTile(
+                    leading: Icon(Icons.image),
+                    title: Text(_image?.name ??
+                        'No Image Selected'), // Ensure null safety
+                    trailing: IconButton(
+                      icon: Icon(Icons.close, color: Colors.red),
+                      onPressed: () {
+                        setState(() {
+                          _image = null;
+                          webImage = null; // Remove the file
+                        });
+                      },
+                    ),
+                  ),
+                ] else ...[
+                  SizedBox(height: 10),
+                  Text(
+                      'No Image Selected'), // Show this if no image is selected
+                ],
               ],
             ),
           ),
@@ -101,23 +130,39 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState!.save();
+              // final TeacherApiService teacherApiService = TeacherApiService();
+              // teacherApiService.createTeacher({
+              //   'fullName': fullName,
+              //   'email': email,
+              //   'phone': phone,
+              //   'address': address,
+              //   'subjectsTaughtTaught': subjectsTaught,
+              //   'teacherID': teacherID,
+
+              //   'qualificationss': qualifications,
+              //   'username': username,
+              //   'password': password,
+              //   'image': _image
+              //       ?.bytes, // Send the image as bytes (null if not selected)
+              // });
               widget.onSubmit({
                 'fullName': fullName,
                 'email': email,
                 'phone': phone,
                 'address': address,
-                'subjects': subjects,
+                'subjectsTaughtTaught': subjectsTaught,
                 'teacherID': teacherID,
-                'employmentDate': employmentDate,
-                'qualification': qualification,
+
+                'qualificationss': qualifications,
                 'username': username,
                 'password': password,
-                'photo': teacherPhoto,
+                'image': _image
+                    ?.bytes, // Send the image as bytes (null if not selected)
               });
-              Navigator.pop(context);
+              Navigator.of(context).pop();
             }
           },
           child: Text('Submit'),
@@ -126,34 +171,30 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
     );
   }
 
-  TextFormField buildFormField(
-      String label, IconData icon, Function(String?) onSave,
-      {bool emailValidator = false,
-      bool phoneValidator = false,
-      bool isPassword = false}) {
+  Widget buildFormField(String label, IconData icon, Function(String?) onSaved,
+      {bool isPassword = false,
+      bool emailValidator = false,
+      bool phoneValidator = false}) {
     return TextFormField(
       decoration: InputDecoration(
-        prefixIcon: Icon(icon, color: Colors.deepPurple),
         labelText: label,
-        labelStyle: TextStyle(color: Colors.deepPurple),
-        filled: true,
-        fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        prefixIcon: Icon(icon),
+        border: OutlineInputBorder(),
       ),
       obscureText: isPassword,
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter $label';
-        }
-        if (emailValidator && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-          return 'Please enter a valid email';
-        }
-        if (phoneValidator && !RegExp(r'^\+?[0-9]{10,15}$').hasMatch(value)) {
-          return 'Please enter a valid phone number';
-        }
-        return null;
-      },
-      onSaved: onSave,
+      // validator: (value) {
+      //   if (value == null || value.isEmpty) {
+      //     return 'Please enter $label';
+      //   }
+      //   if (emailValidator && !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+      //     return 'Please enter a valid email';
+      //   }
+      //   if (phoneValidator && !RegExp(r'^\d{10}$').hasMatch(value)) {
+      //     return 'Please enter a valid 10-digit phone number';
+      //   }
+      //   return null;
+      // },
+      onSaved: onSaved,
     );
   }
 }
