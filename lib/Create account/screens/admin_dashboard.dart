@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'parent_page.dart';
 import 'teacher_page.dart';
 
-class AdminDashboard extends StatelessWidget {
+class parentsboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

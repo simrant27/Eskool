@@ -16,6 +16,21 @@ class _ParentPageState extends State<ParentPage> {
     });
   }
 
+  void _editParent(Map<String, dynamic> updatedParent) {
+    setState(() {
+      int index = parents.indexWhere((p) => p['fullName'] == updatedParent['fullName']);
+      if (index != -1) {
+        parents[index] = updatedParent; // Update the parent's details
+      }
+    });
+  }
+
+  void _deleteParent(String parentName) {
+    setState(() {
+      parents.removeWhere((p) => p['fullName'] == parentName); // Delete the parent based on their name
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,7 +55,11 @@ class _ParentPageState extends State<ParentPage> {
             child: ListView.builder(
               itemCount: parents.length,
               itemBuilder: (context, index) {
-                return ParentCard(parent: parents[index]);
+                return ParentCard(
+                  parent: parents[index],
+                  onEdit: _editParent,
+                  onDelete: () => _deleteParent(parents[index]['fullName']),
+                );
               },
             ),
           ),

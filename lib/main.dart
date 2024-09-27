@@ -1,3 +1,4 @@
+import 'package:eskool/Create%20account/screens/admin_dashboard.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/full_notice_list_page.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/notice_list.dart';
@@ -22,20 +23,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        scaffoldBackgroundColor: Colors.white,
-      ),
-      title: "Eskool",
-      debugShowCheckedModeBanner: false,
-      home:
-          //  Admindashboard()
-          // FullNoticeListPage()
-          // NoticeListScreen()
-          // parentsdashboard()
-          StudentDetail(
-        className: "2",
-      ),
-    );
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: Colors.white,
+        ),
+        title: "Eskool",
+        debugShowCheckedModeBanner: false,
+        home: parentsboard()
+
+        // parentsdashboard()
+        //     StudentDetail(
+        //   className: "Class 1",
+        // ),
+        );
   }
 }
