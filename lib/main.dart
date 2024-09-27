@@ -1,3 +1,4 @@
+import 'package:eskool/Create%20account/screens/admin_dashboard.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:eskool/Screens/admin/billing/billing_page.dart';
 
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: Admindashboard()
+        home: parentsboard()
+        
         // parentsdashboard()
         //     StudentDetail(
         //   className: "Class 1",

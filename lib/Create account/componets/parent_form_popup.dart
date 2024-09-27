@@ -4,8 +4,9 @@ import 'package:image_picker/image_picker.dart';
 
 class ParentFormPopup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSubmit;
+  final Map<String, dynamic>? existingData; // Optional parameter for editing
 
-  ParentFormPopup({required this.onSubmit});
+  ParentFormPopup({required this.onSubmit, this.existingData});
 
   @override
   _ParentFormPopupState createState() => _ParentFormPopupState();
@@ -13,41 +14,62 @@ class ParentFormPopup extends StatefulWidget {
 
 class _ParentFormPopupState extends State<ParentFormPopup> {
   final _formKey = GlobalKey<FormState>();
-  String? fullName, email, phone, address, relationship, occupation, username, password;
+  String? fullName, email, phone, address, relationship, occupation, username, password, parentID;
   List<Map<String, dynamic>> childrenDetails = [];
   File? parentPhoto;
   final ImagePicker picker = ImagePicker();
   bool isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.existingData != null) {
+      // Load existing data into fields for editing
+      fullName = widget.existingData!['fullName'];
+      email = widget.existingData!['email'];
+      phone = widget.existingData!['phone'];
+      address = widget.existingData!['address'];
+      relationship = widget.existingData!['relationship'];
+      occupation = widget.existingData!['occupation'];
+      parentID = widget.existingData!['parentID'];
+      username = widget.existingData!['username'];
+      password = widget.existingData!['password'];
+      childrenDetails = List.from(widget.existingData!['childrenDetails']);
+      parentPhoto = widget.existingData!['photo'];
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Parent Account Form'),
+      title: Text(widget.existingData == null ? 'Parent Account Form' : 'Edit Parent Account'),
       content: SingleChildScrollView(
         child: Container(
-          width: 400, // Increase form width
+          width: 400,
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                buildFormField('Full Name', Icons.person, (value) => fullName = value),
+                buildFormField('Full Name', Icons.person, (value) => fullName = value, initialValue: fullName),
                 SizedBox(height: 10),
-                buildFormField('Email Address', Icons.email, (value) => email = value, emailValidator: true),
+                buildFormField('Email Address', Icons.email, (value) => email = value, emailValidator: true, initialValue: email),
                 SizedBox(height: 10),
-                buildFormField('Phone Number', Icons.phone, (value) => phone = value, phoneValidator: true),
+                buildFormField('Phone Number', Icons.phone, (value) => phone = value, phoneValidator: true, initialValue: phone),
                 SizedBox(height: 10),
-                buildFormField('Address', Icons.home, (value) => address = value),
+                buildFormField('Address', Icons.home, (value) => address = value, initialValue: address),
                 SizedBox(height: 10),
-                buildFormField('Relationship to the Child', Icons.family_restroom, (value) => relationship = value),
+                buildFormField('Relationship to the Child', Icons.family_restroom, (value) => relationship = value, initialValue: relationship),
                 SizedBox(height: 10),
-                buildFormField('Occupation (Optional)', Icons.work, (value) => occupation = value),
+                buildFormField('Occupation (Optional)', Icons.work, (value) => occupation = value, initialValue: occupation),
                 SizedBox(height: 10),
-                buildFormField('Username', Icons.person_outline, (value) => username = value),
+                buildFormField('Parent ID', Icons.badge, (value) => parentID = value, initialValue: parentID),
                 SizedBox(height: 10),
-                buildFormField('Password', Icons.lock, (value) => password = value, isPassword: true),
-                SizedBox(height: 10), // Gap before Add Child button
-                
+                buildFormField('Username', Icons.person_outline, (value) => username = value, initialValue: username),
+                SizedBox(height: 10),
+                buildFormField('Password', Icons.lock, (value) => password = value, isPassword: true, initialValue: password),
+                SizedBox(height: 10),
+
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
@@ -56,12 +78,12 @@ class _ParentFormPopupState extends State<ParentFormPopup> {
                   },
                   child: Text('Add Child'),
                 ),
-                SizedBox(height: 10), // Gap after Add Child button
+                SizedBox(height: 10),
 
                 // Children Details Fields
                 ...childrenDetails.map((child) => buildChildDetails(child)).toList(),
 
-                SizedBox(height: 10), // Gap before Add Photo button
+                SizedBox(height: 10),
                 ElevatedButton.icon(
                   icon: isLoading ? CircularProgressIndicator() : Icon(Icons.photo),
                   label: Text('Add Photo'),
@@ -95,6 +117,7 @@ class _ParentFormPopupState extends State<ParentFormPopup> {
                 'phone': phone,
                 'address': address,
                 'relationship': relationship,
+                'parentID': parentID,
                 'occupation': occupation,
                 'username': username,
                 'password': password,
@@ -104,14 +127,15 @@ class _ParentFormPopupState extends State<ParentFormPopup> {
               Navigator.pop(context);
             }
           },
-          child: Text('Submit'),
+          child: Text(widget.existingData == null ? 'Submit' : 'Update'),
         ),
       ],
     );
   }
 
-  TextFormField buildFormField(String label, IconData icon, Function(String?) onSave, {bool emailValidator = false, bool phoneValidator = false, bool isPassword = false}) {
+  TextFormField buildFormField(String label, IconData icon, Function(String?) onSave, {bool emailValidator = false, bool phoneValidator = false, bool isPassword = false, String? initialValue}) {
     return TextFormField(
+      initialValue: initialValue,
       decoration: InputDecoration(
         prefixIcon: Icon(icon, color: Colors.deepPurple),
         labelText: label,
