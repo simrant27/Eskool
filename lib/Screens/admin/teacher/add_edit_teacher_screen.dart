@@ -1,3 +1,4 @@
+import 'package:eskool/services/teacherService.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import '../../../models/teacherModel.dart';
@@ -23,6 +24,8 @@ class AddEditTeacherScreen extends StatefulWidget {
 }
 
 class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
+  final TeacherService teacherService = TeacherService();
+
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _fullNameController;
   late TextEditingController _emailController;
@@ -48,8 +51,9 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
         TextEditingController(text: widget.teacher?.qualifications?.join(', '));
     _subjectsTaughtController =
         TextEditingController(text: widget.teacher?.subjectsTaught?.join(', '));
-    _isEnrolled =
-        widget.teacher?.enrolled ?? false; // Set the initial value for enrolled
+    _isEnrolled = widget.teacher?.enrolled ?? false;
+    _image.path =
+        widget.teacher?.image.name!; // Set the initial value for enrolled
   }
 
   Future<void> _pickMediaFiles() async {
@@ -85,7 +89,7 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
     super.dispose();
   }
 
-  void _saveTeacher() {
+  void _saveTeacher() async {
     if (_formKey.currentState!.validate()) {
       Teacher teacher = Teacher(
         fullName: _fullNameController.text,
@@ -103,21 +107,23 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
         enrolled: _isEnrolled,
         username: _usernameController.text,
         password: _passwordController.text,
-        teacherID: widget.teacher?.teacherID ??
-            UniqueKey().toString(), // Generate a new ID if adding
+        teacherID: widget.teacher?.teacherID ?? UniqueKey().toString(),
+        image: _image,
       );
 
-      if (widget.onAddTeacher != null) {
-        widget.onAddTeacher!(teacher);
-      } else if (widget.onEditTeacher != null) {
-        widget.onEditTeacher!(teacher);
+      // Call the createTeacher function
+      try {
+        await teacherService.createTeacher(
+            teacher, _image); // Pass the image here
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Teacher saved successfully!')),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Teacher saved successfully!')),
-      );
-
-      Navigator.pop(context);
     }
   }
 

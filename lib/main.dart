@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: TeacherListScreen(teachers: teachers)
+        home: TeacherListScreen()
 
         // parentsdashboard()
         //     StudentDetail(

@@ -19,16 +19,20 @@ class TeacherDetailScreen extends StatelessWidget {
           children: [
             // Display Teacher Image
             Center(
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage:
-                    AssetImage("assets/images/default_profile.png"),
-                // backgroundImage: teacher.image != null
-                //     ? NetworkImage(teacher.image!) // Assuming image is a URL
-                //     : AssetImage('assets/images/default_profile.png')
-                //         as ImageProvider, // Default image if no image available
-              ),
-            ),
+                child: Container(
+                    child: teacher.image != null
+                        ? Image.network(teacher.image!)
+                        : Text("no data"))
+
+                //  CircleAvatar(
+                //   radius: 50,
+                //   // backgroundImage:
+                //   //     AssetImage("assets/images/default_profile.png"),
+                //   backgroundImage: teacher.image != null
+                //       ? Image.network(teacher.image!):Text("no data");// Assuming image is a URL
+                //   // Default image if no image available
+                // ),
+                ),
             SizedBox(height: 16),
             // Display Teacher Details
             Text(
