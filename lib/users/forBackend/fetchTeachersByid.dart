@@ -8,7 +8,7 @@ Future<Teacher?> fetchTeachers(String id) async {
   try {
     print("Fetching students for class: $id");
     final response = await http.get(
-      Uri.parse('$url/api/teachers/find/$id'),
+      Uri.parse('$url/api/teacher/find/$id'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
