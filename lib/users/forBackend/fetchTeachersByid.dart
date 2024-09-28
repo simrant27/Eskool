@@ -1,0 +1,24 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import '../../constants/constants.dart';
+import 'teacher_model.dart';
+
+Future<Teacher?> fetchTeachers(String id) async {
+  try {
+    print("Fetching students for class: $id");
+    final response = await http.get(
+      Uri.parse('$url/api/teachers/find/$id'),
+      headers: {'Content-Type': 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      final decodeData = jsonDecode(response.body);
+      return Teacher.fromJson(decodeData["teacher"]);
+    } else {
+      throw Exception('Failed to load teacher data');
+    }
+  } catch (error) {
+    print("Error occurred: $error"); // Print any error that occurs
+    throw error; // Re-throw the error for higher-level handling
+  }
+}

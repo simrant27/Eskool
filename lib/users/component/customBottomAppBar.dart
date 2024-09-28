@@ -24,15 +24,15 @@ class CustomBottomAppBar extends StatelessWidget {
     return BottomAppBar(
       child: Row(
         children: [
-          IconButton(
-            icon: Icon(Icons.home, size: 30),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Parentsdashboard()),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: Icon(Icons.home, size: 30),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => Parentsdashboard()),
+          //     );
+          //   },
+          // ),
           SizedBox(
             width: 20,
           ),

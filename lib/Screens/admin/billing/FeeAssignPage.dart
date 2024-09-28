@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import '../../../data/class_list.dart';
 import '../../../users/component/customButtonStyle.dart';
 import '../admindashboard/components/customAppbar.dart';
 import '../admindashboard/components/responsive_drawer_layout.dart';
 import 'component/updateAndDeleteFee.dart';
-import 'data/class_list.dart';
 import 'data/feeList.dart';
 import 'data/studentList.dart';
 import 'fetchData/studentFetch.dart';
@@ -104,7 +104,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                 decoration: BoxDecoration(
                   color: Colors.deepPurple[50],
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.deepPurple, width: 2),
+                  border: Border.all(color: Colors.black38, width: 2),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                 child: DropdownButton<String>(
@@ -112,10 +112,10 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                   icon: Icon(Icons.arrow_drop_down, color: Colors.deepPurple),
                   iconSize: 24,
                   elevation: 16,
-                  dropdownColor: Colors.deepPurple[50],
+                  dropdownColor: Colors.white38,
                   underline: SizedBox(),
                   style: TextStyle(
-                    color: Colors.deepPurple,
+                    color: Colors.black87,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -130,7 +130,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                       classList.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text("class $value"),
                     );
                   }).toList(),
                 ),

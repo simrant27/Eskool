@@ -1,11 +1,11 @@
 import 'package:eskool/users/component/customButtonStyle.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/class_list.dart';
 import '../admindashboard/components/customAppbar.dart';
 import '../admindashboard/components/responsive_drawer_layout.dart';
 import 'FeeAssignPage.dart';
 import 'component/showFeeDilog.dart';
-import 'data/class_list.dart';
 import 'data/feeList.dart';
 import 'data/studentList.dart';
 import 'fetchData/studentFetch.dart';
