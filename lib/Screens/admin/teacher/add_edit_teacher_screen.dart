@@ -52,8 +52,8 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
     _subjectsTaughtController =
         TextEditingController(text: widget.teacher?.subjectsTaught?.join(', '));
     _isEnrolled = widget.teacher?.enrolled ?? false;
-    _image.path =
-        widget.teacher?.image.name!; // Set the initial value for enrolled
+    // _image.path =
+    //     widget.teacher?.image.name!; // Set the initial value for enrolled
   }
 
   Future<void> _pickMediaFiles() async {
@@ -108,7 +108,7 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
         username: _usernameController.text,
         password: _passwordController.text,
         teacherID: widget.teacher?.teacherID ?? UniqueKey().toString(),
-        image: _image,
+        // image: _image,
       );
 
       // Call the createTeacher function
