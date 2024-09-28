@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import 'package:eskool/users/screen/teacherdashboard.dart';
-=======
 import 'package:eskool/users/screen/teacherScreen.dart';
->>>>>>> main
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
-// import 'package:eskool/Screens/admin/classes/student_detail.dart';
-import 'package:eskool/Screens/admin/hellopage.dart';
 import 'package:eskool/loginpage/login.dart';
 import 'users/screen/parentsdashboard.dart';
 
@@ -19,19 +13,6 @@ void main() async {
   bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
   String userRole = prefs.getString('role') ?? 'parent'; // Default to 'parent'
 
-<<<<<<< HEAD
-  runApp(MyApp(
-    initialRoute: isLoggedIn
-        ? (userRole == 'admin'
-            ? '/admin-dashboard'
-            : userRole == 'parent'
-                ? '/parent-dashboard'
-                : userRole == 'teacher'
-                    ? '/teacher-dashboard'
-                    : '/login')
-        : '/login',
-  ));
-=======
   // Determine the initial route based on login status and role
   String initialRoute = getInitialRoute(isLoggedIn, userRole);
 
@@ -53,7 +34,6 @@ String getInitialRoute(bool isLoggedIn, String userRole) {
   } else {
     return '/login';
   }
->>>>>>> main
 }
 
 class MyApp extends StatelessWidget {
@@ -70,20 +50,14 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: initialRoute,
+      // initialRoute: initialRoute,
       routes: {
         '/': (context) => LoginPage(),
         '/login': (context) => LoginPage(),
         '/parent-dashboard': (context) => Parentsdashboard(),
         '/admin-dashboard': (context) => Admindashboard(),
-<<<<<<< HEAD
-        '/teacher-dashboard': (context) => Teacherdashboard(),
-
-        // Add other routes as necessary
-=======
         '/teacher-dashboard': (context) => TeacherDashboard(),
         // Add more routes here if needed
->>>>>>> main
       },
     );
   }

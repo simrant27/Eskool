@@ -1,12 +1,6 @@
-import 'dart:convert';
-import 'package:eskool/constants/constants.dart';
 import 'package:eskool/users/forBackend/fetchParent.dart';
 import 'package:eskool/users/forBackend/fetchTeachersByid.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-
-import 'parent_model.dart';
-import 'teacher_model.dart';
 
 class UserService {
   Future fetchUserData() async {
@@ -32,6 +26,8 @@ class UserService {
         return fetchParents(userId);
       } else if (role == 'teacher') {
         print("Fetching teacher data for userId: $userId");
+        print("haha Teacher ${fetchTeachers(userId)}");
+
         return fetchTeachers(userId); // Deserialize Teacher data
       }
     } catch (e) {

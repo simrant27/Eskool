@@ -6,13 +6,14 @@ import 'teacher_model.dart';
 
 Future<Teacher?> fetchTeachers(String id) async {
   try {
-    print("Fetching students for class: $id");
+    print("Fetching  Teacher: $id");
     final response = await http.get(
       Uri.parse('$url/api/teacher/find/$id'),
       headers: {'Content-Type': 'application/json'},
     );
     if (response.statusCode == 200) {
       final decodeData = jsonDecode(response.body);
+      print(decodeData);
       return Teacher.fromJson(decodeData["teacher"]);
     } else {
       throw Exception('Failed to load teacher data');
