@@ -84,7 +84,7 @@ class NoticeDetailPageBody extends StatelessWidget {
           SizedBox(height: 24),
 
           // Text(notice.files!),
-          if (notice.file!.isNotEmpty) // Check if the file is not empty
+          if (notice.file != null && notice.file!.isNotEmpty)
             ListTile(
               leading: Icon(notice.file!.endsWith('.pdf')
                   ? Icons.picture_as_pdf
@@ -101,7 +101,6 @@ class NoticeDetailPageBody extends StatelessWidget {
                     ),
                   ),
                 );
-                // Handle media file opening logic here
               },
             ),
 

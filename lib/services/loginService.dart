@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:eskool/constants/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,6 +31,7 @@ class LoginService {
         await prefs.setString('token', token);
         Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
         await prefs.setString('role', decodedToken['role'] ?? 'No role found');
+        await prefs.setString('userId', decodedToken['id']); // Save userId
 
         // Return success and redirect path
         return {'success': true, 'redirect': redirect};
