@@ -1,18 +1,43 @@
+import 'package:eskool/Screens/admin/student/add_edit_student_form.dart';
 import 'package:eskool/Screens/admin/teacher/show_image.dart';
 import 'package:eskool/models/ParentMode.dart';
+import 'package:eskool/models/Students_model.dart';
 import 'package:flutter/material.dart';
-import '../../../constants/constants.dart';
+import '../../../services/studentService.dart';
+import '../components/custon_button.dart';
 
-class ParentDetailScreen extends StatelessWidget {
+class ParentDetailScreen extends StatefulWidget {
   final Parent parent;
 
   ParentDetailScreen({required this.parent});
 
   @override
+  State<ParentDetailScreen> createState() => _ParentDetailScreenState();
+}
+
+class _ParentDetailScreenState extends State<ParentDetailScreen> {
+  late Future<List<Student>> futureStudents;
+  late StudentService studentService = StudentService();
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch students when the screen is initialized
+    futureStudents = studentService.fetchStudentsByParentId(widget.parent.id!);
+  }
+
+  void _refreshStudents() {
+    setState(() {
+      futureStudents =
+          studentService.fetchStudentsByParentId(widget.parent.id!);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(parent.fullName ?? 'parent Details'),
+        title: Text(widget.parent.fullName ?? 'Parent Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -20,39 +45,163 @@ class ParentDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
-            if (parent.image != null) ...[
-              // For image files
-              if (parent.image!.endsWith('.jpg') ||
-                  parent.image!.endsWith('.png') ||
-                  parent.image!.endsWith('.jpeg')) ...[
-                showImage(parent.image, "parent")
+            if (widget.parent.image != null) ...[
+              if (widget.parent.image!.endsWith('.jpg') ||
+                  widget.parent.image!.endsWith('.png') ||
+                  widget.parent.image!.endsWith('.jpeg')) ...[
+                showImage(widget.parent.image, "parent")
               ]
             ],
-
             SizedBox(height: 16),
-            // Display parent Details
             Text(
-              'Full Name: ${parent.fullName ?? 'N/A'}',
+              'Full Name: ${widget.parent.fullName ?? 'N/A'}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             Text(
-              'Email: ${parent.email ?? 'N/A'}',
+              'Email: ${widget.parent.email ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Phone: ${parent.phone ?? 'N/A'}',
+              'Phone: ${widget.parent.phone ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Username: ${parent.username ?? 'N/A'}',
+              'Username: ${widget.parent.username ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Address: ${parent.address ?? 'N/A'}',
+              'Address: ${widget.parent.address ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
+            CustomButton(
+              label: "Add Child",
+              color: Colors.blue,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AddEditStudentScreen(
+                      parentID: widget.parent.id!,
+                    ),
+                  ),
+                ).then((_) => _refreshStudents());
+              },
+            ),
+            Expanded(
+              child: FutureBuilder<List<Student>>(
+                future: futureStudents,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No Students found.'));
+                  } else {
+                    final students = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: students.length,
+                      itemBuilder: (context, index) {
+                        final student = students[index];
+                        return Card(
+                          elevation: 4,
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  student.fullName ?? 'No Name',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(Icons.edit),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                AddEditStudentScreen(
+                                              parentID: widget.parent.id!,
+                                              student: student,
+                                              onEditStudent: (updatedStudent) {
+                                                _refreshStudents(); // Refresh the list after editing
+                                              },
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () async {
+                                        final confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Confirm Deletion'),
+                                              content: Text(
+                                                  'Are you sure you want to delete this Student?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(false),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(true),
+                                                  child: Text('Delete'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
 
-            // Add more details as needed
+                                        if (confirm == true) {
+                                          try {
+                                            await studentService
+                                                .deleteStudent(student.id!);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Student deleted successfully!')),
+                                            );
+                                            _refreshStudents(); // Refresh the student list
+                                          } catch (e) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text('Error: $e')),
+                                            );
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
       ),
