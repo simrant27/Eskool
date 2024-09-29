@@ -1,6 +1,5 @@
 import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
-import 'package:eskool/users/data/student.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import '../../../models/Students_model.dart';
@@ -51,14 +50,6 @@ class _StudentDetailState extends State<StudentDetail> {
         filteredStudents = students;
         isLoading = false;
       });
-      // Fetch results for each student
-      for (var student in students) {
-        // print("studebt is:" + student.studentId);
-        final results =
-            await StudentService.fetchResultsByStudentId(student.studentId);
-        student.results =
-            results; // Make sure to add a `results` field in the Student class
-      }
     } catch (e) {
       print("Error: $e");
     }
