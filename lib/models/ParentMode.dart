@@ -6,7 +6,7 @@ class Parent {
   String? username;
   String? password;
   String? address;
-
+  List<String>? children;
   // String? teacherID;
   String? image;
 
@@ -17,6 +17,7 @@ class Parent {
     this.phone,
     this.username,
     this.password,
+    this.children,
     this.address,
 
     // this.teacherID,
@@ -32,6 +33,9 @@ class Parent {
       username: json['username'],
       password: json['password'],
       address: json['address'],
+      children: json['children'] != null
+          ? List<String>.from(json['children'].map((child) => child['_id']))
+          : [],
 
       // teacherID: json['teacherID'], // Assuming the ID from MongoDB
       image: json['image'],
@@ -45,6 +49,7 @@ class Parent {
       'email': email,
       'phone': phone,
       // 'teacherID': teacherID,
+      'children': children,
       'username': username,
       'password': password,
       'address': address,
