@@ -25,7 +25,7 @@ class ParentDetailScreen extends StatelessWidget {
                   parent.image!.endsWith('.png') ||
                   parent.image!.endsWith('.jpeg')) ...[
                 Image.network(
-                  "$NoticeImage/${parent.image}",
+                  "$ParentImage/${parent.image}",
                   fit: BoxFit.cover,
                 ),
               ]
