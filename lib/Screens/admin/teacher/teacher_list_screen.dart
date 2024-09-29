@@ -1,11 +1,13 @@
 import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
 import 'package:eskool/Screens/admin/components/custon_button.dart';
+import 'package:eskool/Screens/admin/teacher/demo.dart';
 import 'package:eskool/services/teacherService.dart';
 import 'package:flutter/material.dart';
 import '../../../models/teacherModel.dart';
-import 'add_edit_teacher_screen.dart';
-import 'teacher_detail_screen.dart'; // Import the detail screen
+import '../teacher1/add_edit_teacher_screen.dart';
+import '../teacher1/teacher_detail_screen.dart';
+import 'create_teacher_page.dart'; // Import the detail screen
 
 class TeacherListScreen extends StatefulWidget {
   @override

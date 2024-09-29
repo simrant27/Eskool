@@ -36,7 +36,7 @@ class Teacher {
       qualifications: List<String>.from(json['qualifications'] ?? []),
       subjectsTaught: List<String>.from(json['subjectsTaught'] ?? []),
       enrolled: json['enrolled'],
-      teacherID: json['_id'], // Assuming the ID from MongoDB
+      teacherID: json['teacherID'], // Assuming the ID from MongoDB
       image: json['image'],
     );
   }
@@ -46,6 +46,7 @@ class Teacher {
       'fullName': fullName,
       'email': email,
       'phone': phone,
+      'teacherID': teacherID,
       'username': username,
       'password': password,
       'address': address,

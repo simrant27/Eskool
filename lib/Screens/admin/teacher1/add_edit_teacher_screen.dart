@@ -70,12 +70,6 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
     }
   }
 
-  void _removeFile(int index) {
-    setState(() {
-      _image = null;
-    });
-  }
-
   @override
   void dispose() {
     _fullNameController.dispose();
@@ -114,7 +108,7 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
       // Call the createTeacher function
       try {
         await teacherService.createTeacher(
-            teacher, _image); // Pass the image here
+            teacher.toJson(), _image); // Pass the image here
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Teacher saved successfully!')),
         );
@@ -155,51 +149,51 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
                 TextFormField(
                   controller: _fullNameController,
                   decoration: InputDecoration(labelText: 'Full Name'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter full name' : null,
+                  // validator: (value) =>
+                  //     value!.isEmpty ? 'Enter full name' : null,
                 ),
                 TextFormField(
                   controller: _emailController,
                   decoration: InputDecoration(labelText: 'Email'),
-                  validator: _validateEmail,
+                  // validator: _validateEmail,
                 ),
                 TextFormField(
                   controller: _phoneController,
                   decoration: InputDecoration(labelText: 'Phone'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter phone number' : null,
+                  // validator: (value) =>
+                  //     value!.isEmpty ? 'Enter phone number' : null,
                 ),
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(labelText: 'Username'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter username' : null,
+                  // validator: (value) =>
+                  //     value!.isEmpty ? 'Enter username' : null,
                 ),
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(labelText: 'Password'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter password' : null,
+                  // validator: (value) =>
+                  //     value!.isEmpty ? 'Enter password' : null,
                   obscureText: true,
                 ),
                 TextFormField(
                   controller: _addressController,
                   decoration: InputDecoration(labelText: 'Address'),
-                  validator: (value) => value!.isEmpty ? 'Enter address' : null,
+                  // validator: (value) => value!.isEmpty ? 'Enter address' : null,
                 ),
                 TextFormField(
                   controller: _qualificationsController,
                   decoration: InputDecoration(
                       labelText: 'Qualifications (comma-separated)'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter qualifications' : null,
+                  // validator: (value) =>
+                  //     value!.isEmpty ? 'Enter qualifications' : null,
                 ),
                 TextFormField(
                   controller: _subjectsTaughtController,
                   decoration: InputDecoration(
                       labelText: 'Subjects Taught (comma-separated)'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter subjects taught' : null,
+                  // validator: (value) =>
+                  //     value!.isEmpty ? 'Enter subjects taught' : null,
                 ),
                 Row(
                   children: [

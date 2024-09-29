@@ -6,8 +6,9 @@ import 'package:eskool/Screens/admin/billing/billing_page.dart';
 
 import 'package:eskool/Screens/admin/classes/student_deatail.dart';
 import 'package:eskool/Screens/admin/hellopage.dart';
+import 'package:eskool/Screens/admin/parents/create_parent.dart';
 import 'package:eskool/Screens/admin/parents/parent_list_screen.dart';
-import 'package:eskool/Screens/admin/teacher/add_edit_teacher_screen.dart';
+import 'package:eskool/Screens/admin/teacher1/add_edit_teacher_screen.dart';
 import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
 import 'package:eskool/data/teacher_data.dart';
 
@@ -15,6 +16,8 @@ import 'package:flutter/material.dart';
 
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
 
+import 'Screens/admin/teacher/create_teacher_page.dart';
+// import 'Screens/admin/teacher/demo.dart';
 import 'users/screen/parentsdashboard.dart';
 
 void main() {
@@ -33,7 +36,10 @@ class MyApp extends StatelessWidget {
         ),
         title: "Eskool",
         debugShowCheckedModeBanner: false,
-        home: AddEditTeacherScreen()
+        home:
+            // ParentFormPage()
+            TeacherListScreen()
+        // AddEditTeacherScreen()
         // ParentListScreen()
 
         // parentsdashboard()

@@ -37,35 +37,53 @@ class TeacherService {
     }
   }
 
-  Future<void> createTeacher(Teacher teacher, PlatformFile? image) async {
-    var request = http.MultipartRequest('POST', Uri.parse('$baseUrl/create'));
+  Future<void> createTeacher(
+      Map<String, dynamic> teacherData, PlatformFile? image) async {
+    var uri = Uri.parse("$baseUrl/create");
+    var request = http.MultipartRequest('POST', uri);
 
-    request.fields['teacher'] = json.encode(teacher.toJson());
+    // Add the form fields
+    request.fields.addAll({
+      "fullName": teacherData['fullName'],
+      "email": teacherData['email'],
+      "phone": teacherData['phone'],
+      "subjectsTaught": teacherData['subjectsTaught'].join(','),
+      "teacherID": teacherData['teacherID'],
+      "username": teacherData['username'],
+      "password": teacherData['password'],
+      "address": teacherData['address'],
+      "qualifications": teacherData['qualifications'].join(','),
+    });
 
-    // Add image if available
+    // Add the image file if selected
     if (image != null) {
+      String mimeType = '';
+      if (image.extension == 'png') {
+        mimeType = 'image/png';
+      } else if (image.extension == 'jpg' || image.extension == 'jpeg') {
+        mimeType = 'image/jpeg';
+      }
+
       request.files.add(
-        await http.MultipartFile.fromBytes(
-          'image',
-          image.bytes!,
+        http.MultipartFile.fromBytes(
+          'image', // 'file' should match the key used in your backend
+          image.bytes!, // Use the bytes property for web
           filename: image.name,
-          contentType: MediaType(
-              'image', 'jpg'), // Adjust MIME type based on the file type
+          contentType: MediaType.parse(mimeType), // Use the MediaType
         ),
       );
     }
 
-    // Send request
-    final response = await request.send();
+    try {
+      var response = await request.send();
 
-    // Capture the response body
-    final responseBody = await response.stream.bytesToString();
-
-    print('Response status: ${response.statusCode}');
-    print('Response body: $responseBody');
-
-    if (response.statusCode != 201) {
-      throw Exception('Failed to create teacher: $responseBody');
+      if (response.statusCode == 201) {
+        print('Teacher created successfully');
+      } else {
+        print('Failed to create teacher');
+      }
+    } catch (e) {
+      print('Error: $e');
     }
   }
 

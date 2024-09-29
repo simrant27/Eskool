@@ -22,12 +22,12 @@ class FormInputField extends StatelessWidget {
           labelText: label,
           border: OutlineInputBorder(),
         ),
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter $label';
-          }
-          return null;
-        },
+        // validator: (value) {
+        //   if (value == null || value.isEmpty) {
+        //     return 'Please enter $label';
+        //   }
+        //   return null;
+        // },
       ),
     );
   }

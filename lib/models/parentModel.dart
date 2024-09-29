@@ -1,29 +1,29 @@
 class Parent {
-  String? id;
+  // String? id;
   String fullName;
   String email;
   String phone;
   String address;
   List<String>? children;
   String username;
-  String password;
+  String? password;
   String image;
 
   Parent({
-    this.id,
+    // this.id,
     required this.fullName,
     required this.email,
     required this.phone,
     required this.address,
     this.children,
     required this.username,
-    required this.password,
+    this.password,
     this.image = '',
   });
 
   factory Parent.fromJson(Map<String, dynamic> json) {
     return Parent(
-      id: json['_id'],
+      // id: json['_id'],
       fullName: json['fullName'],
       email: json['email'],
       phone: json['phone'],
@@ -37,7 +37,7 @@ class Parent {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      // '_id': id,
       'fullName': fullName,
       'email': email,
       'phone': phone,
