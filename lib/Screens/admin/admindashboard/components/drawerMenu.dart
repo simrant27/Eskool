@@ -67,12 +67,12 @@ class DrawerMenu extends StatelessWidget {
               return ListTile(
                 title: Text(className),
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => StudentDetail(className: className),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StudentDetail(className: className),
+                    ),
+                  );
                 },
               );
             }).toList(),
