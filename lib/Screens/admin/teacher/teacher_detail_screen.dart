@@ -25,7 +25,7 @@ class TeacherDetailScreen extends StatelessWidget {
               if (teacher.image!.endsWith('.jpg') ||
                   teacher.image!.endsWith('.png') ||
                   teacher.image!.endsWith('.jpeg')) ...[
-                showImage(teacher.image),
+                showImage(teacher.image, "teacher"),
               ]
             ],
             // Display Teacher Image

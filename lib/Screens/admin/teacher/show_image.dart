@@ -2,9 +2,7 @@ import 'package:eskool/constants/constants.dart';
 
 import 'package:flutter/material.dart';
 
-Image showImage(
-  String? imageUrl,
-) {
+Image showImage(String? imageUrl, String? userType) {
   String defaultImage =
       "https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png";
 
@@ -12,12 +10,13 @@ Image showImage(
   String? imageToLoad;
   if (imageUrl != null && imageUrl.isNotEmpty) {
     var fileName = formatUserImage(imageUrl);
-    imageToLoad = "$TeacherImage/$fileName";
+    if (userType == "teacher") imageToLoad = "$TeacherImage/$fileName";
+    if (userType == "parent") imageToLoad = "$ParentImage/$fileName";
   } else {
     imageToLoad = defaultImage;
   }
 
-  return Image.network(imageToLoad);
+  return Image.network(imageToLoad!);
 }
 
 String formatUserImage(String filePath) {

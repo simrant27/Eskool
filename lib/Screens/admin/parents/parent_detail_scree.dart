@@ -1,3 +1,4 @@
+import 'package:eskool/Screens/admin/teacher/show_image.dart';
 import 'package:eskool/models/ParentMode.dart';
 import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
@@ -24,37 +25,9 @@ class ParentDetailScreen extends StatelessWidget {
               if (parent.image!.endsWith('.jpg') ||
                   parent.image!.endsWith('.png') ||
                   parent.image!.endsWith('.jpeg')) ...[
-                Image.network(
-                  "$ParentImage/${parent.image}",
-                  fit: BoxFit.cover,
-                ),
+                showImage(parent.image, "parent")
               ]
             ],
-            // Display parent Image
-            // Center(
-            //   child: Container(
-            //       child: parent.image != null
-            //           ? Image.network("$parentImage/${parent.image!}")
-            //           : Text("no data")),
-            // if (parent.image != null) ...[
-            //   // For image files
-            //   if (parent.image!.endsWith('.jpg') ||
-            //       parent.image!.endsWith('.png') ||
-            //       parent.image!.endsWith('.jpeg')) ...[
-            //     Image.network(
-            //       "$parentImage/$parent.image",
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ]
-            // ],
-            //  CircleAvatar(
-            //   radius: 50,
-            //   // backgroundImage:
-            //   //     AssetImage("assets/images/default_profile.png"),
-            //   backgroundImage: parent.image != null
-            //       ? Image.network(parent.image!):Text("no data");// Assuming image is a URL
-            //   // Default image if no image available
-            // ),
 
             SizedBox(height: 16),
             // Display parent Details
