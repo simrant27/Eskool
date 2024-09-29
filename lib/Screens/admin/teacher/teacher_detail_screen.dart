@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../constants/constants.dart';
 import '../../../models/teacherModel.dart';
+import 'show_image.dart';
 
 class TeacherDetailScreen extends StatelessWidget {
   final Teacher teacher;
@@ -24,10 +25,7 @@ class TeacherDetailScreen extends StatelessWidget {
               if (teacher.image!.endsWith('.jpg') ||
                   teacher.image!.endsWith('.png') ||
                   teacher.image!.endsWith('.jpeg')) ...[
-                Image.network(
-                  "$NoticeImage/${teacher.image}",
-                  fit: BoxFit.cover,
-                ),
+                showImage(teacher.image),
               ]
             ],
             // Display Teacher Image
