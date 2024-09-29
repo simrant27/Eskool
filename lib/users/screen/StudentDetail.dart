@@ -1,24 +1,23 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
-
-import '../component/customAppBar2.dart';
 
 class StudentDetailScreen extends StatelessWidget {
   final String studentName;
   final String studentGrade;
-  final Map<String, dynamic> studentDetails;
+  final String studentId;
 
   StudentDetailScreen({
     required this.studentName,
     required this.studentGrade,
-    required this.studentDetails,
+    required this.studentId
   });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar2(studentName),
+    return CustomScaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -37,10 +36,10 @@ class StudentDetailScreen extends StatelessWidget {
               'Details:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(studentDetails.toString()), // Format as needed
           ],
         ),
       ),
+      appBar: customAppBar2("Student Detail"),
     );
   }
 }

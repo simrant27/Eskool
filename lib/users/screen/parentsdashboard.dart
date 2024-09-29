@@ -2,16 +2,13 @@
 
 import 'package:eskool/models/notice_info_model.dart';
 import 'package:eskool/services/fetchNotice.dart';
+import 'package:eskool/users/component/CustomScaffold.dart';
 import 'package:flutter/material.dart';
-
-import '../component/Drawerlist.dart';
+import '../component/DashboardBox.dart';
 import '../component/customAppBar.dart';
-import '../component/customBottomAppBar.dart';
-import '../component/customBox.dart';
+
 import '../component/introduction_part.dart';
-import '../data/colorCombination.dart';
 import '../data/date.dart';
-import '../data/menuItems.dart';
 import '../forBackend/parent_model.dart';
 import '../forBackend/userService.dart';
 
@@ -51,9 +48,7 @@ class _ParentsdashboardState extends State<Parentsdashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar("Dashboard"),
-      drawer: drawerlist(context),
+    return CustomScaffold(
       body: FutureBuilder<Parent>(
         future: _fetchParentData(), // Fetch the parent data
         builder: (BuildContext context, AsyncSnapshot<Parent> snapshot) {
@@ -77,38 +72,12 @@ class _ParentsdashboardState extends State<Parentsdashboard> {
                       parent.fullName, // Use fetched parent data
                       parent.email,
                       parent.phone,
+                      parent.image
                     ),
                   ],
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 30,
-                          childAspectRatio: 1.0, // Adjust for square items
-                        ),
-                        itemCount: menuItems(context).length - 2,
-                        itemBuilder: (context, index) {
-                          final menuItem = menuItems(
-                              context)[index + 1]; // Adjust for context
-                          return GestureDetector(
-                            onTap: menuItem.onTap,
-                            child: customBox(
-                              menuItem,
-                              boxGradients[index % boxGradients.length],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  child: DashboardBox(context),
                 ),
               ],
             );
@@ -117,7 +86,7 @@ class _ParentsdashboardState extends State<Parentsdashboard> {
           }
         },
       ),
-      bottomNavigationBar: CustomBottomAppBar(),
+      appBar: customAppBar("Dashboard"),
     );
   }
 }
