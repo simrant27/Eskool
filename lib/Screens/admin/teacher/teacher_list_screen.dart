@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import '../../../models/teacherModel.dart';
 
 import 'add_edit_teacher_screen.dart';
-import 'teacher_detail_screen.dart'; // Import the detail screen
+import 'teacher_detail_screen.dart';
+// Import the detail screen
 
 class TeacherListScreen extends StatefulWidget {
   @override
@@ -91,6 +92,7 @@ class _TeacherListScreenState extends State<TeacherListScreen> {
                       final teacher = teachers[index];
                       return GestureDetector(
                         onTap: () {
+                          // print(basename(teach))
                           Navigator.push(
                             context,
                             MaterialPageRoute(

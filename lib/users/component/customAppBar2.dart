@@ -14,5 +14,17 @@ AppBar customAppBar2(title) {
         fontWeight: FontWeight.bold,
       ),
     ),
+    leading: Builder(
+      builder: (context) => IconButton(
+        icon: Icon(
+          Icons.arrow_back_ios,
+          size: 30,
+          // color: Color(value),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
+    ),
   );
 }

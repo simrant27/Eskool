@@ -2,6 +2,7 @@ import 'package:eskool/users/component/boxDesign.dart';
 import 'package:flutter/material.dart';
 
 import '../data/userImage.dart';
+import 'introduction.dart';
 
 Container Introduction_part(
   BuildContext context,
@@ -11,6 +12,7 @@ Container Introduction_part(
   String fullName,
   String email,
   String phone,
+  String? imageUrl,
 ) {
   return Container(
     width: double.infinity,
@@ -59,40 +61,11 @@ Container Introduction_part(
                     spreadRadius: 8,
                   ),
                 ],
-                image: userImage(),
+                image: (userImage(imageUrl)),
               ),
             ),
             SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  fullName,
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w900,
-                    color: Color(0XFF343E87),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Email: $email',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.blueGrey,
-                  ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  'Number: $phone',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blueGrey,
-                  ),
-                ),
-                SizedBox(height: 8),
-              ],
-            ),
+            Introduction(false, fullName, email, phone),
           ],
         ),
       ],

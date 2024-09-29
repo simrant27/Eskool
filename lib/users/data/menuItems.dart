@@ -1,13 +1,17 @@
-// ignore_for_file: prefer_const_constructors
+import 'package:eskool/users/screen/UploadStudyMaterial.dart';
+import 'package:eskool/users/screen/teacher_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/loginService.dart';
 import '../component/CustomAlertDialogBox.dart';
 import '../component/StudentListScreen.dart';
 import '../screen/FetchNoticeByUser.dart';
 import '../screen/StudentDetail.dart';
 import '../screen/finance.dart';
-import '../screen/profile.dart';
+import '../screen/parent_profile.dart';
 import '../screen/Parentsdashboard.dart';
 import 'package:flutter/material.dart';
+
+import '../screen/teacherScreen.dart';
 
 class MenuItem {
   final IconData icon;
@@ -21,26 +25,43 @@ class MenuItem {
   });
 }
 
-List<MenuItem> menuItems(BuildContext context) {
-  return [
+Future<List<MenuItem>> menuItems(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? userRole = prefs.getString('role'); // Get user role
+
+  List<MenuItem> items = [
     MenuItem(
       icon: Icons.dashboard,
       title: 'Dashboard',
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Parentsdashboard()),
-        );
+        if (userRole == 'parent') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Parentsdashboard()),
+          );
+        } else if (userRole == 'teacher') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TeacherDashboard()),
+          );
+        }
       },
     ),
     MenuItem(
       icon: Icons.person,
       title: 'Profile',
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => Profile()),
-        );
+        if (userRole == 'parent') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ParentProfile()),
+          );
+        } else if (userRole == 'teacher') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TeacherProfile()),
+          );
+        }
       },
     ),
     MenuItem(
@@ -57,60 +78,33 @@ List<MenuItem> menuItems(BuildContext context) {
       icon: Icons.chat,
       title: 'Chat',
       onTap: () {
-        // Handle the tap event
-      },
-    ),
-    MenuItem(
-      icon: Icons.details,
-      title: 'Child Details',
-      onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => StudentListWidget(
-                    onSelectRoute: (student) => StudentDetailScreen(
-                      studentName: student['name'],
-                      studentGrade: student['grade'].toString(),
-                      studentDetails: student,
-                    ),
-                  )),
+          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
         );
+        // Handle the tap event
       },
     ),
     MenuItem(
       icon: Icons.assignment,
       title: 'Assignment',
       onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => StudentListWidget()),
-        // );
+        // Handle assignment navigation
       },
     ),
     MenuItem(
-      icon: Icons.attach_money_sharp,
-      title: 'Finance',
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => StudentListWidget(
-                    onSelectRoute: (student) => FinanceBillScreen(
-                      studentName: student['name'],
-                      billItems: student['items'],
-                      totalAmount: student['fees'],
-                    ),
-                  )),
-        );
-      },
+      icon: Icons.assignment,
+      title: 'Result',
+      onTap: () {},
     ),
     MenuItem(
       icon: Icons.book_online_rounded,
       title: 'Materials',
       onTap: () {
-        // Navigator.push(context, MaterialPageRoute(builder: (context) {
-        //   return UploadStudyMaterialScreen();
-        // }));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UploadStudyMaterialScreen()));
       },
     ),
     MenuItem(
@@ -141,4 +135,51 @@ List<MenuItem> menuItems(BuildContext context) {
       },
     ),
   ];
+
+  // Conditionally add "Child Details" and "Finance" for parents only
+  if (userRole == 'parent') {
+    items.insert(
+        4,
+        MenuItem(
+          icon: Icons.details,
+          title: 'Child Details',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentListWidget(
+                  onSelectRoute: (student) => StudentDetailScreen(
+                    studentName: student['fullName'],
+                    studentGrade: student['classAssigned'].toString(),
+                    studentId: student["id"].toString(),
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
+
+    items.insert(
+      5,
+      MenuItem(
+        icon: Icons.attach_money_sharp,
+        title: 'Finance',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StudentListWidget(
+                onSelectRoute: (student) => FinanceBillScreen(
+                  studentId: student['id'],
+                  studentName: student['fullName'],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  return items;
 }
