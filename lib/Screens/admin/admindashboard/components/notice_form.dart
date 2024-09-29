@@ -1,3 +1,4 @@
+import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
 import 'package:eskool/Screens/admin/components/custon_button.dart';
 import 'package:flutter/material.dart';
@@ -201,7 +202,11 @@ class _NoticeFormState extends State<NoticeForm> {
                             _descriptionController.text,
                             _mediaFile != null ? _mediaFile : null,
                           );
-                          Navigator.pop(context, true);
+                          // Navigator.pop(context, true);
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Admindashboard()));
                         },
                       ),
                       SizedBox(width: 20),

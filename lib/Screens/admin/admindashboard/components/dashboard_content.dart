@@ -63,7 +63,7 @@ class _DashboardContentState extends State<DashboardContent> {
                         ),
                       if (Responsive.isMobile(context)) CalenderWidget(),
                       NoticeListBuilder(
-                        // isAdmin: true,
+                        admin: true,
                         showCreateButton: true,
                         showViewAllButton: true,
                         // onNoticeCreated: () {
