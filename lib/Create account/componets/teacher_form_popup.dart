@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
+import 'package:file_picker/file_picker.dart';
 
 class TeacherFormPopup extends StatefulWidget {
   final Function(Map<String, dynamic>) onSubmit;
@@ -23,8 +25,26 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
       qualification,
       username,
       password;
-  File? teacherPhoto;
-  final ImagePicker picker = ImagePicker();
+  PlatformFile? _image;
+  Uint8List? webImage;
+
+  Future<void> _pickMediaFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'jpeg'],
+      allowMultiple: false,
+    );
+
+    if (result != null) {
+      setState(() {
+        _image = result.files.first;
+        if (_image != null && _image!.bytes != null) {
+          webImage = _image!.bytes; // Store bytes for web
+        }
+      });
+    }
+  }
+
   bool isLoading = false;
 
   @override
@@ -72,28 +92,34 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
                     'Password', Icons.lock, (value) => password = value,
                     isPassword: true),
                 SizedBox(height: 10),
-
-                // Add Photo Button
                 ElevatedButton.icon(
                   icon: isLoading
                       ? CircularProgressIndicator()
-                      : Icon(Icons.photo),
-                  label: Text('Add Photo'),
-                  onPressed: () async {
-                    setState(() => isLoading = true);
-                    final pickedFile =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    if (pickedFile != null) {
-                      setState(() {
-                        teacherPhoto = File(pickedFile.path);
-                        isLoading = false;
-                      });
-                    }
-                  },
+                      : Icon(Icons.image),
+                  label: Text('Add image'),
+                  onPressed: _pickMediaFiles,
                 ),
-                teacherPhoto != null
-                    ? Image.file(teacherPhoto!, height: 100, width: 100)
-                    : Container(),
+                if (_image != null) ...[
+                  SizedBox(height: 10),
+                  ListTile(
+                    leading: Icon(Icons.image),
+                    title: Text(_image?.name ??
+                        'No Image Selected'), // Ensure null safety
+                    trailing: IconButton(
+                      icon: Icon(Icons.close, color: Colors.red),
+                      onPressed: () {
+                        setState(() {
+                          _image = null;
+                          webImage = null; // Remove the file
+                        });
+                      },
+                    ),
+                  ),
+                ] else ...[
+                  SizedBox(height: 10),
+                  Text(
+                      'No Image Selected'), // Show this if no image is selected
+                ],
               ],
             ),
           ),
@@ -115,7 +141,7 @@ class _TeacherFormPopupState extends State<TeacherFormPopup> {
                 'qualification': qualification,
                 'username': username,
                 'password': password,
-                'photo': teacherPhoto,
+                'image': _image?.bytes,
               });
               Navigator.pop(context);
             }

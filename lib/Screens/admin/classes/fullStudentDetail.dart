@@ -32,6 +32,14 @@ class FullStudentDetail extends StatelessWidget {
                 SizedBox(height: 10),
                 Text("Parent Name: ${student.parentName}",
                     style: TextStyle(fontSize: 18)),
+
+                SizedBox(height: 10),
+                if (student.results != null && student.results!.isNotEmpty)
+                  for (var result in student.results!)
+                    Text("${result.subject}: ${result.marks}",
+                        style: TextStyle(fontSize: 18))
+                else
+                  Text("No results available.", style: TextStyle(fontSize: 18)),
                 // Add more fields as needed
               ],
             ),

@@ -9,7 +9,7 @@ import '../component/customBottomAppBar.dart';
 import '../data/menuItems.dart';
 import '../data/student.dart';
 import '../data/userImage.dart';
-import 'StudentDetail.dart'; 
+import 'StudentDetail.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});

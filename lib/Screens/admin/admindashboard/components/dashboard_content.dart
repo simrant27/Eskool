@@ -8,15 +8,33 @@ import 'package:eskool/data/noticedata.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../models/notice_info_model.dart';
-import '../../../../services/fetch_notice.dart';
+import '../../../../services/fetchNotice.dart';
 import '../../components/notice_future_builder.dart';
 import 'analyticCards.dart';
 import 'calenderWidget.dart';
 import 'noticewidget.dart';
 import 'package:http/http.dart' as http;
 
-class DashboardContent extends StatelessWidget {
+class DashboardContent extends StatefulWidget {
   const DashboardContent({super.key});
+
+  @override
+  State<DashboardContent> createState() => _DashboardContentState();
+}
+
+class _DashboardContentState extends State<DashboardContent> {
+  late Future<List<NoticeInfoModel>> futureNotices;
+  @override
+  void initState() {
+    super.initState();
+    futureNotices = fetchNotices(); // Call the fetch method
+  }
+
+  void refreshNotices() {
+    setState(() {
+      futureNotices = fetchNotices(); // Refresh the notices
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
