@@ -117,7 +117,6 @@ class FinanceBillScreen extends StatelessWidget {
             ],
           ),
         ),
-        appbartitle: "Finance",
-        showArrow: true);
+        appBar: customAppBar2("Finance"));
   }
 }

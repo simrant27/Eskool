@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -127,8 +128,7 @@ class _StudentListWidgetState extends State<StudentListWidget> {
                 ),
         ],
       ),
-      appbartitle: "Select Student",
-      showArrow: true,
+      appBar: customAppBar2("Select Student"),
     );
   }
 }

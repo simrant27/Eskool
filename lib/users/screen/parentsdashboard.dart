@@ -6,13 +6,9 @@ import 'package:eskool/users/component/CustomScaffold.dart';
 import 'package:flutter/material.dart';
 import '../component/DashboardBox.dart';
 import '../component/customAppBar.dart';
-import '../component/customBottomAppBar.dart';
-import '../component/customBox.dart';
-import '../component/drawerlist.dart';
+
 import '../component/introduction_part.dart';
-import '../data/colorCombination.dart';
 import '../data/date.dart';
-import '../data/menuItems.dart';
 import '../forBackend/parent_model.dart';
 import '../forBackend/userService.dart';
 
@@ -53,45 +49,43 @@ class _ParentsdashboardState extends State<Parentsdashboard> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-        body: FutureBuilder<Parent>(
-          future: _fetchParentData(), // Fetch the parent data
-          builder: (BuildContext context, AsyncSnapshot<Parent> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                  child: CircularProgressIndicator()); // Loading state
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              ); // Error state
-            } else if (snapshot.hasData && snapshot.data != null) {
-              Parent parent = snapshot.data!; // Parent data is available
-              return Column(
-                children: [
-                  Stack(
-                    children: [
-                      Introduction_part(
-                        context,
-                        dayOfWeekShort,
-                        day,
-                        monthShort,
-                        parent.fullName, // Use fetched parent data
-                        parent.email,
-                        parent.phone,
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: DashboardBox(context),
-                  ),
-                ],
-              );
-            } else {
-              return Center(child: Text('No parent data available'));
-            }
-          },
-        ),
-        appbartitle: 'Dashboard',showArrow: false,);
+      body: FutureBuilder<Parent>(
+        future: _fetchParentData(), // Fetch the parent data
+        builder: (BuildContext context, AsyncSnapshot<Parent> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator()); // Loading state
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            ); // Error state
+          } else if (snapshot.hasData && snapshot.data != null) {
+            Parent parent = snapshot.data!; // Parent data is available
+            return Column(
+              children: [
+                Stack(
+                  children: [
+                    Introduction_part(
+                      context,
+                      dayOfWeekShort,
+                      day,
+                      monthShort,
+                      parent.fullName, // Use fetched parent data
+                      parent.email,
+                      parent.phone,
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: DashboardBox(context),
+                ),
+              ],
+            );
+          } else {
+            return Center(child: Text('No parent data available'));
+          }
+        },
+      ),
+      appBar: customAppBar("Dashboard"),
+    );
   }
-
-  
 }

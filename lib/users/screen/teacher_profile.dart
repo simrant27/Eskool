@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/customAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -116,14 +117,14 @@ class _TeacherProfileState extends State<TeacherProfile> {
                     SizedBox(height: 16),
 
                     // Logout List Tile
-                    Logout_profile(context),                  ],
+                    Logout_profile(context),
+                  ],
                 )
               : Center(
                   child: Text(
                       'No teacher data available'), // Placeholder if teacher is null
                 ),
-      appbartitle: "Teacher Profile",
-      showArrow: false,
+      appBar: customAppBar("Teacher Profile"),
     );
   }
 }

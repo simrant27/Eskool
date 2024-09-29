@@ -1,11 +1,11 @@
 import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/customAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Screens/admin/billing/data/studentList.dart';
 import '../component/Logout_profile.dart';
 import '../component/buildSecuritySection.dart';
 import '../component/introduction.dart';
-import '../data/menuItems.dart';
 import '../data/userImage.dart';
 import '../forBackend/fetchstudentAsParent.dart';
 import '../forBackend/parent_model.dart';
@@ -88,90 +88,89 @@ class _ParentProfileState extends State<ParentProfile> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-        body: ListView(
-          padding: EdgeInsets.all(16.0),
-          children: [
-            // ParentProfile Image
-            Center(
-              child: Container(
-                width: MediaQuery.of(context).size.width / 3,
-                height: MediaQuery.of(context).size.width / 3,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(width: 1, color: Colors.white),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blueGrey.withOpacity(0.2),
-                      blurRadius: 12,
-                      spreadRadius: 8,
-                    ),
-                  ],
-                  image: userImage(),
-                ),
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          // ParentProfile Image
+          Center(
+            child: Container(
+              width: MediaQuery.of(context).size.width / 3,
+              height: MediaQuery.of(context).size.width / 3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(100),
+                border: Border.all(width: 1, color: Colors.white),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.blueGrey.withOpacity(0.2),
+                    blurRadius: 12,
+                    spreadRadius: 8,
+                  ),
+                ],
+                image: userImage(),
               ),
             ),
+          ),
 
-            SizedBox(height: 40), // Add some spacing
+          SizedBox(height: 40), // Add some spacing
 
-            // Personal Information
-            if (parent != null) // Check if parent data is loaded
-              Introduction(
-                true,
-                parent!.fullName, // Pass the parent's full name
-                parent!.email, // Pass the parent's email
-                parent!.phone, // Pass the parent's phone
+          // Personal Information
+          if (parent != null) // Check if parent data is loaded
+            Introduction(
+              true,
+              parent!.fullName, // Pass the parent's full name
+              parent!.email, // Pass the parent's email
+              parent!.phone, // Pass the parent's phone
+            ),
+          SizedBox(height: 16),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Linked Students",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-            SizedBox(height: 16),
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Linked Students",
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 10),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics:
-                      NeverScrollableScrollPhysics(), // Prevent inner scrolling
-                  itemCount: students.length,
-                  itemBuilder: (context, index) {
-                    final student = students[index];
-                    return ListTile(
-                      leading: Icon(Icons.child_care, color: Colors.blue),
-                      title: Text(student.fullName,
-                          style: TextStyle(fontSize: 18)),
-                      subtitle: Text('Grade: ${student.classAssigned}'),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StudentDetailScreen(
-                              studentName: student.fullName,
-                              studentGrade: student.classAssigned.toString(),
-                              studentDetails: student.toJson(),
-                            ),
+              SizedBox(height: 10),
+              ListView.builder(
+                shrinkWrap: true,
+                physics:
+                    NeverScrollableScrollPhysics(), // Prevent inner scrolling
+                itemCount: students.length,
+                itemBuilder: (context, index) {
+                  final student = students[index];
+                  return ListTile(
+                    leading: Icon(Icons.child_care, color: Colors.blue),
+                    title:
+                        Text(student.fullName, style: TextStyle(fontSize: 18)),
+                    subtitle: Text('Grade: ${student.classAssigned}'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentDetailScreen(
+                            studentName: student.fullName,
+                            studentGrade: student.classAssigned.toString(),
+                            studentDetails: student.toJson(),
                           ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
-            SizedBox(height: 16),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ),
+          SizedBox(height: 16),
 
-            // Security & Privacy
-            buildSecuritySection(context),
-            SizedBox(height: 16),
+          // Security & Privacy
+          buildSecuritySection(context),
+          SizedBox(height: 16),
 
-            // Logout List Tile
-            Logout_profile(context),
-          ],
-        ),
-        appbartitle: "Profile",
-        showArrow: false);
+          // Logout List Tile
+          Logout_profile(context),
+        ],
+      ),
+      appBar: customAppBar("Profile"),
+    );
   }
-
 }

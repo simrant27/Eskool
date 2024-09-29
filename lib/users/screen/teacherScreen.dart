@@ -1,11 +1,10 @@
 import 'package:eskool/users/component/CustomScaffold.dart';
 import 'package:eskool/users/component/DashboardBox.dart';
+import 'package:eskool/users/component/customAppBar.dart';
 import 'package:flutter/material.dart';
 import '../../models/notice_info_model.dart';
 import '../../services/fetchNotice.dart';
-import '../component/customBox.dart';
 import '../component/introduction_part.dart';
-import '../data/colorCombination.dart';
 import '../data/date.dart';
 import '../data/menuItems.dart';
 import '../forBackend/teacher_model.dart';
@@ -93,8 +92,7 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
           }
         },
       ),
-      appbartitle: "Dashboard",
-      showArrow: false,
+      appBar: customAppBar("Dashboard"),
     );
   }
 }
