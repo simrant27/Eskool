@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      // initialRoute: initialRoute,
+      initialRoute: initialRoute,
       routes: {
         '/': (context) => LoginPage(),
         '/login': (context) => LoginPage(),

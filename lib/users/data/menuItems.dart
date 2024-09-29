@@ -28,7 +28,7 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? userRole = prefs.getString('role'); // Get user role
 
-  return [
+  List<MenuItem> items = [
     MenuItem(
       icon: Icons.dashboard,
       title: 'Dashboard',
@@ -81,44 +81,10 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       },
     ),
     MenuItem(
-      icon: Icons.details,
-      title: 'Child Details',
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => StudentListWidget(
-                    onSelectRoute: (student) => StudentDetailScreen(
-                      studentName: student['fullName'],
-                      studentGrade: student['classAssigned'].toString(),
-                      studentDetails: student,
-                    ),
-                  )),
-        );
-      },
-    ),
-    MenuItem(
       icon: Icons.assignment,
       title: 'Assignment',
       onTap: () {
         // Handle assignment navigation
-      },
-    ),
-    MenuItem(
-      icon: Icons.attach_money_sharp,
-      title: 'Finance',
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => StudentListWidget(
-                    onSelectRoute: (student) => FinanceBillScreen(
-                      studentName: student['fullName'],
-                      billItems: student['items'],
-                      totalAmount: student['fees'],
-                    ),
-                  )),
-        );
       },
     ),
     MenuItem(
@@ -156,4 +122,51 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       },
     ),
   ];
+
+  // Conditionally add "Child Details" and "Finance" for parents only
+  if (userRole == 'parent') {
+    items.insert(
+        4,
+        MenuItem(
+          icon: Icons.details,
+          title: 'Child Details',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentListWidget(
+                  onSelectRoute: (student) => StudentDetailScreen(
+                    studentName: student['fullName'],
+                    studentGrade: student['classAssigned'].toString(),
+                    studentDetails: student,
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
+
+    items.insert(
+        5,
+        MenuItem(
+          icon: Icons.attach_money_sharp,
+          title: 'Finance',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => StudentListWidget(
+                  onSelectRoute: (student) => FinanceBillScreen(
+                    studentName: student['fullName'],
+                    billItems: student['items'],
+                    totalAmount: student['fees'],
+                  ),
+                ),
+              ),
+            );
+          },
+        ));
+  }
+
+  return items;
 }

@@ -3,14 +3,12 @@
 import 'package:eskool/users/component/CustomScaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../component/buildProfileSection.dart';
-import '../component/buildSecuritySection.dart';
-import '../data/menuItems.dart';
-import '../data/student.dart';
+
+import '../component/Logout_profile.dart';
+import '../component/introduction.dart';
 import '../data/userImage.dart';
 import '../forBackend/fetchTeachersByid.dart';
 import '../forBackend/teacher_model.dart';
-import 'StudentDetail.dart';
 
 class TeacherProfile extends StatefulWidget {
   const TeacherProfile({super.key});
@@ -107,9 +105,8 @@ class _TeacherProfileState extends State<TeacherProfile> {
                     SizedBox(height: 40), // Add some spacing
 
                     // Personal Information Section (Only build if teacher is not null)
-                    buildProfileSection(
-                      "Personal Information",
-                      context,
+                    Introduction(
+                      true,
                       teacher!
                           .fullName, // Access teacher's properties safely now
                       teacher!.email,
@@ -117,8 +114,9 @@ class _TeacherProfileState extends State<TeacherProfile> {
                     ),
 
                     SizedBox(height: 16),
-                    // Add other sections as needed
-                  ],
+
+                    // Logout List Tile
+                    Logout_profile(context),                  ],
                 )
               : Center(
                   child: Text(

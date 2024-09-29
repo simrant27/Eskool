@@ -20,7 +20,7 @@ class CustomScaffold extends StatelessWidget {
     return Scaffold(
       appBar:
           (showArrow) ? customAppBar2(appbartitle) : customAppBar(appbartitle),
-      // drawer: CustomDrawerForUser(context),
+      drawer: CustomDrawerForUser(context),
       body: body,
       bottomNavigationBar: CustomBottomAppBar(),
     );

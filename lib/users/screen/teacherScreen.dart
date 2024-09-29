@@ -1,10 +1,9 @@
 import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/DashboardBox.dart';
 import 'package:flutter/material.dart';
 import '../../models/notice_info_model.dart';
 import '../../services/fetchNotice.dart';
-
 import '../component/customBox.dart';
-
 import '../component/introduction_part.dart';
 import '../data/colorCombination.dart';
 import '../data/date.dart';
@@ -53,104 +52,49 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
-        body: FutureBuilder<Teacher>(
-          future: _fetchTeacherData(), // Fetch the teacher data asynchronously
-          builder: (BuildContext context, AsyncSnapshot<Teacher> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                  child: CircularProgressIndicator()); // Loading state
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text('Error: ${snapshot.error}'),
-              ); // Error state
-            } else if (snapshot.hasData && snapshot.data != null) {
-              Teacher teacher = snapshot.data!;
-              return FutureBuilder<List<MenuItem>>(
-                future: futureMenuItems, // Fetch menu items asynchronously
-                builder: (context, menuSnapshot) {
-                  if (menuSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                        child:
-                            CircularProgressIndicator()); // Loading menu items
-                  } else if (menuSnapshot.hasError) {
-                    return Center(
-                      child: Text('Error: ${menuSnapshot.error}'),
-                    ); // Error loading menu items
-                  } else if (menuSnapshot.hasData &&
-                      menuSnapshot.data != null) {
-                    List<MenuItem> teacherlistMenu =
-                        menuSnapshot.data!.where((item) {
-                      return item.title == 'Chat' ||
-                          item.title == 'Notification' ||
-                          item.title == 'Assignment' ||
-                          item.title == 'Profile' ||
-                          item.title == 'Materials';
-                    }).toList();
+      body: FutureBuilder<Teacher>(
+        future: _fetchTeacherData(), // Fetch the teacher data
+        builder: (BuildContext context, AsyncSnapshot<Teacher> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(), // Loading state
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            ); // Error state
+          } else if (snapshot.hasData) {
+            Teacher teacher = snapshot.data!; // Teacher data is available
 
-                    return Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Introduction_part(
-                              context,
-                              dayOfWeekShort,
-                              day,
-                              monthShort,
-                              teacher.fullName, // Use fetched teacher data
-                              teacher.email,
-                              teacher.phone,
-                            ),
-                          ],
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: Padding(
-                              padding: EdgeInsets.all(15),
-                              child: GridView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, // Two items per row
-                                  crossAxisSpacing: 20,
-                                  mainAxisSpacing: 30,
-                                  childAspectRatio: 1.0, // Square items
-                                ),
-                                itemCount:
-                                    teacherlistMenu.length, // Number of items
-                                itemBuilder: (context, index) {
-                                  final menuItem = teacherlistMenu[index];
-                                  return GestureDetector(
-                                    onTap: menuItem.onTap, // Action on tap
-                                    child: customBox(
-                                      menuItem, // Display menu item
-                                      boxGradients[index %
-                                          boxGradients
-                                              .length], // Gradient background
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Center(
-                        child: Text(
-                            'No menu data available')); // No menu data state
-                  }
-                },
-              );
-            } else {
-              return Center(
-                  child: Text('No teacher data available')); // No data state
-            }
-          },
-        ),
-        appbartitle: "Dashboard",
-        showArrow: false);
+            return Column(
+              children: [
+                Stack(
+                  children: [
+                    Introduction_part(
+                      context,
+                      dayOfWeekShort,
+                      day,
+                      monthShort,
+                      teacher.fullName, // Use fetched teacher data
+                      teacher.email,
+                      teacher.phone,
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: DashboardBox(context),
+                ),
+              ],
+            );
+          } else {
+            return Center(
+              child: Text('No teacher data available'), // No data state
+            );
+          }
+        },
+      ),
+      appbartitle: "Dashboard",
+      showArrow: false,
+    );
   }
 }

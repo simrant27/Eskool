@@ -64,7 +64,7 @@ Container Introduction_part(
               ),
             ),
             SizedBox(width: 20),
-            Introduction(fullName, email, phone),
+            Introduction(false,fullName, email, phone),
           ],
         ),
       ],

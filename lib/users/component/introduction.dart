@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
 
-Column Introduction(String fullName, String email, String phone) {
+Column Introduction(bool profile, String fullName, String email, String phone) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
+      if (profile) ...[
+        Text(
+          "Profile Information",
+          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 15),
+      ],
       Text(
-        "Hi $fullName",
+        profile ? 'Name : $fullName' : "Hi $fullName",
         style: TextStyle(
-          fontSize: 25,
-          fontWeight: FontWeight.w900,
-          color: Color(0XFF343E87),
+          fontSize: profile ? 18 : 25, // Conditionally adjust the font size
+          fontWeight: profile ? FontWeight.normal : FontWeight.w900,
+          color: profile ? Colors.black : Color(0XFF343E87),
         ),
       ),
       SizedBox(height: 10),
       Text(
-        'Email: $email',
+        'Email : $email',
         style: TextStyle(
           fontSize: 18,
-          color: Colors.blueGrey,
+          color: profile ? Colors.black : Colors.blueGrey,
         ),
       ),
       SizedBox(height: 6),
       Text(
-        'Number: $phone',
+        'Number : $phone',
         style: TextStyle(
-          fontSize: 16,
-          color: Colors.blueGrey,
+          fontSize: profile ? 18 : 16,
+          color: profile ? Colors.black : Colors.blueGrey,
         ),
       ),
       SizedBox(height: 8),
