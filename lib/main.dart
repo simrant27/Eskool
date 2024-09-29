@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
 // import 'package:eskool/Screens/admin/classes/student_detail.dart';
-import 'package:eskool/Screens/admin/hellopage.dart';
+
 import 'package:eskool/loginpage/login.dart';
 import 'users/screen/parentsdashboard.dart';
 
