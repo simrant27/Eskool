@@ -12,6 +12,7 @@ Container Introduction_part(
   String fullName,
   String email,
   String phone,
+  String? imageUrl,
 ) {
   return Container(
     width: double.infinity,
@@ -60,11 +61,11 @@ Container Introduction_part(
                     spreadRadius: 8,
                   ),
                 ],
-                image: userImage(),
+                image: (userImage(imageUrl)),
               ),
             ),
             SizedBox(width: 20),
-            Introduction(false,fullName, email, phone),
+            Introduction(false, fullName, email, phone),
           ],
         ),
       ],

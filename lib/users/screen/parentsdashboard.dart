@@ -72,6 +72,7 @@ class _ParentsdashboardState extends State<Parentsdashboard> {
                       parent.fullName, // Use fetched parent data
                       parent.email,
                       parent.phone,
+                      parent.image
                     ),
                   ],
                 ),

@@ -93,11 +93,15 @@ class _StudentListWidgetState extends State<StudentListWidget> {
                       final student = students[index];
                       return GestureDetector(
                         onTap: () {
+                          print("from student page ${student.id}");
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  widget.onSelectRoute(student.toJson()),
+                              builder: (context) => widget.onSelectRoute({
+                                'id': student.id,
+                                'fullName': student.fullName,
+                                "classAssigned": student.classAssigned
+                              }),
                             ),
                           );
                         },

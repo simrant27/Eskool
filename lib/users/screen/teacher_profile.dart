@@ -88,18 +88,16 @@ class _TeacherProfileState extends State<TeacherProfile> {
                         width: MediaQuery.of(context).size.width / 3,
                         height: MediaQuery.of(context).size.width / 3,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(width: 1, color: Colors.white),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.blueGrey.withOpacity(0.2),
-                              blurRadius: 12,
-                              spreadRadius: 8,
-                            ),
-                          ],
-                          image:
-                              userImage(), // You might want to pass teacher's image here
-                        ),
+                            borderRadius: BorderRadius.circular(100),
+                            border: Border.all(width: 1, color: Colors.white),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.blueGrey.withOpacity(0.2),
+                                blurRadius: 12,
+                                spreadRadius: 8,
+                              ),
+                            ],
+                            image: userImage(teacher!.image)),
                       ),
                     ),
 

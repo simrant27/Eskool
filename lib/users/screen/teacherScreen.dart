@@ -77,6 +77,7 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
                       teacher.fullName, // Use fetched teacher data
                       teacher.email,
                       teacher.phone,
+                      teacher.image
                     ),
                   ],
                 ),

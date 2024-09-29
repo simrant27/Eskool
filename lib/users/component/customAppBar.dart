@@ -2,15 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-class Customappbar extends StatelessWidget {
-  const Customappbar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Placeholder();
-  }
-}
-
 AppBar customAppBar(title) {
   return AppBar(
     backgroundColor: Color.fromARGB(255, 196, 232, 248),

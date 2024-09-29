@@ -147,25 +147,25 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
         ));
 
     items.insert(
-        5,
-        MenuItem(
-          icon: Icons.attach_money_sharp,
-          title: 'Finance',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => StudentListWidget(
-                  onSelectRoute: (student) => FinanceBillScreen(
-                    studentName: student['fullName'],
-                    billItems: student['items'],
-                    totalAmount: student['fees'],
-                  ),
+      5,
+      MenuItem(
+        icon: Icons.attach_money_sharp,
+        title: 'Finance',
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StudentListWidget(
+                onSelectRoute: (student) => FinanceBillScreen(
+                  studentId: student['id'],
+                  studentName: student['fullName'],
                 ),
               ),
-            );
-          },
-        ));
+            ),
+          );
+        },
+      ),
+    );
   }
 
   return items;
