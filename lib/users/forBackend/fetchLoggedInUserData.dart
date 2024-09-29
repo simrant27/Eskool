@@ -10,7 +10,8 @@ Future<void> fetchLoggedInUserData() async {
 
     // Now you can access user-specific data from the token
     String userId =
-        decodedToken['id']; // Example: Extract the user ID from the token
+        decodedToken['_id']; // Example: Extract the user ID from the token
     String role = decodedToken['role']; // Extract the user's role
+    
   }
 }

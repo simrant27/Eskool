@@ -1,17 +1,12 @@
+import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/DashboardBox.dart';
+import 'package:eskool/users/component/customAppBar.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/notice_info_model.dart';
 import '../../services/fetchNotice.dart';
-import '../../services/loginService.dart';
-import '../component/Drawerlist.dart';
-import '../component/customAppBar.dart';
-import '../component/customBottomAppBar.dart';
-import '../component/customBox.dart';
 import '../component/introduction_part.dart';
-import '../data/colorCombination.dart';
 import '../data/date.dart';
 import '../data/menuItems.dart';
-import '../forBackend/fetchTeachersByid.dart';
 import '../forBackend/teacher_model.dart';
 import '../forBackend/userService.dart';
 
@@ -23,26 +18,31 @@ class TeacherDashboard extends StatefulWidget {
 }
 
 class _TeacherDashboardState extends State<TeacherDashboard> {
+  Teacher? teacher;
+
   late Future<List<NoticeInfoModel>> futureNotices;
+  late Future<List<MenuItem>> futureMenuItems;
 
   @override
   void initState() {
     super.initState();
-    _fetchTeacherData();
-    futureNotices = fetchNotices(); // Call the fetch method
+    futureNotices = fetchNotices(); // Fetch notices when initializing
+    futureMenuItems = menuItems(context); // Fetch menu items when initializing
+    _fetchTeacherData(); // Fetch teacher data
   }
 
   void refreshNotices() {
     setState(() {
-      futureNotices = fetchNotices(); // Refresh the notices
+      futureNotices = fetchNotices(); // Refresh the notice list
     });
   }
 
+  // Asynchronously fetch teacher data from user service
   Future<Teacher> _fetchTeacherData() async {
     UserService userService = UserService();
     var fetchedUser = await userService.fetchUserData();
     if (fetchedUser is Teacher) {
-      return fetchedUser; // Return the Parent object
+      return fetchedUser; // Return Teacher object
     } else {
       throw Exception('Failed to load teacher data');
     }
@@ -50,28 +50,21 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    List<MenuItem> teacherlistMenu = menuItems(context).where((item) {
-      return item.title == 'Chat' ||
-          item.title == 'Notification' ||
-          item.title == 'Assignment' ||
-          item.title == 'Profile' ||
-          item.title == 'Materials';
-    }).toList();
-
-    return Scaffold(
-      appBar: customAppBar("Dashboard"),
-      drawer: drawerlist(context),
+    return CustomScaffold(
       body: FutureBuilder<Teacher>(
         future: _fetchTeacherData(), // Fetch the teacher data
         builder: (BuildContext context, AsyncSnapshot<Teacher> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Loading state
+            return Center(
+              child: CircularProgressIndicator(), // Loading state
+            );
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error: ${snapshot.error}'),
             ); // Error state
-          } else if (snapshot.hasData && snapshot.data != null) {
-            Teacher teacher = snapshot.data!; // Parent data is available
+          } else if (snapshot.hasData) {
+            Teacher teacher = snapshot.data!; // Teacher data is available
+
             return Column(
               children: [
                 Stack(
@@ -81,49 +74,26 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
                       dayOfWeekShort,
                       day,
                       monthShort,
-                      teacher.fullName, // Use fetched parent data
+                      teacher.fullName, // Use fetched teacher data
                       teacher.email,
                       teacher.phone,
+                      teacher.image
                     ),
                   ],
                 ),
                 Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Padding(
-                      padding: EdgeInsets.all(15),
-                      child: GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 20,
-                          mainAxisSpacing: 30,
-                          childAspectRatio: 1.0, // Adjusted for square items
-                        ),
-                        itemCount: teacherlistMenu.length,
-                        itemBuilder: (context, index) {
-                          final menuItem = teacherlistMenu[index];
-                          return GestureDetector(
-                            onTap: menuItem.onTap,
-                            child: customBox(
-                              menuItem,
-                              boxGradients[index % boxGradients.length],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                  child: DashboardBox(context),
                 ),
               ],
             );
           } else {
-            return Center(child: Text('No parent data available'));
+            return Center(
+              child: Text('No teacher data available'), // No data state
+            );
           }
         },
       ),
-      bottomNavigationBar: CustomBottomAppBar(),
+      appBar: customAppBar("Dashboard"),
     );
   }
 }

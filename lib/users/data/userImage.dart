@@ -2,11 +2,29 @@
 
 import 'package:flutter/material.dart';
 
-DecorationImage userImage() {
+import '../../constants/constants.dart';
+
+DecorationImage userImage(String? imageUrl) {
+  String defaultImage =
+      "https://www.transparentpng.com/download/user/gray-user-profile-icon-png-fP8Q1P.png";
+
+  // Check if imageUrl is valid and extract file name if necessary
+  String? imageToLoad;
+  if (imageUrl != null && imageUrl.isNotEmpty) {
+    var fileName = formatUserImage(imageUrl);
+    imageToLoad = "$url/assets/$fileName";
+  } else {
+    imageToLoad = defaultImage;
+  }
+
   return DecorationImage(
     fit: BoxFit.cover,
-    image: NetworkImage(
-      "https://images.unsplash.com/photo-1541647376583-8934aaf3448a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1234&q=80",
-    ),
+    image: NetworkImage(imageToLoad),
   );
+}
+
+String formatUserImage(String filePath) {
+  // Parse the file URI and extract the file name
+  Uri uri = Uri.parse(filePath);
+  return uri.pathSegments.last;
 }

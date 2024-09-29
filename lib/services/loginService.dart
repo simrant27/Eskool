@@ -29,7 +29,8 @@ class LoginService {
         await prefs.setString('token', token);
         Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
         await prefs.setString('role', decodedToken['role'] ?? 'No role found');
-        await prefs.setString('userId', decodedToken['id']); // Save userId
+        await prefs.setString(
+            'userId', decodedToken['id'] ?? 'No id found'); // Save userId
 
         // Return success and redirect path
         return {'success': true, 'redirect': redirect};
