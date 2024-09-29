@@ -1,4 +1,5 @@
 class Teacher {
+  String? id;
   String? fullName;
   String? email;
   String? phone;
@@ -12,6 +13,7 @@ class Teacher {
   String? image;
 
   Teacher({
+    this.id,
     this.fullName,
     this.email,
     this.phone,
@@ -27,6 +29,7 @@ class Teacher {
 
   factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
+      id: json['_id'],
       fullName: json['fullName'],
       email: json['email'],
       phone: json['phone'],
@@ -43,6 +46,7 @@ class Teacher {
 
   Map<String, dynamic> toJson() {
     return {
+      '_id': id,
       'fullName': fullName,
       'email': email,
       'phone': phone,

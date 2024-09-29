@@ -1,13 +1,13 @@
 import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
 import 'package:eskool/Screens/admin/components/custon_button.dart';
-import 'package:eskool/Screens/admin/teacher/demo.dart';
+// import 'package:eskool/Screens/admin/teacher1/demo.dart';
 import 'package:eskool/services/teacherService.dart';
 import 'package:flutter/material.dart';
 import '../../../models/teacherModel.dart';
-import '../teacher1/add_edit_teacher_screen.dart';
-import '../teacher1/teacher_detail_screen.dart';
-import 'create_teacher_page.dart'; // Import the detail screen
+
+import 'add_edit_teacher_screen.dart';
+import 'teacher_detail_screen.dart'; // Import the detail screen
 
 class TeacherListScreen extends StatefulWidget {
   @override
@@ -38,14 +38,14 @@ class _TeacherListScreenState extends State<TeacherListScreen> {
     });
   }
 
-  void _deleteTeacher(String teacherID) async {
-    await teacherService
-        .deleteTeacher(teacherID); // Call the delete method from the service
-    setState(() {
-      futureTeachers =
-          teacherService.fetchTeachers(); // Refresh the list after deleting
-    });
-  }
+  // void _deleteTeacher(String id) async {
+  //   await teacherService
+  //       .deleteTeacher(id); // Call the delete method from the service
+  //   setState(() {
+  //     futureTeachers =
+  //         teacherService.fetchTeachers(); // Refresh the list after deleting
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,17 @@ class _TeacherListScreenState extends State<TeacherListScreen> {
                         _addTeacher, // Pass the callback to add a teacher
                   ),
                 ),
-              );
+              ).then((_) {
+                // Correct syntax for the then method
+                setState(() {
+                  futureTeachers = teacherService.fetchTeachers();
+                });
+              }).catchError((error) {
+                // Handle errors if needed
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Error: $error')),
+                );
+              });
             },
           ),
           Expanded(
@@ -159,8 +169,63 @@ class _TeacherListScreenState extends State<TeacherListScreen> {
                                     ),
                                     IconButton(
                                       icon: Icon(Icons.delete),
-                                      onPressed: () {
-                                        _deleteTeacher(teacher.teacherID!);
+                                      onPressed: () async {
+                                        final confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Confirm Deletion'),
+                                              content: Text(
+                                                  'Are you sure you want to delete this teacher?'),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(false),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context)
+                                                          .pop(true),
+                                                  child: Text('Delete'),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+
+                                        if (confirm == true) {
+                                          try {
+                                            print(
+                                                'Deleting teacher with ID: ${teacher.id}');
+
+                                            // Call the deleteTeacher function
+                                            await teacherService
+                                                .deleteTeacher(teacher.id!);
+
+                                            // Show success message
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text(
+                                                      'Teacher deleted successfully!')),
+                                            );
+
+                                            // Refresh the list of teachers
+                                            setState(() {
+                                              futureTeachers = teacherService
+                                                  .fetchTeachers(); // Refresh the list
+                                            });
+                                          } catch (e) {
+                                            // Show error message if the deletion fails
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              SnackBar(
+                                                  content: Text('Error: $e')),
+                                            );
+                                          }
+                                        }
                                       },
                                     ),
                                   ],

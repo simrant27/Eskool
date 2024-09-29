@@ -88,13 +88,19 @@ class TeacherService {
   }
 
   Future<void> updateTeacher(String id, Teacher teacher) async {
+    print(id);
+    // if (teacher.id == null) {
+    //   throw Exception('Teacher ID cannot be null');
+    // }
     final response = await http.put(
-      Uri.parse('$baseUrl/api/teachers/$id'),
+      Uri.parse('$baseUrl/update/$id'),
       headers: {
         'Content-Type': 'application/json',
       },
       body: json.encode(teacher.toJson()),
     );
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
     if (response.statusCode != 200) {
       throw Exception('Failed to update teacher');
@@ -102,10 +108,15 @@ class TeacherService {
   }
 
   Future<void> deleteTeacher(String id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/api/teachers/$id'));
+    final response = await http.delete(Uri.parse('$baseUrl/delete/$id'));
 
-    if (response.statusCode != 204) {
-      throw Exception('Failed to delete teacher');
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    if (response.statusCode != 200) {
+      // Extract message from response body for better error feedback
+      final body = json.decode(response.body);
+      throw Exception(body['message'] ?? 'Failed to delete teacher');
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:eskool/services/teacherService.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -52,8 +54,7 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
     _subjectsTaughtController =
         TextEditingController(text: widget.teacher?.subjectsTaught?.join(', '));
     _isEnrolled = widget.teacher?.enrolled ?? false;
-    // _image.path =
-    //     widget.teacher?.image.name!; // Set the initial value for enrolled
+    _image = widget.image;
   }
 
   Future<void> _pickMediaFiles() async {
@@ -86,6 +87,7 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
   void _saveTeacher() async {
     if (_formKey.currentState!.validate()) {
       Teacher teacher = Teacher(
+        id: widget.teacher?.id,
         fullName: _fullNameController.text,
         email: _emailController.text,
         phone: _phoneController.text,
@@ -105,13 +107,26 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
         // image: _image,
       );
 
-      // Call the createTeacher function
       try {
-        await teacherService.createTeacher(
-            teacher.toJson(), _image); // Pass the image here
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Teacher saved successfully!')),
-        );
+        if (teacher.id == null) {
+          // If no teacher ID exists, create a new teacher
+          await teacherService.createTeacher(teacher.toJson(), _image);
+          if (widget.onAddTeacher != null) {
+            widget.onAddTeacher!(teacher);
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Teacher added successfully!')),
+          );
+        } else {
+          // If a teacher ID exists, update the existing teacher
+          await teacherService.updateTeacher(teacher.id!, teacher);
+          if (widget.onEditTeacher != null) {
+            widget.onEditTeacher!(teacher);
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Teacher updated successfully!')),
+          );
+        }
         Navigator.pop(context);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

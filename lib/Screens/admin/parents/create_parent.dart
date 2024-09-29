@@ -5,7 +5,7 @@ import 'dart:convert';
 
 import '../../../models/parentModel.dart';
 import '../../../services/parentService.dart';
-import '../teacher1/component.dart/form_input_field.dart'; // For JSON encoding
+import '../teacher/component.dart/form_input_field.dart'; // For JSON encoding
 
 class ParentFormPage extends StatefulWidget {
   @override
