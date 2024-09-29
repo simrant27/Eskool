@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 class StudentDetailScreen extends StatelessWidget {
   final String studentName;
   final String studentGrade;
-  final Map<String, dynamic> studentDetails;
+  final String studentId;
 
   StudentDetailScreen({
     required this.studentName,
     required this.studentGrade,
-    required this.studentDetails,
+    required this.studentId
   });
 
   @override
@@ -36,7 +36,6 @@ class StudentDetailScreen extends StatelessWidget {
               'Details:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            Text(studentDetails.toString()), // Format as needed
           ],
         ),
       ),

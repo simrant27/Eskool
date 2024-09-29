@@ -150,7 +150,7 @@ class _ParentProfileState extends State<ParentProfile> {
                           builder: (context) => StudentDetailScreen(
                             studentName: student.fullName,
                             studentGrade: student.classAssigned.toString(),
-                            studentDetails: student.toJson(),
+                            studentId: student.id.toString(),
                           ),
                         ),
                       );
