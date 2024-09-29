@@ -38,15 +38,6 @@ class _TeacherListScreenState extends State<TeacherListScreen> {
     });
   }
 
-  // void _deleteTeacher(String id) async {
-  //   await teacherService
-  //       .deleteTeacher(id); // Call the delete method from the service
-  //   setState(() {
-  //     futureTeachers =
-  //         teacherService.fetchTeachers(); // Refresh the list after deleting
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return ResponsiveDrawerLayout(

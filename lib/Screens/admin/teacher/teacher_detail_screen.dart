@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../constants/constants.dart';
 import '../../../models/teacherModel.dart';
 
 class TeacherDetailScreen extends StatelessWidget {
@@ -17,22 +18,44 @@ class TeacherDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Display Teacher Image
-            Center(
-                child: Container(
-                    child: teacher.image != null
-                        ? Image.network(teacher.image!)
-                        : Text("no data"))
-
-                //  CircleAvatar(
-                //   radius: 50,
-                //   // backgroundImage:
-                //   //     AssetImage("assets/images/default_profile.png"),
-                //   backgroundImage: teacher.image != null
-                //       ? Image.network(teacher.image!):Text("no data");// Assuming image is a URL
-                //   // Default image if no image available
-                // ),
+            SizedBox(height: 20),
+            if (teacher.image != null) ...[
+              // For image files
+              if (teacher.image!.endsWith('.jpg') ||
+                  teacher.image!.endsWith('.png') ||
+                  teacher.image!.endsWith('.jpeg')) ...[
+                Image.network(
+                  "$NoticeImage/${teacher.image}",
+                  fit: BoxFit.cover,
                 ),
+              ]
+            ],
+            // Display Teacher Image
+            // Center(
+            //   child: Container(
+            //       child: teacher.image != null
+            //           ? Image.network("$TeacherImage/${teacher.image!}")
+            //           : Text("no data")),
+            // if (teacher.image != null) ...[
+            //   // For image files
+            //   if (teacher.image!.endsWith('.jpg') ||
+            //       teacher.image!.endsWith('.png') ||
+            //       teacher.image!.endsWith('.jpeg')) ...[
+            //     Image.network(
+            //       "$TeacherImage/$teacher.image",
+            //       fit: BoxFit.cover,
+            //     ),
+            //   ]
+            // ],
+            //  CircleAvatar(
+            //   radius: 50,
+            //   // backgroundImage:
+            //   //     AssetImage("assets/images/default_profile.png"),
+            //   backgroundImage: teacher.image != null
+            //       ? Image.network(teacher.image!):Text("no data");// Assuming image is a URL
+            //   // Default image if no image available
+            // ),
+
             SizedBox(height: 16),
             // Display Teacher Details
             Text(
