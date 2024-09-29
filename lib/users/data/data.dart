@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 final Map<String, Widget> introduction = {
-  'greeting': Text(
+  'fullName': Text(
     "Hi Jackie",
     style: TextStyle(
       fontSize: 25,

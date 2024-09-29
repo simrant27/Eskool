@@ -1,49 +1,66 @@
-import 'package:eskool/Create%20account/screens/admin_dashboard.dart';
-import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content.dart';
-import 'package:eskool/Screens/admin/admindashboard/components/full_notice_list_page.dart';
-import 'package:eskool/Screens/admin/admindashboard/components/notice_list.dart';
-import 'package:eskool/Screens/admin/billing/billing_page.dart';
-
-import 'package:eskool/Screens/admin/classes/student_deatail.dart';
-import 'package:eskool/Screens/admin/parents/create_parent.dart';
-import 'package:eskool/Screens/admin/parents/parent_list_screen.dart';
-import 'package:eskool/Screens/admin/teacher/add_edit_teacher_screen.dart';
-import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
-import 'package:eskool/data/teacher_data.dart';
-
+import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
+// import 'package:eskool/Screens/admin/classes/student_detail.dart';
 
-// import 'Screens/admin/teacher/demo.dart';
+import 'package:eskool/loginpage/login.dart';
 import 'users/screen/parentsdashboard.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // Check if the user is logged in and fetch their role
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  String userRole = prefs.getString('role') ?? 'parent'; // Default to 'parent'
+
+  // Determine the initial route based on login status and role
+  String initialRoute = getInitialRoute(isLoggedIn, userRole);
+
+  runApp(MyApp(initialRoute: initialRoute));
+}
+
+String getInitialRoute(bool isLoggedIn, String userRole) {
+  if (isLoggedIn) {
+    switch (userRole) {
+      case 'admin':
+        return '/admin-dashboard';
+      case 'parent':
+        return '/parent-dashboard';
+      case 'teacher':
+        return '/teacher-dashboard';
+      default:
+        return '/login'; // Fallback if role is not recognized
+    }
+  } else {
+    return '/login';
+  }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.white,
-        ),
-        title: "Eskool",
-        debugShowCheckedModeBanner: false,
-        home:
-            // ParentFormPage()
-            TeacherListScreen()
-        // AddEditTeacherScreen()
-        // ParentListScreen()
-
-        // parentsdashboard()
-        //     StudentDetail(
-        //   className: "Class 1",
-        // ),
-        );
+      title: "Eskool",
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+      ),
+      initialRoute: initialRoute,
+      routes: {
+        '/': (context) => LoginPage(),
+        '/login': (context) => LoginPage(),
+        '/parent-dashboard': (context) => Parentsdashboard(),
+        '/admin-dashboard': (context) => Admindashboard(),
+        '/teacher-dashboard': (context) => TeacherDashboard(),
+        // Add more routes here if needed
+      },
+    );
   }
 }

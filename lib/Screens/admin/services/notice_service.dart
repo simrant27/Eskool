@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:eskool/models/notice_info_model.dart';
 
+import '../../../constants/constants.dart';
+
 class NoticeService {
   // Define the backend URL
-  static const String baseUrl = 'http://192.168.18.121:3000/api/notices';
+  static const String baseUrl = '$url/api/notices';
 
   // Fetch notices from backend
   Future<List<NoticeInfoModel>> fetchNotices() async {

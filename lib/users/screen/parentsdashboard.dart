@@ -1,137 +1,121 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:eskool/models/notice_info_model.dart';
+import 'package:eskool/services/fetchNotice.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../component/Drawerlist.dart';
-import '../component/boxDesign.dart';
 import '../component/customAppBar.dart';
 import '../component/customBottomAppBar.dart';
 import '../component/customBox.dart';
+import '../component/introduction_part.dart';
 import '../data/colorCombination.dart';
-import '../data/data.dart';
+import '../data/date.dart';
 import '../data/menuItems.dart';
-import '../data/userImage.dart';
+import '../forBackend/parent_model.dart';
+import '../forBackend/userService.dart';
 
-class parentsdashboard extends StatelessWidget {
-  const parentsdashboard({super.key});
+class Parentsdashboard extends StatefulWidget {
+  const Parentsdashboard({super.key});
+
+  @override
+  State<Parentsdashboard> createState() => _ParentsdashboardState();
+}
+
+class _ParentsdashboardState extends State<Parentsdashboard> {
+  Parent? parent;
+  late Future<List<NoticeInfoModel>> futureNotices;
+
+  @override
+  void initState() {
+    super.initState();
+    futureNotices = fetchNotices(); // Fetch notices on load
+    _fetchParentData(); // Fetch parent data on load
+  }
+
+  void refreshNotices() {
+    setState(() {
+      futureNotices = fetchNotices(); // Refresh the notices
+    });
+  }
+
+  Future<Parent> _fetchParentData() async {
+    UserService userService = UserService();
+    var fetchedUser = await userService.fetchUserData();
+    if (fetchedUser is Parent) {
+      return fetchedUser; // Return the Parent object
+    } else {
+      throw Exception('Failed to load Parent data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String dayOfWeekShort = DateFormat('EEE').format(now);
-    String day = DateFormat('d').format(now);
-    String monthShort = DateFormat('MMM').format(now);
-
     return Scaffold(
       appBar: customAppBar("Dashboard"),
       drawer: drawerlist(context),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                width: double.infinity, // Use full width
-                height: MediaQuery.of(context).size.height / 3.7,
-                decoration: boxDesign(),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                child: Column(
+      body: FutureBuilder<Parent>(
+        future: _fetchParentData(), // Fetch the parent data
+        builder: (BuildContext context, AsyncSnapshot<Parent> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator()); // Loading state
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            ); // Error state
+          } else if (snapshot.hasData && snapshot.data != null) {
+            Parent parent = snapshot.data!; // Parent data is available
+            return Column(
+              children: [
+                Stack(
                   children: [
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: RichText(
-                        text: TextSpan(
-                          text: dayOfWeekShort,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 46, 121, 214),
-                            fontSize: MediaQuery.of(context).size.height / 45,
-                            fontWeight: FontWeight.w900,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: ' $day $monthShort',
-                              style: TextStyle(
-                                color: Color(0XFF263064),
-                                fontSize:
-                                    MediaQuery.of(context).size.height / 50,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 15),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.height / 15,
-                          height: MediaQuery.of(context).size.height / 15,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(width: 1, color: Colors.white),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.blueGrey.withOpacity(0.2),
-                                blurRadius: 12,
-                                spreadRadius: 8,
-                              ),
-                            ],
-                            image: userImage(),
-                          ),
-                        ),
-                        SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            introduction['greeting'] ??
-                                Text(''), // Ensure fallback values
-                            SizedBox(height: 10),
-                            introduction['email'] ?? Text(''),
-                            SizedBox(height: 6),
-                            introduction['number'] ?? Text(''),
-                            SizedBox(height: 8),
-                          ],
-                        ),
-                      ],
+                    Introduction_part(
+                      context,
+                      dayOfWeekShort,
+                      day,
+                      monthShort,
+                      parent.fullName, // Use fetched parent data
+                      parent.email,
+                      parent.phone,
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Padding(
-                padding: EdgeInsets.all(15),
-                child: GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 20,
-                    mainAxisSpacing: 30,
-                    childAspectRatio: 1.0, // Adjusted for square items
-                  ),
-                  itemCount: menuItems(context).length - 2,
-                  itemBuilder: (context, index) {
-                    final menuItem =
-                        menuItems(context)[index + 1]; // Adjust for context
-                    return GestureDetector(
-                      onTap: menuItem.onTap,
-                      child: customBox(
-                        menuItem,
-                        boxGradients[index % boxGradients.length],
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 20,
+                          mainAxisSpacing: 30,
+                          childAspectRatio: 1.0, // Adjust for square items
+                        ),
+                        itemCount: menuItems(context).length - 2,
+                        itemBuilder: (context, index) {
+                          final menuItem = menuItems(
+                              context)[index + 1]; // Adjust for context
+                          return GestureDetector(
+                            onTap: menuItem.onTap,
+                            child: customBox(
+                              menuItem,
+                              boxGradients[index % boxGradients.length],
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          )
-        ],
+              ],
+            );
+          } else {
+            return Center(child: Text('No parent data available'));
+          }
+        },
       ),
       bottomNavigationBar: CustomBottomAppBar(),
     );
