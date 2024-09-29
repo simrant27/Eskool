@@ -78,6 +78,10 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       icon: Icons.chat,
       title: 'Chat',
       onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
+        );
         // Handle the tap event
       },
     ),
