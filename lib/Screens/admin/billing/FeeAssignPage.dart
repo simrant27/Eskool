@@ -14,13 +14,9 @@ class FeeAssignPage extends StatefulWidget {
 }
 
 class _FeeAssignPageState extends State<FeeAssignPage> {
-  // Store fee amounts for each student
   Map<Student, Map<String, double>> feeAmounts = {};
-  // Store global amounts for fees
   Map<String, double> globalAmounts = {};
-  // Store checkbox selections for each fee
   Map<String, bool> feeSelections = {};
-  // Selected class from dropdown
   String selectedClass = '1';
   List<Student> students = [];
   bool isLoading = true;
@@ -30,19 +26,15 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
   final TextEditingController libraryController = TextEditingController();
   final TextEditingController extraController = TextEditingController();
 
-
-
   @override
   void initState() {
     super.initState();
-    // Initialize amounts and selections for the default selected class
     initializeFeeAmountsForClass(selectedClass);
   }
 
-  // Fetch and initialize fee amounts and selections for each student in the class
   Future<void> initializeFeeAmountsForClass(String className) async {
     setState(() {
-      isLoading = true; // Show loading indicator
+      isLoading = true;
       feeAmounts.clear();
       globalAmounts.clear();
       feeSelections.clear();
@@ -54,33 +46,28 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
       students = fetchedStudents;
 
       for (var student in students) {
-        feeAmounts[student] = {
-          for (var fee in fees) fee: 0.0
-        }; // Initialize amounts
+        feeAmounts[student] = {for (var fee in fees) fee: 0.0};
       }
 
       for (var fee in fees) {
-        globalAmounts[fee] = 0.0; // Initialize global fee amounts
-        feeSelections[fee] = false; // Initialize fee selection checkboxes
+        globalAmounts[fee] = 0.0;
+        feeSelections[fee] = false;
       }
 
-      isLoading = false; // Hide loading indicator
+      isLoading = false;
     });
   }
 
-  // Update fees for all students based on global amounts and selections
   void updateFeeForAllStudents() {
     for (var student in feeAmounts.keys) {
       for (var fee in fees) {
         if (feeSelections[fee] == true && globalAmounts[fee]! > 0) {
-          // Only update fees for the selected fees with non-zero amounts
           updateFee(student.id, fee, globalAmounts[fee]!, '2024-12-30');
         }
       }
     }
   }
 
-  // Delete fees for all students for selected fees
   void deleteFeeForAllStudents() {
     for (var student in feeAmounts.keys) {
       for (var fee in fees) {
@@ -99,12 +86,9 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
           children: [
             CustomAppbar(
               showSearch: true,
-              hinttext: "students",
-              onChanged: (value) {
-                // Implement search logic if needed
-              },
+              hinttext: "Search for students",
+              onChanged: (value) {},
             ),
-            // Class Selection Dropdown
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Container(
@@ -137,103 +121,86 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                       classList.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text("class $value"),
+                      child: Text("Class $value"),
                     );
                   }).toList(),
                 ),
               ),
             ),
-
-            // Loading Indicator
             if (isLoading) CircularProgressIndicator(),
-
-            // Global Fee Inputs for all students
             if (!isLoading) ...[
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: fees.map((fee) {
-                    return Column(
-                      children: [
-                        SizedBox(
-                          height: 60.0,
-                          width: 200.0,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              labelText: 'Enter $fee Amount',
-                              border: OutlineInputBorder(),
+                    return Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 60.0,
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Enter $fee Amount',
+                                border: OutlineInputBorder(),
+                              ),
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {
+                                setState(() {
+                                  globalAmounts[fee] =
+                                      double.tryParse(value) ?? 0.0;
+                                });
+                              },
                             ),
-                            keyboardType: TextInputType.number,//use controller for $fee controller
-                            onChanged: (value) {
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
                               setState(() {
-                                globalAmounts[fee] =
-                                    double.tryParse(value) ?? 0.0;
+                                // Logic to assign this fee to all students
+                                for (var student in students) {
+                                  feeAmounts[student]![fee] =
+                                      globalAmounts[fee]!;
+                                }
                               });
                             },
+                            child: Text("Assign For All"),
                           ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              //change all of the $Fee controller used
-                            });
-                          },
-                          child:
-                              Text("Assign For all"),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   }).toList(),
                 ),
               ),
-
-              // Table for student-specific fees
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: DataTable(
                   columns: [
                     DataColumn(
-                      label: Text(
-                        'Student Name',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
+                      label: Text('Student Name',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                     ),
                     DataColumn(
-                      label: Text(
-                        'Class',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
+                      label: Text('Class',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
                     ),
                     ...fees.map((fee) => DataColumn(
-                          label: Text(
-                            fee,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
+                          label: Text(fee,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18)),
                         )),
                   ],
                   rows: students.map((student) {
                     return DataRow(cells: [
-                      DataCell(
-                        Text(
-                          student.fullName,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          student.classAssigned,
-                          style: TextStyle(fontSize: 18),
-                        ),
-                      ),
+                      DataCell(Text(student.fullName,
+                          style: TextStyle(fontSize: 18))),
+                      DataCell(Text(student.classAssigned,
+                          style: TextStyle(fontSize: 18))),
                       ...fees.map((fee) {
                         return DataCell(
                           TextFormField(
-                            keyboardType: TextInputType.number,// use a $fee controller if Assign For all button is click then change according to their value
+                            keyboardType: TextInputType.number,
                             onChanged: (value) {
                               setState(() {
                                 feeAmounts[student]![fee] =
@@ -249,25 +216,19 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                   }).toList(),
                 ),
               ),
-
-              // Buttons to update or delete fees
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     ElevatedButton(
-                      onPressed: () {
-                        updateFeeForAllStudents(); // Update fees
-                      },
+                      onPressed: updateFeeForAllStudents,
                       style: customButtonStyle,
                       child: const Text('Update Fee'),
                     ),
                     const SizedBox(width: 10),
                     ElevatedButton(
-                      onPressed: () {
-                        deleteFeeForAllStudents(); // Delete fees
-                      },
+                      onPressed: deleteFeeForAllStudents,
                       style: customButtonStyle,
                       child: const Text('Delete Fee'),
                     ),

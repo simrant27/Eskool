@@ -1,15 +1,22 @@
 import 'dart:io';
-import 'package:eskool/constants/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:image_picker/image_picker.dart';
 
-class UploadMaterialScreen extends StatefulWidget {
+import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/customAppBar2.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../constants/constants.dart';
+import '../component/customButtonStyle.dart';
+
+class UploadStudyMaterialScreen extends StatefulWidget {
   @override
-  _UploadMaterialScreenState createState() => _UploadMaterialScreenState();
+  _UploadStudyMaterialScreenState createState() =>
+      _UploadStudyMaterialScreenState();
 }
 
-class _UploadMaterialScreenState extends State<UploadMaterialScreen> {
+class _UploadStudyMaterialScreenState extends State<UploadStudyMaterialScreen> {
+  String? fileName;
+  String? filePath;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   File? _selectedFile;
@@ -33,8 +40,7 @@ class _UploadMaterialScreenState extends State<UploadMaterialScreen> {
 
     final request = http.MultipartRequest(
       'POST',
-      Uri.parse(
-          '$url/api/materials'), // Replace with your API URL
+      Uri.parse('$url/api/materials'), // Replace with your API URL
     );
 
     request.files.add(await http.MultipartFile.fromPath(
@@ -61,35 +67,95 @@ class _UploadMaterialScreenState extends State<UploadMaterialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Upload Material"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: "Title"),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: InputDecoration(labelText: "Description"),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickFile,
-              child: Text("Select File"),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _uploadMaterial,
-              child: Text("Upload"),
-            ),
-          ],
+    return CustomScaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title Input
+              TextField(
+                controller: _titleController,
+                decoration: InputDecoration(
+                  labelText: 'Title',
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter the title of the material',
+                ),
+              ),
+              SizedBox(height: 16),
+
+              // Description Input
+              TextField(
+                controller: _descriptionController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter a brief description',
+                ),
+              ),
+              SizedBox(height: 16),
+
+              // Upload Button
+              ElevatedButton.icon(
+                onPressed: _pickFile,
+                icon: Icon(Icons.upload_file),
+                label: Text('Choose File'),
+              ),
+              SizedBox(height: 16),
+
+              // Display selected file
+              if (fileName != null)
+                Text(
+                  'Selected File: $fileName',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              if (fileName == null)
+                Text(
+                  'No file selected',
+                  style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
+                ),
+              Spacer(),
+
+              // Submit Button
+
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (fileName != null && _titleController.text.isNotEmpty) {
+                      // Implement upload functionality here
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Text('Upload Successful'),
+                          content: Text('Your material has been uploaded.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      // Show error if no file or title
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content:
+                              Text('Please select a file and enter a title'),
+                        ),
+                      );
+                    }
+                  },
+                  style: customButtonStyle,
+                  child: Text('Upload Material'),
+                ),
+              )
+            ],
+          ),
         ),
-      ),
-    );
+        appBar: customAppBar2("Upload a Material"));
   }
 }

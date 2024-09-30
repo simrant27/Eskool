@@ -110,7 +110,8 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
         } else if (userRole == 'teacher') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => UploadMaterialScreen()),
+            MaterialPageRoute(
+                builder: (context) => UploadStudyMaterialScreen()),
           );
         }
       },
