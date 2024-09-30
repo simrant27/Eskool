@@ -55,16 +55,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: ParentListScreen(),
-      // initialRoute: initialRoute,
-      // routes: {
-      //   '/': (context) => LoginPage(),
-      //   '/login': (context) => LoginPage(),
-      //   '/parent-dashboard': (context) => Parentsdashboard(),
-      //   '/admin-dashboard': (context) => Admindashboard(),
-      //   '/teacher-dashboard': (context) => TeacherDashboard(),
-      // Add more routes here if needed
-      // },
+      initialRoute: initialRoute,
+      routes: {
+        '/': (context) => LoginPage(),
+        '/login': (context) => LoginPage(),
+        '/parent-dashboard': (context) => Parentsdashboard(),
+        '/admin-dashboard': (context) => Admindashboard(),
+        '/teacher-dashboard': (context) => TeacherDashboard(),
+        // Add more routes here if needed
+      },
     );
   }
 }
