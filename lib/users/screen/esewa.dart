@@ -159,7 +159,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 SizedBox(height: 20),
                 Text(
                   "Please ensure your eSewa account has sufficient balance before proceeding.",
-                  style: TextStyle(color: Colors.red),
+                  style: TextStyle(color: Colors.red, fontSize: 24),
                   textAlign: TextAlign.center,
                 ),
               ],
