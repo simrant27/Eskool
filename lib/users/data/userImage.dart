@@ -12,7 +12,7 @@ DecorationImage userImage(String? imageUrl) {
   String? imageToLoad;
   if (imageUrl != null && imageUrl.isNotEmpty) {
     var fileName = formatUserImage(imageUrl);
-    imageToLoad = "$url/assets/$fileName";
+    imageToLoad = "$url/uploads/parent_upload/$fileName";
   } else {
     imageToLoad = defaultImage;
   }
