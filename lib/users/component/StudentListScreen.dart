@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/RectangleBox.dart';
 import 'package:eskool/users/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -105,26 +106,8 @@ class _StudentListWidgetState extends State<StudentListWidget> {
                             ),
                           );
                         },
-                        child: Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 30,
-                              vertical: 10), // Adjust margin for spacing
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 127, 195, 224),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: Text(
-                              student
-                                  .fullName, // Access fullName directly from the Student object
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
+                        child: RectangleBox(
+                          student.fullName,
                         ),
                       );
                     },
