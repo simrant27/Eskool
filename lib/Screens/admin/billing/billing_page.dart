@@ -77,12 +77,19 @@ class _BillingPageState extends State<BillingPage> {
                 border: OutlineInputBorder(),
               ),
               value: selectedClass,
-              items: classList.map((classAssigned) {
-                return DropdownMenuItem(
-                  value: classAssigned,
-                  child: Text('Class $classAssigned'),
-                );
-              }).toList(),
+              items: classList.isNotEmpty
+                  ? classList.map((classAssigned) {
+                      return DropdownMenuItem(
+                        value: classAssigned,
+                        child: Text('Class $classAssigned'),
+                      );
+                    }).toList()
+                  : [
+                      const DropdownMenuItem(
+                        value: null,
+                        child: Text('No classes available'),
+                      ),
+                    ],
               onChanged: (value) {
                 setState(() {
                   selectedClass = value;

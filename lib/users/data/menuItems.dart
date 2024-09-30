@@ -1,3 +1,4 @@
+import 'package:eskool/users/component/SubjectList.dart';
 import 'package:eskool/users/screen/UploadStudyMaterial.dart';
 import 'package:eskool/users/screen/esewa.dart';
 import 'package:eskool/users/screen/material.dart';
@@ -118,7 +119,7 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
         } else if (userRole == 'teacher') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Resultassign()),
+            MaterialPageRoute(builder: (context) => SubjectList()),
           );
         }
       },
