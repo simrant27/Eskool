@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../CustomUi/button_card.dart';
-import '../models/chat_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'homescreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -12,58 +10,37 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  ChatModel? sourceChat; //object of chat model
-  List<ChatModel> chatmodels = [
-    ChatModel(
-        name: "Asmita",
-        icon: Icons.group,
-        isGroup: false,
-        time: "18.05",
-        currentMessage: "hello there",
-        id: 1),
-    ChatModel(
-        name: "Oshin",
-        icon: Icons.group,
-        isGroup: false,
-        time: "18.05",
-        currentMessage: "hello hii",
-        id: 2),
-    ChatModel(
-        name: "class5",
-        icon: Icons.group,
-        isGroup: false,
-        time: "18.05",
-        currentMessage: "hello there",
-        id: 3),
-    ChatModel(
-        name: "Suzu",
-        icon: Icons.group,
-        isGroup: false,
-        time: "18.05",
-        currentMessage: "hello there",
-        id: 4),
-  ];
+  String? userRole;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserRole();
+  }
+
+  Future<void> _getUserRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userRole = prefs.getString('role') ?? 'parent';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-          itemCount: chatmodels.length,
-          itemBuilder: (context, index) => InkWell(
-                onTap: () {
-                  sourceChat = chatmodels.removeAt(index);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                                chatmodels: chatmodels,
-                                sourceChat: sourceChat!,
-                              )));
-                },
-                child: ButtonCard(
-                  name: chatmodels[index].name,
-                  icon: Icons.person,
-                ),
-              )),
+      body: userRole == null
+          ? Center(child: CircularProgressIndicator())
+          : InkWell(
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(userRole: userRole!),
+                  ),
+                );
+              },
+              child: Center(child: Text("Proceed to Home")),
+            ),
     );
   }
 }
