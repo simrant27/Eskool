@@ -8,7 +8,7 @@ class Replycard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.centerRight,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width - 45,
@@ -35,7 +35,7 @@ class Replycard extends StatelessWidget {
                     time!,
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.grey.shade800,
+                      color: const Color.fromARGB(255, 215, 9, 9),
                     ),
                   )),
             ],

@@ -8,7 +8,7 @@ class OwnMsgCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: ConstrainedBox(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width - 45,
@@ -16,7 +16,7 @@ class OwnMsgCard extends StatelessWidget {
         child: Card(
           elevation: 2,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-          color: Color.fromARGB(255, 195, 228, 255),
+          color: Color.fromARGB(255, 155, 199, 236),
           margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Stack(
             children: [

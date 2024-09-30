@@ -3,6 +3,7 @@ import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../../constants/constants.dart';
 import '../CustomUi/own_msg.dart';
 import '../CustomUi/replycard.dart';
 import '../models/chat_model.dart';
@@ -20,9 +21,9 @@ class IndividualPage extends StatefulWidget {
 
 class _IndividualPageState extends State<IndividualPage> {
   late IO.Socket socket;
-  List<MessageModel> messages = [];
-  TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  List messages = [];
+  final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _IndividualPageState extends State<IndividualPage> {
   }
 
   void connect() {
-    socket = IO.io("http://192.168.18.56:5000", <String, dynamic>{
+    socket = IO.io("http://$ip:5000", <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
     });
@@ -54,21 +55,7 @@ class _IndividualPageState extends State<IndividualPage> {
         print("Message received: $msg");
         if (mounted) {
           setState(() {
-            // Add the received message to the list
-            messages.add(MessageModel(
-              type:
-                  "destination", // Assuming "destination" for received messages
-              message: msg["message"],
-              time: DateTime.now().toString().substring(10, 16),
-            ));
-          });
-
-          Future.delayed(Duration.zero, () {
-            _scrollController.animateTo(
-              _scrollController.position.maxScrollExtent,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-            );
+            messages.add(msg);
           });
         }
       });
@@ -82,55 +69,36 @@ class _IndividualPageState extends State<IndividualPage> {
 
   Future loadMessages() async {
     final response = await http.get(Uri.parse(
-        'http://192.168.18.56:5000/api/messages?senderId=${widget.sourceChat.id}&receiverId=${widget.chatModel.id}'));
+        'http://$ip:5000/api/messages?senderId=${widget.sourceChat.id}&receiverId=${widget.chatModel.id}'));
 
     if (response.statusCode == 200) {
-      List<dynamic> messageList = jsonDecode(response.body);
+      final messageList = jsonDecode(response.body);
+      print("response body : $messageList");
 
-      messages = messageList.map((msg) => MessageModel.fromJson(msg)).toList();
+      // Access the 'response' key from the backend response
+      messages = messageList['response'];
       print("messages $messages");
+      return messageList;
+    } else {
+      print("Failed to load messages: ${response.statusCode}");
     }
   }
 
-  void sendMessage(String message, String sourceId, String targetId) {
-    print("message : $message");
-    print("send message calling");
-    setMessage("source", message);
-    socket.emit("message",
-        {"message": message, "sourceId": sourceId, "targetId": targetId});
-
+  Future sendMessage(String message, String sourceId, String targetId) async {
     // Save message to MongoDB
-    http.post(
-      Uri.parse('http://192.168.18.56:5000/api/messages'),
+    final response = await http.post(
+      Uri.parse('http://$ip:5000/api/messages'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'message': message,
-        'type': 'source',
-        'time': DateTime.now().toString().substring(10, 16),
-        'sourceId': sourceId,
-        'targetId': targetId,
+        'text': message,
+        'senderId': sourceId,
+        'receiverId': targetId,
       }),
     );
-  }
-
-  void setMessage(String type, String message) {
-    MessageModel messageModel = MessageModel(
-      type: type,
-      message: message,
-      time: DateTime.now().toString().substring(10, 16),
-    );
-
-    if (mounted) {
-      setState(() {
-        messages.add(messageModel);
-      });
-    }
-  }
-
-  void testing(){
-    print("testing");
+    final data = jsonDecode(response.body);
+    socket.emit("message", data['message']);
   }
 
   @override
@@ -149,10 +117,10 @@ class _IndividualPageState extends State<IndividualPage> {
             children: [
               Icon(Icons.arrow_back, size: 24),
               CircleAvatar(
+                radius: 25,
                 child: widget.chatModel.isGroup!
                     ? Icon(Icons.group)
                     : Icon(Icons.person),
-                radius: 25,
               ),
             ],
           ),
@@ -171,15 +139,18 @@ class _IndividualPageState extends State<IndividualPage> {
         builder: (context, snapshot) {
           // Check for connection state
           if (snapshot.connectionState == ConnectionState.waiting) {
+            print("waiting");
             return Center(
                 child: CircularProgressIndicator()); // Show loading indicator
           } else if (snapshot.hasError) {
+            print("error");
+
             return Center(
                 child: Text('Error: ${snapshot.error}')); // Show error message
           } else if (snapshot.hasData) {
             // Get the fetched data
-            if (messages.length > 0) {
-              return Container(
+            if (messages.isNotEmpty) {
+              return SizedBox(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 child: Column(
@@ -188,34 +159,106 @@ class _IndividualPageState extends State<IndividualPage> {
                       child: ListView.builder(
                         controller: _scrollController,
                         shrinkWrap: true,
-                        itemCount: messages.length + 1,
+                        itemCount: messages.length,
                         itemBuilder: (context, index) {
+                          print("text : of all ${messages[index]['text']}");
                           if (index == messages.length) {
                             return Container(height: 70);
                           }
-                          if (messages[index].type == "source") {
+                          if (messages[index]['senderId'] ==
+                              widget.sourceChat.id) {
+                            print("text ${messages[index]['text']}");
                             return OwnMsgCard(
-                              message: messages[index].message,
-                              time: messages[index].time,
+                              message: messages[index]['text'],
+                              time: messages[index]['createdAt'],
                             );
                           } else {
+                            print("another");
                             return Replycard(
-                              message: messages[index].message,
-                              time: messages[index].time,
+                              message: messages[index]['text'],
+                              time: messages[index]['createdAt'],
                             );
                           }
                         },
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: SizedBox(
+                        height: 70,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width - 70,
+                              margin: EdgeInsets.only(
+                                  left: 10, right: 2, bottom: 10),
+                              padding: EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: TextFormField(
+                                controller: _controller,
+                                textAlignVertical: TextAlignVertical.center,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 5,
+                                minLines: 1,
+                                decoration: InputDecoration(
+                                  hintText: "Type a message",
+                                  border: InputBorder.none,
+                                  suffixIcon: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          // Attach file functionality can go here
+                                          showModalBottomSheet(
+                                            backgroundColor: Colors.transparent,
+                                            context: context,
+                                            builder: (builder) => bottomsheet(),
+                                          );
+                                        },
+                                        icon: Icon(Icons.attach_file),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          // Camera functionality can go here
+                                        },
+                                        icon: Icon(Icons.camera_alt),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: CircleAvatar(
+                                radius: 25,
+                                child: IconButton(
+                                  icon: Icon(Icons.send),
+                                  onPressed: () async {
+                                    print("message calling");
+                                    await sendMessage(
+                                        _controller.text,
+                                        widget.sourceChat.id.toString(),
+                                        widget.chatModel.id.toString());
+                                    _controller.clear();
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 ),
               );
             }
-            return Text("");
-          } else {
             return Align(
               alignment: Alignment.bottomCenter,
-              child: Container(
+              child: SizedBox(
                 height: 70,
                 child: Row(
                   children: [
@@ -267,15 +310,9 @@ class _IndividualPageState extends State<IndividualPage> {
                         radius: 25,
                         child: IconButton(
                           icon: Icon(Icons.send),
-                          onPressed: () {
-                            print("sending message");
-                            _scrollController.animateTo(
-                              _scrollController.position.maxScrollExtent,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
-                            testing();
-                            sendMessage(
+                          onPressed: () async {
+                            print("message calling");
+                            await sendMessage(
                                 _controller.text,
                                 widget.sourceChat.id.toString(),
                                 widget.chatModel.id.toString());
@@ -287,7 +324,9 @@ class _IndividualPageState extends State<IndividualPage> {
                   ],
                 ),
               ),
-            ); // Show no data message
+            );
+          } else {
+            return Text("data");
           }
         },
       ),
@@ -299,7 +338,7 @@ class _IndividualPageState extends State<IndividualPage> {
       height: 200,
       color: Colors.white,
       child: Column(
-        children: [
+        children: const [
           // Add bottom sheet content here
           ListTile(
             leading: Icon(Icons.insert_photo),
