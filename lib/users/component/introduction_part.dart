@@ -61,7 +61,7 @@ Container Introduction_part(
                     spreadRadius: 8,
                   ),
                 ],
-                image: (userImage(imageUrl)),
+                image: UserImageLoader.userImage(imageUrl),
               ),
             ),
             SizedBox(width: 20),
