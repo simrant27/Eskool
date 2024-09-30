@@ -1,3 +1,4 @@
+import 'package:eskool/constants/constants.dart';
 import 'package:eskool/users/data/student.dart';
 import 'package:flutter/material.dart';
 import '../component/CustomAlertDialogBox.dart';
@@ -9,11 +10,15 @@ import '../forBackend/fetchStudentFee.dart';
 class FinanceBillScreen extends StatefulWidget {
   final String studentId;
   final String studentName;
+  final bool payButton;
+  final bool showBottomApp;
 
   const FinanceBillScreen({
     Key? key,
     required this.studentId,
     required this.studentName,
+    this.payButton = true,
+    this.showBottomApp = true,
   }) : super(key: key);
 
   @override
@@ -115,31 +120,34 @@ class _FinanceBillScreenState extends State<FinanceBillScreen> {
             SizedBox(height: 30),
 
             // Payment Button
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  customAlertDialogBox(
-                    context,
-                    "Payment",
-                    'Your payment has been processed.',
-                    [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(
-                              context); // Close the dialog after confirmation
-                        },
-                        child: Text('OK'),
-                      ),
-                    ],
-                  );
-                },
-                style: customButtonStyle,
-                child: Text('Pay Now'),
-              ),
-            )
+            widget.payButton
+                ? Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        customAlertDialogBox(
+                          context,
+                          "Payment",
+                          'Your payment has been processed.',
+                          [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(
+                                    context); // Close the dialog after confirmation
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                      style: customButtonStyle,
+                      child: Text('Pay Now'),
+                    ),
+                  )
+                : Text("")
           ],
         ),
       ),
+      bottomApp: widget.showBottomApp,
       appBar: customAppBar2("Fee for ${widget.studentName}"),
     );
   }

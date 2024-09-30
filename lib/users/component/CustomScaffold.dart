@@ -7,15 +7,17 @@ import 'package:flutter/material.dart';
 class CustomScaffold extends StatelessWidget {
   final dynamic body;
   final dynamic appBar;
+  final dynamic bottomApp;
 
-  const CustomScaffold({required this.body, required this.appBar, super.key});
+  const CustomScaffold({required this.body, required this.appBar, 
+  this.bottomApp=true,super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
       body: body,
-      bottomNavigationBar: CustomBottomAppBar(),
+     bottomNavigationBar:bottomApp? CustomBottomAppBar():null,
     );
   }
 }

@@ -135,7 +135,8 @@ class _BillingPageState extends State<BillingPage> {
                                       [
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.pop(context); // Close the dialog
+                                            Navigator.pop(
+                                                context); // Close the dialog
                                           },
                                           child: Text('Cancle'),
                                         ),
@@ -145,11 +146,20 @@ class _BillingPageState extends State<BillingPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        FinanceBillScreen(
-                                                            studentId:
-                                                                student.id,
-                                                            studentName: student
-                                                                .fullName))); // Close the dialog
+                                                        ResponsiveDrawerLayout(
+                                                          content:
+                                                              FinanceBillScreen(
+                                                                  showBottomApp:
+                                                                      false,
+                                                                  payButton:
+                                                                      false,
+                                                                  studentId:
+                                                                      student
+                                                                          .id,
+                                                                  studentName:
+                                                                      student
+                                                                          .fullName),
+                                                        ))); // Close the dialog
                                           },
                                           child: Text(' Show Bill'),
                                         ),
