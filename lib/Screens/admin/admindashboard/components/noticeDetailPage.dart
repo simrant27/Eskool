@@ -109,23 +109,23 @@ class NoticeDetailPageBody extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               if (showEditAndDelete!)
-                CustomButton(
-                  icon: Icons.edit,
-                  label: "Edit",
-                  color: const Color.fromARGB(255, 82, 168, 239),
-                  onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => EditNoticePage(
-                    //       initialTitle: notice.title,
-                    //       initialDescription: notice.description,
-                    //     ),
-                    //   ),
-                    // );
-                  },
-                ),
-              SizedBox(width: 10),
+                // CustomButton(
+                //   icon: Icons.edit,
+                //   label: "Edit",
+                //   color: const Color.fromARGB(255, 82, 168, 239),
+                //   onPressed: () {
+                //     // Navigator.push(
+                //     //   context,
+                //     //   MaterialPageRoute(
+                //     //     builder: (context) => EditNoticePage(
+                //     //       initialTitle: notice.title,
+                //     //       initialDescription: notice.description,
+                //     //     ),
+                //     //   ),
+                //     // );
+                //   },
+                // ),
+                SizedBox(width: 10),
               if (showEditAndDelete!)
                 CustomButton(
                   label: "Delete",
