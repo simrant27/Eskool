@@ -11,6 +11,13 @@ class UserImageLoader {
   static Future<void> initialize() async {
     _prefs = await SharedPreferences.getInstance();
     userRole = _prefs.getString('role');
+  // Check if imageUrl is valid and extract file name if necessary
+  String? imageToLoad;
+  if (imageUrl != null && imageUrl.isNotEmpty) {
+    var fileName = formatUserImage(imageUrl);
+    imageToLoad = "$url/uploads/parent_upload/$fileName";
+  } else {
+    imageToLoad = defaultImage;
   }
 
   static DecorationImage userImage(String? imageUrl) {
