@@ -30,11 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-
   flutter_admin_scaffold: ^1.3.0
   flutter_svg: ^0.22.0
   fl_chart: ^0.68.0
@@ -44,6 +40,9 @@ dependencies:
   file_picker: ^8.1.2
   http: ^1.2.2
   image_picker: ^1.1.2
+  url_launcher: ^6.0.20  # Correctly indented here
+
+ 
 
 
 
@@ -68,12 +67,15 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/logowithtext.png
     - assets/images/me.jpg
 
+analysis_options:
+  include: package:flutter_lints/flutter.yaml
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -101,3 +103,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
