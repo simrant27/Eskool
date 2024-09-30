@@ -1,3 +1,6 @@
+import 'package:eskool/Screens/admin/parents/parent_list_screen.dart';
+import 'package:eskool/Screens/admin/teacher/component/widget.dart';
+import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
 import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,15 +54,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: initialRoute,
-      routes: {
-        '/': (context) => LoginPage(),
-        '/login': (context) => LoginPage(),
-        '/parent-dashboard': (context) => Parentsdashboard(),
-        '/admin-dashboard': (context) => Admindashboard(),
-        '/teacher-dashboard': (context) => TeacherDashboard(),
-        // Add more routes here if needed
-      },
+      home: TeacherListScreen(),
+      // initialRoute: initialRoute,
+      // routes: {
+      //   '/': (context) => LoginPage(),
+      //   '/login': (context) => LoginPage(),
+      //   '/parent-dashboard': (context) => Parentsdashboard(),
+      //   '/admin-dashboard': (context) => Admindashboard(),
+      //   '/teacher-dashboard': (context) => TeacherDashboard(),
+      // Add more routes here if needed
+      // },
     );
   }
 }
