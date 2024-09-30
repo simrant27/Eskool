@@ -1,5 +1,6 @@
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/users/data/student.dart';
+import 'package:eskool/users/screen/esewa.dart';
 import 'package:flutter/material.dart';
 import '../component/CustomAlertDialogBox.dart';
 import '../component/CustomScaffold.dart';
@@ -127,12 +128,18 @@ class _FinanceBillScreenState extends State<FinanceBillScreen> {
                         customAlertDialogBox(
                           context,
                           "Payment",
-                          'Your payment has been processed.',
+                          ' Use Esewa',
                           [
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(
-                                    context); // Close the dialog after confirmation
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PaymentPage(
+                                          studentName: widget.studentName,
+                                          amount: totalAmount,
+                                          studentId: widget.studentId)),
+                                );
                               },
                               child: Text('OK'),
                             ),

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:eskool/users/component/CustomScaffold.dart';
 import 'package:eskool/users/component/customAppBar2.dart';
 import 'package:eskool/users/forBackend/fetchResult.dart';

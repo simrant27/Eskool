@@ -62,35 +62,51 @@
 //   }
 // }
 
+import 'package:eskool/users/component/CustomScaffold.dart';
+import 'package:eskool/users/component/customAppBar2.dart';
+import 'package:eskool/users/component/customButtonStyle.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class PaymentPage extends StatelessWidget {
-  final String studentId = "ST123456";
-  final double amount = 1200.0; // This can be dynamic based on payment
-  final String esewaMerchantId = "EPAYTEST";
-  final String esewaPaymentUrl =
-      "https://uat.esewa.com.np/epay/main"; // UAT (sandbox)
+class PaymentPage extends StatefulWidget {
+  final String studentId;
+  final String studentName;
 
-  // Dummy success and failure URLs for redirection
+  final double amount;
+  PaymentPage(
+      {required this.studentName,
+      required this.amount,
+      required this.studentId,
+      super.key});
+  @override
+  State<PaymentPage> createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  // This can be dynamic based on payment
+  final String esewaMerchantId = "EPAYTEST";
+
+  final String esewaPaymentUrl = "https://uat.esewa.com.np/epay/main";
+  // UAT (sandbox)
   final String successUrl = "https://www.facebook.com/";
+
   final String failureUrl = "https://www.netflix.com/np/";
 
   Future<void> _payWithEsewa(BuildContext context) async {
     // Assuming there are no additional charges for this transaction
     final double transactionFee = 0.0; // Set transaction fee if applicable
     final double totalAmount =
-        amount + transactionFee; // Total amount to be charged
+        widget.amount + transactionFee; // Total amount to be charged
 
     // Construct the URL with necessary parameters for eSewa
     final String url = Uri.encodeFull(
         '$esewaPaymentUrl?tAmt=$totalAmount' // Required parameter
-        '&amt=$amount' // Payment amount
+        '&amt=${widget.amount}' // Payment amount
         '&txAmt=$transactionFee' // Transaction fee
         '&psc=0' // Payment service charge
         '&pdc=0' // Partner service charge
         '&scd=$esewaMerchantId' // Merchant/service code
-        '&pid=$studentId' // Product/Payment ID
+        '&pid=${widget.studentName}' // Product/Payment ID
         '&su=$successUrl' // Success URL
         '&fu=$failureUrl' // Failure URL
         );
@@ -108,46 +124,48 @@ class PaymentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("eSewa Payment"),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Student ID: $studentId",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              "Amount: Rs. $amount",
-              style: TextStyle(fontSize: 18, color: Colors.grey[700]),
-            ),
-            SizedBox(height: 20),
-            Center(
-              child: ElevatedButton.icon(
-                onPressed: () => _payWithEsewa(context),
-                icon: Icon(Icons.payment),
-                label: Text("Pay with eSewa"),
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  textStyle: TextStyle(fontSize: 16),
+    return CustomScaffold(
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Student Name: ${widget.studentName}",
+                  style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0XFF343E87)),
                 ),
-              ),
+                SizedBox(height: 10),
+                Text(
+                  "Student Id: Rs. ${widget.studentId}",
+                  style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Amount: Rs. ${widget.amount}",
+                  style: TextStyle(fontSize: 20, color: Colors.grey[700]),
+                ),
+                SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton.icon(
+                      onPressed: () => _payWithEsewa(context),
+                      icon: Icon(Icons.payment),
+                      label: Text("Pay with eSewa"),
+                      style: customButtonStyle),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  "Please ensure your eSewa account has sufficient balance before proceeding.",
+                  style: TextStyle(color: Colors.red),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
-            SizedBox(height: 20),
-            Text(
-              "Please ensure your eSewa account has sufficient balance before proceeding.",
-              style: TextStyle(color: Colors.red),
-              textAlign: TextAlign.center,
-            ),
-          ],
+          ),
         ),
-      ),
-    );
+        appBar: customAppBar2("Esewa Payment"));
   }
 }
