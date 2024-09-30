@@ -129,6 +129,10 @@ class _IndividualPageState extends State<IndividualPage> {
     }
   }
 
+  void testing(){
+    print("testing");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -264,16 +268,17 @@ class _IndividualPageState extends State<IndividualPage> {
                         child: IconButton(
                           icon: Icon(Icons.send),
                           onPressed: () {
+                            print("sending message");
                             _scrollController.animateTo(
                               _scrollController.position.maxScrollExtent,
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeOut,
                             );
+                            testing();
                             sendMessage(
                                 _controller.text,
                                 widget.sourceChat.id.toString(),
                                 widget.chatModel.id.toString());
-                            print("sending message");
                             _controller.clear();
                           },
                         ),
