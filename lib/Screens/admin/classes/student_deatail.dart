@@ -35,7 +35,7 @@ class _StudentDetailState extends State<StudentDetail> {
   void fetchStudents() async {
     try {
       final fetchedStudents =
-          await studentService.fetchStudentsByClass(widget.className);
+          await studentService.fetchStudentByClassName(widget.className);
 
       // Check if any students were fetched
       print("Fetched Students: $fetchedStudents");
@@ -64,12 +64,12 @@ class _StudentDetailState extends State<StudentDetail> {
   }
 
   void navigateToDetail(Student student) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => FullStudentDetail(student: student),
-    //   ),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullStudentDetail(student: student),
+      ),
+    );
   }
 
   @override
@@ -113,17 +113,14 @@ class _StudentDetailState extends State<StudentDetail> {
                     columnSpacing: columnSpacing,
                     columns: const [
                       DataColumn(
-                          label: Text('Roll No',
-                              style: TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(
                           label: Text('Name',
                               style: TextStyle(fontWeight: FontWeight.bold))),
                       DataColumn(
                           label: Text('Grade',
                               style: TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(
-                          label: Text('Parent Name',
-                              style: TextStyle(fontWeight: FontWeight.bold))),
+                      // DataColumn(
+                      //     label: Text('Parent Name',
+                      //         style: TextStyle(fontWeight: FontWeight.bold))),
                     ],
                     rows: filteredStudents
                         .map(
