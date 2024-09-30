@@ -5,15 +5,15 @@ import 'package:flutter/widgets.dart';
 class ChatModel {
   String name;
   IconData? icon;
-  bool? isGroup;
+ 
   String? time;
   String? currentMessage;
-  int? id;
+  String? id;
 
   ChatModel(
       {required this.name,
       this.icon,
-      this.isGroup,
+     
       this.time,
       this.currentMessage,
       this.id});

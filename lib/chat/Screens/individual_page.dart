@@ -118,9 +118,7 @@ class _IndividualPageState extends State<IndividualPage> {
               Icon(Icons.arrow_back, size: 24),
               CircleAvatar(
                 radius: 25,
-                child: widget.chatModel.isGroup!
-                    ? Icon(Icons.group)
-                    : Icon(Icons.person),
+                child: Icon(Icons.person),
               ),
             ],
           ),

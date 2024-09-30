@@ -17,31 +17,31 @@ class _LoginScreenState extends State<LoginScreen> {
     ChatModel(
         name: "Asmita",
         icon: Icons.group,
-        isGroup: false,
+        // isGroup: false,
         time: "18.05",
         currentMessage: "hello there",
-        id: 1),
+        id: "1"),
     ChatModel(
         name: "Oshin",
         icon: Icons.group,
-        isGroup: false,
+        // isGroup: false,
         time: "18.05",
         currentMessage: "hello hii",
-        id: 2),
+        id: "2"),
     ChatModel(
         name: "class5",
         icon: Icons.group,
-        isGroup: false,
+        // isGroup: false,
         time: "18.05",
         currentMessage: "hello there",
-        id: 3),
+        id: "3"),
     ChatModel(
         name: "Suzu",
         icon: Icons.group,
-        isGroup: false,
+        // isGroup: false,
         time: "18.05",
         currentMessage: "hello there",
-        id: 4),
+        id: "4"),
   ];
   @override
   Widget build(BuildContext context) {
@@ -55,8 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => HomeScreen(
-                                chatmodels: chatmodels,
-                                sourceChat: sourceChat!,
+                                // chatmodels: chatmodels,
+                                // sourceChat: sourceChat!,
                               )));
                 },
                 child: ButtonCard(

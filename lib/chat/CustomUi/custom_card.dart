@@ -24,12 +24,11 @@ class CustomCard extends StatelessWidget {
         children: [
           ListTile(
             leading: CircleAvatar(
-              child:
-                  chatModel.isGroup! ? Icon(Icons.group) : Icon(Icons.person),
+              child: Icon(Icons.person),
               radius: 25,
             ),
             title: Text(
-              chatModel.name!,
+              chatModel.name,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             subtitle: Text(
