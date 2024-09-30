@@ -80,15 +80,16 @@ class _IndividualPageState extends State<IndividualPage> {
     });
   }
 
-  Future<void> loadMessages() async {
+  Future loadMessages() async {
     final response = await http.get(Uri.parse(
-        'http://192.168.18.121:5000/messages/${widget.sourceChat.id}/${widget.chatModel.id}'));
+        'http://192.168.18.56:5000/messages/senderId=${widget.sourceChat.id}?receiverId=${widget.chatModel.id}'));
 
     if (response.statusCode == 200) {
       List<dynamic> messageList = jsonDecode(response.body);
       setState(() {
         messages =
             messageList.map((msg) => MessageModel.fromJson(msg)).toList();
+        print("messages $messages");
       });
     }
   }
@@ -100,7 +101,7 @@ class _IndividualPageState extends State<IndividualPage> {
 
     // Save message to MongoDB
     http.post(
-      Uri.parse('http://192.168.18.121:5000/messages'),
+      Uri.parse('http://192.168.18.56:5000/messages'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -161,35 +162,51 @@ class _IndividualPageState extends State<IndividualPage> {
           ],
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                shrinkWrap: true,
-                itemCount: messages.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == messages.length) {
-                    return Container(height: 70);
-                  }
-                  if (messages[index].type == "source") {
-                    return OwnMsgCard(
-                      message: messages[index].message,
-                      time: messages[index].time,
-                    );
-                  } else {
-                    return Replycard(
-                      message: messages[index].message,
-                      time: messages[index].time,
-                    );
-                  }
-                },
+      body: FutureBuilder(
+        future: loadMessages(), // Call the fetch function
+        builder: (context, snapshot) {
+          // Check for connection state
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: CircularProgressIndicator()); // Show loading indicator
+          } else if (snapshot.hasError) {
+            return Center(
+                child: Text('Error: ${snapshot.error}')); // Show error message
+          } else if (snapshot.hasData) {
+            // Get the fetched data
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      itemCount: messages.length + 1,
+                      itemBuilder: (context, index) {
+                        if (index == messages.length) {
+                          return Container(height: 70);
+                        }
+                        if (messages[index].type == "source") {
+                          return OwnMsgCard(
+                            message: messages[index].message,
+                            time: messages[index].time,
+                          );
+                        } else {
+                          return Replycard(
+                            message: messages[index].message,
+                            time: messages[index].time,
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Align(
+            );
+          } else {
+            return Align(
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: 70,
@@ -261,9 +278,9 @@ class _IndividualPageState extends State<IndividualPage> {
                   ],
                 ),
               ),
-            ),
-          ],
-        ),
+            ); // Show no data message
+          }
+        },
       ),
     );
   }
