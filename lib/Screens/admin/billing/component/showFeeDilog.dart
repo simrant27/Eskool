@@ -107,8 +107,6 @@ class _ShowFeeDialogState extends State<ShowFeeDialog> {
                 );
               },
             );
-
-            
           },
           child: const Text('Confirm'),
         ),

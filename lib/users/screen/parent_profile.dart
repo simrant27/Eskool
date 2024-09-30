@@ -106,7 +106,7 @@ class _ParentProfileState extends State<ParentProfile> {
                     spreadRadius: 8,
                   ),
                 ],
-                image: userImage(parent?.image),
+                image: UserImageLoader.userImage(parent?.image),
               ),
             ),
           ),

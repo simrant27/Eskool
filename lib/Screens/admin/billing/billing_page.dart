@@ -1,4 +1,6 @@
+import 'package:eskool/users/component/CustomAlertDialogBox.dart';
 import 'package:eskool/users/component/customButtonStyle.dart';
+import 'package:eskool/users/screen/finance.dart';
 import 'package:flutter/material.dart';
 
 import '../../../data/class_list.dart';
@@ -126,16 +128,57 @@ class _BillingPageState extends State<BillingPage> {
                                     ),
                                   ),
                                   onTap: () {
-                                    // Navigate to the ShowFeeDialog for the individual student
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return ShowFeeDialog(
-                                          fees:
-                                              fees, // Pass the appropriate fee list
-                                          student: student,
-                                        );
-                                      },
+                                    customAlertDialogBox(
+                                      context,
+                                      "Choose ",
+                                      " ",
+                                      [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(
+                                                context); // Close the dialog
+                                          },
+                                          child: Text('Cancle'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ResponsiveDrawerLayout(
+                                                          content:
+                                                              FinanceBillScreen(
+                                                                  showBottomApp:
+                                                                      false,
+                                                                  payButton:
+                                                                      false,
+                                                                  studentId:
+                                                                      student
+                                                                          .id,
+                                                                  studentName:
+                                                                      student
+                                                                          .fullName),
+                                                        ))); // Close the dialog
+                                          },
+                                          child: Text(' Show Bill'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            await showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return ShowFeeDialog(
+                                                  fees:
+                                                      fees, // Pass the appropriate fee list
+                                                  student: student,
+                                                );
+                                              },
+                                            ); // Navigate to login page
+                                          },
+                                          child: Text('Assign fee'),
+                                        ),
+                                      ],
                                     );
                                   },
                                 ),
@@ -146,17 +189,25 @@ class _BillingPageState extends State<BillingPage> {
 
           const SizedBox(height: 20),
           // Button to navigate to FeeAssignPage for all students
-          ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => FeeAssignPage(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 30, 50),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FeeAssignPage(),
+                      ),
+                    );
+                  },
+                  style: customButtonStyle,
+                  child: const Text('For All'),
                 ),
-              );
-            },
-            style: customButtonStyle,
-            child: const Text('For All'),
+              ],
+            ),
           ),
         ],
       ),

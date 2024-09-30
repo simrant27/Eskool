@@ -70,15 +70,14 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
                 Stack(
                   children: [
                     Introduction_part(
-                      context,
-                      dayOfWeekShort,
-                      day,
-                      monthShort,
-                      teacher.fullName, // Use fetched teacher data
-                      teacher.email,
-                      teacher.phone,
-                      teacher.image
-                    ),
+                        context,
+                        dayOfWeekShort,
+                        day,
+                        monthShort,
+                        teacher.fullName, // Use fetched teacher data
+                        teacher.email,
+                        teacher.phone,
+                        teacher.image),
                   ],
                 ),
                 Expanded(
