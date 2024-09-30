@@ -65,15 +65,14 @@ class _ParentsdashboardState extends State<Parentsdashboard> {
                 Stack(
                   children: [
                     Introduction_part(
-                      context,
-                      dayOfWeekShort,
-                      day,
-                      monthShort,
-                      parent.fullName, // Use fetched parent data
-                      parent.email,
-                      parent.phone,
-                      parent.image
-                    ),
+                        context,
+                        dayOfWeekShort,
+                        day,
+                        monthShort,
+                        parent.fullName, // Use fetched parent data
+                        parent.email,
+                        parent.phone,
+                        parent.image),
                   ],
                 ),
                 Expanded(

@@ -19,3 +19,7 @@ const appPadding = 16.0;
 
 const String url = 'http://localhost:3000';
 const NoticeImage = "${url}/notice_upload";
+const TeacherImage = "${url}/uploads/teacher_upload";
+const ParentImage = "${url}/parent_upload";
+const userTeacherImg = "$url/uploads/teacher_upload";
+const userParentImg = "$url/uploads/parent_upload";

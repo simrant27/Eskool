@@ -1,3 +1,5 @@
+import 'package:eskool/users/screen/UploadStudyMaterial.dart';
+import 'package:eskool/users/screen/material.dart';
 import 'package:eskool/users/screen/teacher_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/loginService.dart';
@@ -77,6 +79,10 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       icon: Icons.chat,
       title: 'Chat',
       onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
+        );
         // Handle the tap event
       },
     ),
@@ -88,10 +94,26 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       },
     ),
     MenuItem(
+      icon: Icons.assignment,
+      title: 'Result',
+      onTap: () {},
+    ),
+    MenuItem(
       icon: Icons.book_online_rounded,
       title: 'Materials',
       onTap: () {
-        // Handle materials navigation
+        if (userRole == 'parent') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MaterialListScreen()),
+          );
+        } else if (userRole == 'teacher') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => UploadStudyMaterialScreen()),
+          );
+        }
       },
     ),
     MenuItem(
@@ -138,7 +160,7 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
                   onSelectRoute: (student) => StudentDetailScreen(
                     studentName: student['fullName'],
                     studentGrade: student['classAssigned'].toString(),
-                    studentDetails: student,
+                    studentId: student["id"].toString(),
                   ),
                 ),
               ),

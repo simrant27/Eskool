@@ -5,6 +5,7 @@ import 'dart:convert';
 import '../../../models/Students_model.dart';
 import '../../../services/studentService.dart';
 
+// import '../billing/data/studentList.dart';
 import 'fullStudentDetail.dart';
 
 import 'package:http/http.dart' as http;
@@ -23,6 +24,7 @@ class _StudentDetailState extends State<StudentDetail> {
   List<Student> students = [];
   List<Student> filteredStudents = [];
   bool isLoading = true;
+  late StudentService studentService = StudentService();
 
   @override
   void initState() {
@@ -33,20 +35,15 @@ class _StudentDetailState extends State<StudentDetail> {
   void fetchStudents() async {
     try {
       final fetchedStudents =
-          await StudentService.fetchStudentsByClass(widget.className);
+          await studentService.fetchStudentsByClass(widget.className);
 
-      // Sort students alphabetically by fullName
-      fetchedStudents.sort((a, b) => a.fullName.compareTo(b.fullName));
+      // Check if any students were fetched
+      print("Fetched Students: $fetchedStudents");
+
+      fetchedStudents.sort((a, b) => a.fullName!.compareTo(b.fullName!));
 
       setState(() {
         students = fetchedStudents;
-
-        // Assign roll numbers serially
-        for (int i = 0; i < students.length; i++) {
-          students[i].rollNumber =
-              (i + 1).toString(); // Set roll number as 1, 2, 3, etc.
-        }
-
         filteredStudents = students;
         isLoading = false;
       });
@@ -60,19 +57,19 @@ class _StudentDetailState extends State<StudentDetail> {
       searchQuery = query;
       filteredStudents = students
           .where((student) =>
-              student.fullName.toLowerCase().contains(query.toLowerCase()) ||
-              student.studentId.contains(query))
+              student.fullName!.toLowerCase().contains(query.toLowerCase()) ||
+              student.studentId!.contains(query))
           .toList();
     });
   }
 
   void navigateToDetail(Student student) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FullStudentDetail(student: student),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => FullStudentDetail(student: student),
+    //   ),
+    // );
   }
 
   @override
@@ -132,22 +129,22 @@ class _StudentDetailState extends State<StudentDetail> {
                         .map(
                           (student) => DataRow(
                             cells: [
+                              // DataCell(
+                              //   Text(student.rollNumber!),
+                              //   onTap: () => navigateToDetail(student),
+                              // ),
                               DataCell(
-                                Text(student.rollNumber!),
+                                Text(student.fullName!),
                                 onTap: () => navigateToDetail(student),
                               ),
                               DataCell(
-                                Text(student.fullName),
+                                Text(student.classAssigned!),
                                 onTap: () => navigateToDetail(student),
                               ),
-                              DataCell(
-                                Text(student.classAssigned),
-                                onTap: () => navigateToDetail(student),
-                              ),
-                              DataCell(
-                                Text(student.parentName),
-                                onTap: () => navigateToDetail(student),
-                              ),
+                              // DataCell(
+                              //   Text(student.parentName),
+                              //   onTap: () => navigateToDetail(student),
+                              // ),
                             ],
                           ),
                         )

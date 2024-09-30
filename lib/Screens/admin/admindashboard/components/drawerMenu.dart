@@ -3,6 +3,8 @@ import 'package:eskool/Screens/admin/admindashboard/components/dashboard_content
 import 'package:eskool/Screens/admin/admindashboard/components/drawer_list_title.dart';
 import 'package:eskool/Screens/admin/billing/billing_page.dart';
 import 'package:eskool/Screens/admin/classes/student_deatail.dart';
+import 'package:eskool/Screens/admin/parents/parent_list_screen.dart';
+import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
 import 'package:eskool/constants/constants.dart';
 import 'package:eskool/data/class_list.dart';
 import 'package:eskool/models/Students_model.dart';
@@ -35,9 +37,24 @@ class DrawerMenu extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Admindashboard()));
               }),
-          DrawerListTitle(title: "Teacher", icon: Icons.person_2, tap: () {}),
           DrawerListTitle(
-              title: "Parents", icon: Icons.people_alt_sharp, tap: () {}),
+              title: "Teacher",
+              icon: Icons.person_2,
+              tap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TeacherListScreen()));
+              }),
+          DrawerListTitle(
+              title: "Parents",
+              icon: Icons.people_alt_sharp,
+              tap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ParentListScreen()));
+              }),
           // DrawerListTitle(
           //     title: "Classes", icon: Icons.class_outlined, tap: () {}),
           ExpansionTile(
