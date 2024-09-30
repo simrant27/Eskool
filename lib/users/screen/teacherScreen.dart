@@ -4,6 +4,7 @@ import 'package:eskool/users/component/customAppBar.dart';
 import 'package:flutter/material.dart';
 import '../../models/notice_info_model.dart';
 import '../../services/fetchNotice.dart';
+import '../component/drawerlist.dart';
 import '../component/introduction_part.dart';
 import '../data/date.dart';
 import '../data/menuItems.dart';

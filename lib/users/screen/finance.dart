@@ -45,7 +45,7 @@ class _FinanceBillScreenState extends State<FinanceBillScreen> {
         isLoading = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error fetching fees: $error')),
+        SnackBar(content: Text(' fetching fees: No fee Added')),
       );
     });
   }
