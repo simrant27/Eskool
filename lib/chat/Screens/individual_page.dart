@@ -80,20 +80,21 @@ class _IndividualPageState extends State<IndividualPage> {
     });
   }
 
-  Future<void> loadMessages() async {
+  Future loadMessages() async {
     final response = await http.get(Uri.parse(
         'http://192.168.18.121:5000/messages/${widget.sourceChat.id}/${widget.chatModel.id}'));
 
     if (response.statusCode == 200) {
       List<dynamic> messageList = jsonDecode(response.body);
-      setState(() {
-        messages =
-            messageList.map((msg) => MessageModel.fromJson(msg)).toList();
-      });
+      // setState(() {
+      messages = messageList.map((msg) => MessageModel.fromJson(msg)).toList();
+      // });
     }
   }
 
   void sendMessage(String message, String sourceId, String targetId) {
+    print("message : $message");
+
     setMessage("source", message);
     socket.emit("message",
         {"message": message, "sourceId": sourceId, "targetId": targetId});

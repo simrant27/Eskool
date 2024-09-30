@@ -1,3 +1,4 @@
+import 'package:eskool/chat/Screens/login_screnn.dart';
 import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,14 +54,15 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       // initialRoute: initialRoute,
-      routes: {
-        '/': (context) => LoginPage(),
-        '/login': (context) => LoginPage(),
-        '/parent-dashboard': (context) => Parentsdashboard(),
-        '/admin-dashboard': (context) => Admindashboard(),
-        '/teacher-dashboard': (context) => TeacherDashboard(),
-        // Add more routes here if needed
-      },
+      home: LoginScreen(),
+      // routes: {
+      //   '/': (context) => LoginPage(),
+      //   '/login': (context) => LoginPage(),
+      //   '/parent-dashboard': (context) => Parentsdashboard(),
+      //   '/admin-dashboard': (context) => Admindashboard(),
+      //   '/teacher-dashboard': (context) => TeacherDashboard(),
+      //   // Add more routes here if needed
+      // },
     );
   }
 }
