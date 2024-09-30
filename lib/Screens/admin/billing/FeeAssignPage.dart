@@ -25,6 +25,13 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
   List<Student> students = [];
   bool isLoading = true;
 
+  final TextEditingController tutionController = TextEditingController();
+  final TextEditingController sportsController = TextEditingController();
+  final TextEditingController libraryController = TextEditingController();
+  final TextEditingController extraController = TextEditingController();
+
+
+
   @override
   void initState() {
     super.initState();
@@ -158,7 +165,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                               labelText: 'Enter $fee Amount',
                               border: OutlineInputBorder(),
                             ),
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,//use controller for $fee controller
                             onChanged: (value) {
                               setState(() {
                                 globalAmounts[fee] =
@@ -170,11 +177,11 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              feeSelections[fee] = !feeSelections[fee]!;
+                              //change all of the $Fee controller used
                             });
                           },
                           child:
-                              Text(feeSelections[fee]! ? 'Selected' : 'Select'),
+                              Text("Assign For all"),
                         ),
                       ],
                     );
@@ -226,7 +233,7 @@ class _FeeAssignPageState extends State<FeeAssignPage> {
                       ...fees.map((fee) {
                         return DataCell(
                           TextFormField(
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.number,// use a $fee controller if Assign For all button is click then change according to their value
                             onChanged: (value) {
                               setState(() {
                                 feeAmounts[student]![fee] =

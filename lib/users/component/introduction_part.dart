@@ -16,7 +16,7 @@ Container Introduction_part(
 ) {
   return Container(
     width: double.infinity,
-    height: MediaQuery.of(context).size.height / 3.7,
+    height: MediaQuery.of(context).size.height / 3,
     decoration: boxDesign(),
     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
     child: Column(
@@ -44,7 +44,7 @@ Container Introduction_part(
             ),
           ),
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

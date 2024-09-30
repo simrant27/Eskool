@@ -1,121 +1,91 @@
 import 'dart:io';
 import 'package:eskool/constants/constants.dart';
-import 'package:eskool/users/component/CustomScaffold.dart';
-import 'package:eskool/users/component/customAppBar2.dart';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
-import '../component/customButtonStyle.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
-class UploadStudyMaterialScreen extends StatefulWidget {
+class UploadMaterialScreen extends StatefulWidget {
   @override
-  _UploadStudyMaterialScreenState createState() =>
-      _UploadStudyMaterialScreenState();
+  _UploadMaterialScreenState createState() => _UploadMaterialScreenState();
 }
 
-class _UploadStudyMaterialScreenState extends State<UploadStudyMaterialScreen> {
-  String? fileName;
-  final TextEditingController titleController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  File? selectedFile;
-  bool isLoading = false;
+class _UploadMaterialScreenState extends State<UploadMaterialScreen> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  File? _selectedFile;
 
-  // Maximum allowed file size (5 MB)
-  final int maxFileSize = 5 * 1024 * 1024; // 5 MB in bytes
-
-  // Method to pick a file
   Future<void> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg', 'doc', 'docx'],
-    );
-
-    if (result != null) {
-      File pickedFile = File(result.files.single.path!);
-      int fileSize = pickedFile.lengthSync();
-
-      if (fileSize <= maxFileSize) {
-        // If file size is valid
-        setState(() {
-          selectedFile = pickedFile;
-          fileName = result.files.single.name;
-        });
-      } else {
-        // If file size exceeds the limit
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('File size exceeds the limit of 5 MB')),
-        );
-      }
+    final ImagePicker _picker = ImagePicker();
+    final XFile? file = await _picker.pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        _selectedFile = File(file.path);
+      });
     }
   }
 
-  Future<void> _uploadFile() async {
-    // Your existing file upload logic...
+  Future<void> _uploadMaterial() async {
+    if (_selectedFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Please select a file to upload.")));
+      return;
+    }
+
+    final request = http.MultipartRequest(
+      'POST',
+      Uri.parse(
+          '$url/api/materials'), // Replace with your API URL
+    );
+
+    request.files.add(await http.MultipartFile.fromPath(
+      'file',
+      _selectedFile!.path,
+    ));
+    request.fields['title'] = _titleController.text;
+    request.fields['description'] = _descriptionController.text;
+
+    try {
+      final response = await request.send();
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Material uploaded successfully!")));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to upload material.")));
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("An error occurred: $error")));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBar: customAppBar2("Upload a Material"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Upload Material"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: 'Title',
-                border: OutlineInputBorder(),
-                hintText: 'Enter the title of the material',
-              ),
+              controller: _titleController,
+              decoration: InputDecoration(labelText: "Title"),
             ),
-            SizedBox(height: 16),
             TextField(
-              controller: descriptionController,
-              maxLines: 3,
-              decoration: InputDecoration(
-                labelText: 'Description',
-                border: OutlineInputBorder(),
-                hintText: 'Enter a brief description',
-              ),
+              controller: _descriptionController,
+              decoration: InputDecoration(labelText: "Description"),
             ),
-            SizedBox(height: 16),
-            ElevatedButton.icon(
+            SizedBox(height: 20),
+            ElevatedButton(
               onPressed: _pickFile,
-              icon: Icon(Icons.upload_file),
-              label: Text('Choose File'),
+              child: Text("Select File"),
             ),
-            SizedBox(height: 16),
-            if (fileName != null)
-              Text(
-                'Selected File: $fileName',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              )
-            else
-              Text(
-                'No file selected',
-                style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-              ),
-            Spacer(),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (fileName != null && titleController.text.isNotEmpty) {
-                    _uploadFile(); // Call the upload function
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Please select a file and enter a title'),
-                      ),
-                    );
-                  }
-                },
-                style: customButtonStyle,
-                child: isLoading
-                    ? CircularProgressIndicator() // Show loading indicator
-                    : Text('Upload Material'),
-              ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _uploadMaterial,
+              child: Text("Upload"),
             ),
           ],
         ),

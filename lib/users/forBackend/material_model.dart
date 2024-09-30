@@ -1,11 +1,11 @@
-class Material {
+class Materials {
   final String id;
   final String title;
   final String description;
   final String? file; // Just the file name from the response
   final DateTime uploadedAt;
 
-  Material({
+  Materials({
     required this.id,
     required this.title,
     required this.description,
@@ -13,8 +13,8 @@ class Material {
     required this.uploadedAt,
   });
 
-  factory Material.fromJson(Map<String, dynamic> json) {
-    return Material(
+  factory Materials.fromJson(Map<String, dynamic> json) {
+    return Materials(
       id: json['_id'],
       title: json['title'],
       description: json['description'],
