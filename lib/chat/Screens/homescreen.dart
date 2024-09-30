@@ -1,11 +1,11 @@
-import 'package:eskool/services/parentService.dart';
-import 'package:eskool/services/teacherService.dart';
+import 'package:eskool/chat/Screens/individual_page.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/ParentMode.dart';
 import '../../models/teacherModel.dart';
+import '../../services/parentService.dart';
+import '../../services/teacherService.dart';
 import '../models/chat_model.dart';
-// / Adjust import as per your structure
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,40 +18,49 @@ class _HomeScreenState extends State<HomeScreen> {
   late Future<List<ChatModel>> chatModelsFuture;
   ParentService parentService = ParentService();
   TeacherService teacherService = TeacherService();
+  String? userId; // Variable to store the user ID
 
   @override
   void initState() {
     super.initState();
-    chatModelsFuture = _fetchUsersBasedOnRole();
+    _getUserId(); // Fetch the user ID when initializing the widget
+    chatModelsFuture =
+        _fetchUsersBasedOnRole(); // Fetch chat users based on the role
+  }
+
+  Future<void> _getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getString('userId') ??
+          'No id found'; // Get the user ID from SharedPreferences
+    });
   }
 
   Future<List<ChatModel>> _fetchUsersBasedOnRole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String role = prefs.getString('role') ?? 'No role found';
+    String userId = prefs.getString('userId') ?? 'No id found';
 
-    if (role == 'parent') {
+    print('Logged in Role: $role');
+    print('Logged in User ID: $userId');
+
+    if (role == 'teacher') {
       // Fetch parents and convert them to ChatModel
       List<Parent> parents = await parentService.fetchParents();
       return parents.map((parent) {
         return ChatModel(
           name: parent.fullName!,
           icon: Icons.person,
-          // isGroup: false,
-          // time: '18:00', // You can modify this as per your needs
-          // currentMessage: 'Send a message', // Default message
           id: parent.id,
         );
       }).toList();
-    } else if (role == 'teacher') {
+    } else if (role == 'parent') {
       // Fetch teachers and convert them to ChatModel
       List<Teacher> teachers = await teacherService.fetchTeachers();
       return teachers.map((teacher) {
         return ChatModel(
           name: teacher.fullName!,
           icon: Icons.person,
-          // isGroup: false,
-          // time: '18:00', // You can modify this as per your needs
-          // Default message
           id: teacher.id,
         );
       }).toList();
@@ -92,9 +101,26 @@ class _HomeScreenState extends State<HomeScreen> {
               return ListTile(
                 leading: Icon(chatModel.icon),
                 title: Text(chatModel.name),
-                // subtitle: Text(chatModel.currentMessage),
                 onTap: () {
-                  // Navigate to chat page or any other action
+                  // Ensure userId is available before navigating
+                  if (userId != null && userId != 'No id found') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => IndividualPage(
+                          chatModel: chatModel,
+                          sourceChat: ChatModel(
+                            name: "Source Chat", // Adjust as needed
+                            id: userId!, // Use the stored userId from SharedPreferences
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    // Handle the case where userId is not available
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('User ID not found!')));
+                  }
                 },
               );
             },

@@ -166,13 +166,13 @@ class _IndividualPageState extends State<IndividualPage> {
                           if (messages[index]['senderId'] ==
                               widget.sourceChat.id) {
                             print("text ${messages[index]['text']}");
-                            return OwnMsgCard(
+                            return Replycard(
                               message: messages[index]['text'],
                               time: messages[index]['createdAt'],
                             );
                           } else {
                             print("another");
-                            return Replycard(
+                            return OwnMsgCard(
                               message: messages[index]['text'],
                               time: messages[index]['createdAt'],
                             );
@@ -239,8 +239,8 @@ class _IndividualPageState extends State<IndividualPage> {
                                     print("message calling");
                                     await sendMessage(
                                         _controller.text,
-                                        widget.sourceChat.id.toString(),
-                                        widget.chatModel.id.toString());
+                                        widget.sourceChat.id!,
+                                        widget.chatModel.id!);
                                     _controller.clear();
                                   },
                                 ),
