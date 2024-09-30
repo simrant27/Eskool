@@ -82,26 +82,26 @@ class _IndividualPageState extends State<IndividualPage> {
 
   Future loadMessages() async {
     final response = await http.get(Uri.parse(
-        'http://192.168.18.56:5000/messages/senderId=${widget.sourceChat.id}?receiverId=${widget.chatModel.id}'));
+        'http://192.168.18.56:5000/api/messages?senderId=${widget.sourceChat.id}&receiverId=${widget.chatModel.id}'));
 
     if (response.statusCode == 200) {
       List<dynamic> messageList = jsonDecode(response.body);
-      setState(() {
-        messages =
-            messageList.map((msg) => MessageModel.fromJson(msg)).toList();
-        print("messages $messages");
-      });
+
+      messages = messageList.map((msg) => MessageModel.fromJson(msg)).toList();
+      print("messages $messages");
     }
   }
 
   void sendMessage(String message, String sourceId, String targetId) {
+    print("message : $message");
+    print("send message calling");
     setMessage("source", message);
     socket.emit("message",
         {"message": message, "sourceId": sourceId, "targetId": targetId});
 
     // Save message to MongoDB
     http.post(
-      Uri.parse('http://192.168.18.56:5000/messages'),
+      Uri.parse('http://192.168.18.56:5000/api/messages'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -174,37 +174,40 @@ class _IndividualPageState extends State<IndividualPage> {
                 child: Text('Error: ${snapshot.error}')); // Show error message
           } else if (snapshot.hasData) {
             // Get the fetched data
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      shrinkWrap: true,
-                      itemCount: messages.length + 1,
-                      itemBuilder: (context, index) {
-                        if (index == messages.length) {
-                          return Container(height: 70);
-                        }
-                        if (messages[index].type == "source") {
-                          return OwnMsgCard(
-                            message: messages[index].message,
-                            time: messages[index].time,
-                          );
-                        } else {
-                          return Replycard(
-                            message: messages[index].message,
-                            time: messages[index].time,
-                          );
-                        }
-                      },
+            if (messages.length > 0) {
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemCount: messages.length + 1,
+                        itemBuilder: (context, index) {
+                          if (index == messages.length) {
+                            return Container(height: 70);
+                          }
+                          if (messages[index].type == "source") {
+                            return OwnMsgCard(
+                              message: messages[index].message,
+                              time: messages[index].time,
+                            );
+                          } else {
+                            return Replycard(
+                              message: messages[index].message,
+                              time: messages[index].time,
+                            );
+                          }
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
+                  ],
+                ),
+              );
+            }
+            return Text("");
           } else {
             return Align(
               alignment: Alignment.bottomCenter,
@@ -270,6 +273,7 @@ class _IndividualPageState extends State<IndividualPage> {
                                 _controller.text,
                                 widget.sourceChat.id.toString(),
                                 widget.chatModel.id.toString());
+                            print("sending message");
                             _controller.clear();
                           },
                         ),

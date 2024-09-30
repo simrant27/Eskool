@@ -1,13 +1,15 @@
+import 'package:eskool/chat/Screens/login_screnn.dart';
 import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
-
 import 'package:eskool/loginpage/login.dart';
+import 'users/data/userImage.dart';
 import 'users/screen/parentsdashboard.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await UserImageLoader.initialize();
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   // Check if the user is logged in and fetch their role
@@ -51,9 +53,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: initialRoute,
+      // initialRoute: initialRoute,
       routes: {
-        '/': (context) => LoginPage(),
+        // '/': (context) => LoginPage(),
+        '/': (context) => LoginScreen(),
+
         '/login': (context) => LoginPage(),
         '/parent-dashboard': (context) => Parentsdashboard(),
         '/admin-dashboard': (context) => Admindashboard(),

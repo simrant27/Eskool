@@ -1,5 +1,6 @@
 import 'package:eskool/chat/Screens/login_screnn.dart';
 import 'package:eskool/users/screen/UploadStudyMaterial.dart';
+import 'package:eskool/users/screen/material.dart';
 import 'package:eskool/users/screen/teacher_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/loginService.dart';
@@ -102,10 +103,18 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       icon: Icons.book_online_rounded,
       title: 'Materials',
       onTap: () {
-        Navigator.push(
+        if (userRole == 'parent') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => MaterialListScreen()),
+          );
+        } else if (userRole == 'teacher') {
+          Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => UploadStudyMaterialScreen()));
+                builder: (context) => UploadStudyMaterialScreen()),
+          );
+        }
       },
     ),
     MenuItem(
