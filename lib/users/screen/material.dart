@@ -51,24 +51,26 @@ class _MaterialListScreenState extends State<MaterialListScreen> {
     return CustomScaffold(
         body: _materials.isEmpty
             ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                itemCount: _materials.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: EdgeInsets.all(8.0),
-                    child: ListTile(
-                      title: Text(_materials[index]['title']),
-                      subtitle: Text(_materials[index]['description'] ?? ''),
-                      trailing: IconButton(
-                        icon: Icon(Icons.download),
-                        onPressed: () {
-                          _openFile(_materials[index][
-                              'file']); // Call openFile function with the file name
-                        },
+            : Card(
+                child: ListView.builder(
+                  itemCount: _materials.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      margin: EdgeInsets.all(8.0),
+                      child: ListTile(
+                        title: Text(_materials[index]['title']),
+                        subtitle: Text(_materials[index]['description'] ?? ''),
+                        trailing: IconButton(
+                          icon: Icon(Icons.download),
+                          onPressed: () {
+                            _openFile(_materials[index][
+                                'file']); // Call openFile function with the file name
+                          },
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
         appBar: customAppBar2("Uploaded Materials"));
   }
