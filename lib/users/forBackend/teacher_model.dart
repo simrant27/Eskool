@@ -4,7 +4,6 @@ class Teacher {
   final String email;
   final String phone;
   final List<String> subjectsTaught;
-  final List<String> gradeAssigned;
   final String teacherID;
   final bool enrolled;
   final List<String> qualifications;
@@ -18,7 +17,6 @@ class Teacher {
     required this.email,
     required this.phone,
     required this.subjectsTaught,
-    required this.gradeAssigned,
     required this.teacherID,
     required this.enrolled,
     required this.qualifications,
@@ -34,7 +32,6 @@ class Teacher {
       email: json['email'],
       phone: json['phone'],
       subjectsTaught: List<String>.from(json['subjectsTaught']),
-      gradeAssigned: List<String>.from(json['gradeAssigned']),
       teacherID: json['teacherID'],
       enrolled: json['enrolled'],
       qualifications: List<String>.from(json['qualifications']),
