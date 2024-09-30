@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:eskool/users/component/introduction.dart';
 import 'package:flutter/material.dart';
 
 import '../data/menuItems.dart';
 import 'boxDesign.dart';
 
-Drawer CustomDrawerForUser(BuildContext context) {
+Drawer CustomDrawerForUser(
+    BuildContext context, String fullName, String email, String phone) {
+  // Retrieve the menu items once and reuse
+  final items = menuItems(context);
+
   return Drawer(
     child: Column(
       children: [

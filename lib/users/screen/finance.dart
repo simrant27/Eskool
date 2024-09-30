@@ -53,7 +53,7 @@ class _FinanceBillScreenState extends State<FinanceBillScreen> {
 
     return CustomScaffold(
       body: Padding(
-        padding: EdgeInsets.fromLTRB(50, 30, 50, 60),
+        padding: EdgeInsets.fromLTRB(50, 30, 50, 150),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -112,7 +112,7 @@ class _FinanceBillScreenState extends State<FinanceBillScreen> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
 
             // Payment Button
             Center(

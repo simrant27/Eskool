@@ -2,7 +2,6 @@ import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:eskool/Screens/admin/admindashboard/admindashboard.dart';
-
 import 'package:eskool/loginpage/login.dart';
 import 'users/data/userImage.dart';
 import 'users/screen/parentsdashboard.dart';
@@ -53,7 +52,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      initialRoute: initialRoute,
+      // initialRoute: initialRoute,
       routes: {
         '/': (context) => LoginPage(),
         '/login': (context) => LoginPage(),

@@ -14,7 +14,6 @@ class CustomScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar,
-      drawer: CustomDrawerForUser(context),
       body: body,
       bottomNavigationBar: CustomBottomAppBar(),
     );
