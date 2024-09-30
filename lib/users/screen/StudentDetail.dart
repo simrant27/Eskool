@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 class StudentDetailScreen extends StatelessWidget {
   final String studentName;
   final String studentGrade;
-  final String studentId;
-
+final String studentId;
   StudentDetailScreen({
     required this.studentName,
     required this.studentGrade,
@@ -36,6 +35,7 @@ class StudentDetailScreen extends StatelessWidget {
               'Details:',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
+            // Format as needed
           ],
         ),
       ),
