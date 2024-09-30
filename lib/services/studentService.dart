@@ -10,32 +10,32 @@ class StudentService {
   final String baseUrl = "$url/api/student";
 
   // Fetch all students
-  // Future<List<Student>> fetchStudents() async {
-  //   final response = await http.get(Uri.parse('$baseUrl/'));
+  Future<List<Student>> fetchStudents() async {
+    final response = await http.get(Uri.parse('$baseUrl/'));
 
-  //   if (response.statusCode == 200) {
-  //     final Map<String, dynamic> data = json.decode(response.body);
-  //     if (data['students'] != null) {
-  //       final List<dynamic> studentsJson = data['students'];
-  //       return studentsJson.map((json) => Student.fromJson(json)).toList();
-  //     } else {
-  //       return [];
-  //     }
-  //   } else {
-  //     throw Exception('Failed to load students');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      if (data['students'] != null) {
+        final List<dynamic> studentsJson = data['students'];
+        return studentsJson.map((json) => Student.fromJson(json)).toList();
+      } else {
+        return [];
+      }
+    } else {
+      throw Exception('Failed to load students');
+    }
+  }
 
   // Fetch student by ID
-  // Future<Student> fetchStudentById(String id) async {
-  //   final response = await http.get(Uri.parse('$baseUrl/$id'));
+  Future<Student> fetchStudentById(String id) async {
+    final response = await http.get(Uri.parse('$baseUrl/$id'));
 
-  //   if (response.statusCode == 200) {
-  //     return Student.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to load student');
-  //   }
-  // }
+    if (response.statusCode == 200) {
+      return Student.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Failed to load student');
+    }
+  }
 
   // Fetch students by class name
   Future<List<Student>> fetchStudentByClassName(String classAssigned) async {

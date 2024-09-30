@@ -31,8 +31,9 @@ class NoticeForm extends StatefulWidget {
 }
 
 class _NoticeFormState extends State<NoticeForm> {
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  late TextEditingController _titleController = TextEditingController();
+  late TextEditingController _descriptionController = TextEditingController();
   PlatformFile? _mediaFile;
 
   @override
@@ -69,6 +70,15 @@ class _NoticeFormState extends State<NoticeForm> {
     setState(() {
       _mediaFile = null;
     });
+  }
+
+  @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    ;
+
+    super.dispose();
   }
 
   Future<void> _submitToBackend(

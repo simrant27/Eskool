@@ -1,5 +1,6 @@
 import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
 import 'package:eskool/Screens/admin/student/add_edit_student_form.dart';
+import 'package:eskool/Screens/admin/student/student_detail_page.dart';
 import 'package:eskool/Screens/admin/teacher/show_image.dart';
 import 'package:eskool/models/ParentMode.dart';
 import 'package:eskool/models/Students_model.dart';
@@ -172,103 +173,110 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                                       vertical: 8, horizontal: 16),
                                   child: Padding(
                                     padding: const EdgeInsets.all(16.0),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          student.fullName ?? 'No Name',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => StudentDetailPage(student: student)));
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            student.fullName ?? 'No Name',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: 8),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(Icons.edit),
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AddEditStudentScreen(
-                                                      parentID:
-                                                          widget.parent.id!,
-                                                      student: student,
-                                                      onEditStudent:
-                                                          (updatedStudent) {
-                                                        _refreshStudents(); // Refresh the list after editing
-                                                      },
+                                          SizedBox(height: 8),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(Icons.edit),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          AddEditStudentScreen(
+                                                        parentID:
+                                                            widget.parent.id!,
+                                                        student: student,
+                                                        onEditStudent:
+                                                            (updatedStudent) {
+                                                          _refreshStudents(); // Refresh the list after editing
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                            IconButton(
-                                              icon: Icon(Icons.delete),
-                                              onPressed: () async {
-                                                final confirm =
-                                                    await showDialog<bool>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: Text(
-                                                          'Confirm Deletion'),
-                                                      content: Text(
-                                                          'Are you sure you want to delete this Student?'),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(false),
-                                                          child: Text('Cancel'),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop(true),
-                                                          child: Text('Delete'),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
+                                                  );
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.delete),
+                                                onPressed: () async {
+                                                  final confirm =
+                                                      await showDialog<bool>(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return AlertDialog(
+                                                        title: Text(
+                                                            'Confirm Deletion'),
+                                                        content: Text(
+                                                            'Are you sure you want to delete this Student?'),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(false),
+                                                            child:
+                                                                Text('Cancel'),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () =>
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(true),
+                                                            child:
+                                                                Text('Delete'),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
 
-                                                if (confirm == true) {
-                                                  try {
-                                                    await studentService
-                                                        .deleteStudent(
-                                                            student.id!);
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                          content: Text(
-                                                              'Student deleted successfully!')),
-                                                    );
-                                                    _refreshStudents(); // Refresh the student list
-                                                  } catch (e) {
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                      SnackBar(
-                                                          content: Text(
-                                                              'Error: $e')),
-                                                    );
+                                                  if (confirm == true) {
+                                                    try {
+                                                      await studentService
+                                                          .deleteStudent(
+                                                              student.id!);
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                            content: Text(
+                                                                'Student deleted successfully!')),
+                                                      );
+                                                      _refreshStudents(); // Refresh the student list
+                                                    } catch (e) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                            content: Text(
+                                                                'Error: $e')),
+                                                      );
+                                                    }
                                                   }
-                                                }
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
