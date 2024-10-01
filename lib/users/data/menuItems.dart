@@ -1,3 +1,5 @@
+import 'package:eskool/chat/Screens/homescreen.dart';
+import 'package:eskool/chat/Screens/login_screnn.dart';
 import 'package:eskool/users/component/SubjectList.dart';
 import 'package:eskool/users/screen/UploadStudyMaterial.dart';
 import 'package:eskool/users/screen/esewa.dart';
@@ -85,7 +87,7 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => FetchNoticeByUser()),
+          MaterialPageRoute(builder: (context) => HomeScreen()),
         );
         // Handle the tap event
       },

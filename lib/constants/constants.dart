@@ -17,7 +17,8 @@ const red = Colors.red;
 //default app padding
 const appPadding = 16.0;
 
-const String url = 'http://localhost:3000';
+const String url = 'http://192.168.2.227:3000';
+const String ip = '192.168.2.227';
 const NoticeImage = "${url}/notice_upload";
 const TeacherImage = "${url}/uploads/teacher_upload";
 const ParentImage = "${url}/parent_upload";
