@@ -12,6 +12,8 @@ Image showImage(String? imageUrl, String? userType) {
     var fileName = formatUserImage(imageUrl);
     if (userType == "teacher") imageToLoad = "$TeacherImage/$fileName";
     if (userType == "parent") imageToLoad = "$ParentImage/$fileName";
+    if (userType == "student") imageToLoad = "$StudentImage/$fileName";
+
   } else {
     imageToLoad = defaultImage;
   }
