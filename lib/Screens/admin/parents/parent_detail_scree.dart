@@ -203,7 +203,7 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
               ),
             ),
           ],
-gi        ),
+        ),
       ),
     );
   }
