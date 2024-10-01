@@ -1,6 +1,7 @@
 import 'package:eskool/Screens/admin/parents/parent_list_screen.dart';
 import 'package:eskool/Screens/admin/teacher/component/widget.dart';
 import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
+// import 'package:eskool/chat/Screens/login_screnn.dart';
 import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,7 +59,9 @@ class MyApp extends StatelessWidget {
       initialRoute: initialRoute,
       routes: {
         '/': (context) => LoginPage(),
-        '/login': (context) => LoginPage(),
+        // '/': (context) => LoginScreen(),
+
+        // '/login': (context) => LoginPage(),
         '/parent-dashboard': (context) => Parentsdashboard(),
         '/admin-dashboard': (context) => Admindashboard(),
         '/teacher-dashboard': (context) => TeacherDashboard(),

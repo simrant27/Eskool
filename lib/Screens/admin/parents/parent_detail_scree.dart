@@ -175,7 +175,12 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                                     padding: const EdgeInsets.all(16.0),
                                     child: InkWell(
                                       onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => StudentDetailPage(student: student)));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    StudentDetailPage(
+                                                        student: student)));
                                       },
                                       child: Row(
                                         mainAxisAlignment:
@@ -289,7 +294,7 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                   ]))
             ],
           ),
-git        ),
+        ),
       ),
     );
   }
