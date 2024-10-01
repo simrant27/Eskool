@@ -1,13 +1,13 @@
 import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
 import 'package:eskool/constants/responsive.dart'; // Assumed package for checking desktop/mobile
 import 'package:flutter/material.dart';
-import '../../../models/teacherModel.dart';
-import 'show_image.dart';
+import '../../../models/Students_model.dart';
+import '../teacher/show_image.dart';
 
-class TeacherDetailScreen extends StatelessWidget {
-  final Teacher teacher;
+class StudentDetailPage extends StatelessWidget {
+  final Student student;
 
-  TeacherDetailScreen({required this.teacher});
+  StudentDetailPage({required this.student});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class TeacherDetailScreen extends StatelessWidget {
         content: Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 230, 238, 248),
-        title: Text("Hi ${teacher.fullName}!" ?? 'Teacher Details'),
+        title: Text("Hi ${student.fullName}!" ?? 'Student Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -40,12 +40,12 @@ class TeacherDetailScreen extends StatelessWidget {
     return [
       SizedBox(height: 20),
 
-      // If teacher has an image
-      if (teacher.image != null) ...[
+      // If student has an image
+      if (student.image != null) ...[
         // For image files (only showing for images ending with jpg/png/jpeg)
-        if (teacher.image!.endsWith('.jpg') ||
-            teacher.image!.endsWith('.png') ||
-            teacher.image!.endsWith('.jpeg')) ...[
+        if (student.image!.endsWith('.jpg') ||
+            student.image!.endsWith('.png') ||
+            student.image!.endsWith('.jpeg')) ...[
           Container(
               width: MediaQuery.of(context).size.height / 2,
               height: MediaQuery.of(context).size.height / 2,
@@ -59,7 +59,7 @@ class TeacherDetailScreen extends StatelessWidget {
                       spreadRadius: 8,
                     ),
                   ]),
-              child: showImage(teacher.image, "teacher")),
+              child: showImage(student.image, "student")),
         ]
       ],
 
@@ -76,7 +76,7 @@ class TeacherDetailScreen extends StatelessWidget {
           endIndent: 10,
         ),
 
-      // Teacher Details Container
+      // student Details Container
       Container(
         padding: Responsive.isDesktop(context)
             ? EdgeInsets.all(80)
@@ -87,39 +87,34 @@ class TeacherDetailScreen extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Full Name: ${teacher.fullName ?? 'N/A'}',
+                  'Full Name: ${student.fullName ?? 'N/A'}',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
             SizedBox(height: 10),
+
             Text(
-              'Email: ${teacher.email ?? 'N/A'}',
+              'Phone: ${student.classAssigned ?? 'N/A'}',
+              style: TextStyle(fontSize: 18),
+            ),
+
+            Text(
+              'Address: ${student.address ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
             Text(
-              'Phone: ${teacher.phone ?? 'N/A'}',
+              'Qualifications: ${student.studentId ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
-            Text(
-              'Username: ${teacher.username ?? 'N/A'}',
+             Text(
+              'Qualifications: ${student.gender ?? 'N/A'}',
               style: TextStyle(fontSize: 18),
             ),
-            Text(
-              'Address: ${teacher.address ?? 'N/A'}',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Qualifications: ${teacher.qualifications?.join(', ') ?? 'N/A'}',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Subjects Taught: ${teacher.subjectsTaught?.join(', ') ?? 'N/A'}',
-              style: TextStyle(fontSize: 18),
-            ),
+            
             // Uncomment if you want to display enrolled status
             // Text(
-            //   'Enrolled: ${teacher.enrolled! ? 'Yes' : 'No'}',
+            //   'Enrolled: ${student.enrolled! ? 'Yes' : 'No'}',
             //   style: TextStyle(fontSize: 18),
             // ),
           ],

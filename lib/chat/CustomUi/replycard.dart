@@ -28,16 +28,16 @@ class Replycard extends StatelessWidget {
                   style: TextStyle(fontSize: 16),
                 ),
               ),
-              Positioned(
-                  bottom: 4,
-                  right: 10,
-                  child: Text(
-                    time!,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: const Color.fromARGB(255, 215, 9, 9),
-                    ),
-                  )),
+              // Positioned(
+              //     bottom: 4,
+              //     right: 10,
+              //     child: Text(
+              //       time!,
+              //       style: TextStyle(
+              //         fontSize: 13,
+              //         color: const Color.fromARGB(255, 215, 9, 9),
+              //       ),
+              //     )),
             ],
           ),
         ),

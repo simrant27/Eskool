@@ -128,7 +128,7 @@ class _IndividualPageState extends State<IndividualPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(widget.chatModel.name, style: TextStyle(fontSize: 18.5)),
-            Text("Last seen at 18:06", style: TextStyle(fontSize: 13))
+            // Text("Last seen at 18:06", style: TextStyle(fontSize: 13))
           ],
         ),
       ),
@@ -168,7 +168,7 @@ class _IndividualPageState extends State<IndividualPage> {
                             print("text ${messages[index]['text']}");
                             return Replycard(
                               message: messages[index]['text'],
-                              time: messages[index]['createdAt'],
+                              // time: messages[index]['createdAt'],
                             );
                           } else {
                             print("another");

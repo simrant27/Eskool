@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:eskool/Screens/admin/components/custom_page_layout.dart';
 import 'package:eskool/services/teacherService.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -148,112 +149,169 @@ class _AddEditTeacherScreenState extends State<AddEditTeacherScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.teacher == null ? 'Add Teacher' : 'Edit Teacher'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: _fullNameController,
-                  decoration: InputDecoration(labelText: 'Full Name'),
-                  // validator: (value) =>
-                  //     value!.isEmpty ? 'Enter full name' : null,
-                ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
-                  // validator: _validateEmail,
-                ),
-                TextFormField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(labelText: 'Phone'),
-                  // validator: (value) =>
-                  //     value!.isEmpty ? 'Enter phone number' : null,
-                ),
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'Username'),
-                  // validator: (value) =>
-                  //     value!.isEmpty ? 'Enter username' : null,
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
-                  // validator: (value) =>
-                  //     value!.isEmpty ? 'Enter password' : null,
-                  obscureText: true,
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: InputDecoration(labelText: 'Address'),
-                  // validator: (value) => value!.isEmpty ? 'Enter address' : null,
-                ),
-                TextFormField(
-                  controller: _qualificationsController,
-                  decoration: InputDecoration(
-                      labelText: 'Qualifications (comma-separated)'),
-                  // validator: (value) =>
-                  //     value!.isEmpty ? 'Enter qualifications' : null,
-                ),
-                TextFormField(
-                  controller: _subjectsTaughtController,
-                  decoration: InputDecoration(
-                      labelText: 'Subjects Taught (comma-separated)'),
-                  // validator: (value) =>
-                  //     value!.isEmpty ? 'Enter subjects taught' : null,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _isEnrolled,
-                      onChanged: (value) {
-                        setState(() {
-                          _isEnrolled = value ?? false;
-                        });
-                      },
-                    ),
-                    Text('Enrolled'),
-                  ],
-                ),
-                SizedBox(height: 20),
-                CustomButton(
-                  label: "Select files",
-                  color: Colors.blue.shade100,
-                  onPressed: _pickMediaFiles,
-                ),
-                if (_image != null) ...[
-                  SizedBox(height: 10),
-                  ListTile(
-                    leading: Icon(_image!.extension == 'pdf'
-                        ? Icons.picture_as_pdf
-                        : Icons.image),
-                    title: Text(_image!.name),
-                    trailing: IconButton(
-                      icon: Icon(Icons.close, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          _image = null; // Remove the file
-                        });
-                      },
-                    ),
+    return CustomPageLayout(
+      child: Center(
+        // Center the form
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            color: Colors.white,
+            elevation: 6.0, // Add elevation for shadow effect
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15), // Rounded corners
+            ),
+            child: Container(
+              width:
+                  MediaQuery.of(context).size.width * 0.85, // Limit form width
+              padding: const EdgeInsets.all(16.0), // Padding inside the Card
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _fullNameController,
+                        decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          prefixIcon: Icon(Icons.person), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter full name' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          prefixIcon: Icon(Icons.email), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: _validateEmail,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                          labelText: 'Phone',
+                          prefixIcon: Icon(Icons.phone), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter phone number' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          labelText: 'Username',
+                          prefixIcon: Icon(Icons.account_circle), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter username' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          prefixIcon: Icon(Icons.lock), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        obscureText: true,
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter password' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _addressController,
+                        decoration: InputDecoration(
+                          labelText: 'Address',
+                          prefixIcon: Icon(Icons.home), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter address' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _qualificationsController,
+                        decoration: InputDecoration(
+                          labelText: 'Qualifications (comma-separated)',
+                          prefixIcon: Icon(Icons.school), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter qualifications' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _subjectsTaughtController,
+                        decoration: InputDecoration(
+                          labelText: 'Subjects Taught (comma-separated)',
+                          prefixIcon: Icon(Icons.book), // Add icon
+                          border: OutlineInputBorder(),
+                        ),
+                        // validator: (value) =>
+                        //     value!.isEmpty ? 'Enter subjects taught' : null,
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _isEnrolled,
+                            onChanged: (value) {
+                              setState(() {
+                                _isEnrolled = value ?? false;
+                              });
+                            },
+                          ),
+                          Text('Enrolled'),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      CustomButton(
+                        label: "Select files",
+                        color: Colors.blue.shade100,
+                        onPressed: _pickMediaFiles,
+                      ),
+                      if (_image != null) ...[
+                        SizedBox(height: 10),
+                        ListTile(
+                          leading: Icon(
+                            _image!.extension == 'pdf'
+                                ? Icons.picture_as_pdf
+                                : Icons.image,
+                          ),
+                          title: Text(_image!.name),
+                          trailing: IconButton(
+                            icon: Icon(Icons.close, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                _image = null; // Remove the file
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: 10),
+                      ElevatedButton.icon(
+                        onPressed: _saveTeacher,
+                        icon: Icon(Icons.save), // Add save icon
+                        label: Text('Save'),
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 12, horizontal: 20),
+                          textStyle: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-                SizedBox(
-                  height: 10,
                 ),
-                ElevatedButton(
-                  onPressed: _saveTeacher,
-                  child: Text('Save'),
-                ),
-              ],
+              ),
             ),
           ),
         ),
