@@ -1,10 +1,13 @@
 import 'dart:math';
+import 'package:eskool/Screens/admin/components/custom_page_layout.dart';
 import 'package:eskool/services/studentService.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/Students_model.dart';
 import '../components/custon_button.dart';
+
+enum Gender { male, female, other }
 
 class AddEditStudentScreen extends StatefulWidget {
   final Student? student;
@@ -33,7 +36,7 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
   late TextEditingController _classAssignedController;
   late TextEditingController _studentIdController;
   late TextEditingController _addressController;
-  late TextEditingController _genderController;
+  Gender? _selectedGender; // To store selected gender
   PlatformFile? _image;
 
   @override
@@ -45,7 +48,15 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
     _studentIdController =
         TextEditingController(text: widget.student?.studentId);
     _addressController = TextEditingController(text: widget.student?.address);
-    _genderController = TextEditingController(text: widget.student?.gender);
+
+    // Initialize gender selection based on the student data
+    if (widget.student?.gender == 'male') {
+      _selectedGender = Gender.male;
+    } else if (widget.student?.gender == 'female') {
+      _selectedGender = Gender.female;
+    } else {
+      _selectedGender = Gender.other;
+    }
 
     _image = widget.image;
   }
@@ -70,7 +81,6 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
     _classAssignedController.dispose();
     _studentIdController.dispose();
     _addressController.dispose();
-    _genderController.dispose();
     super.dispose();
   }
 
@@ -82,9 +92,12 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
         classAssigned: _classAssignedController.text,
         studentId: _studentIdController.text,
         address: _addressController.text,
-        gender: _genderController.text,
+        gender: _selectedGender == Gender.male
+            ? 'male'
+            : _selectedGender == Gender.female
+                ? 'female'
+                : 'other', // Save the gender as string
         parentID: widget.parentID, // Use the passed parentID
-        // image: _image, // You may also add this if you are uploading an image
       );
 
       try {
@@ -109,9 +122,6 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
         }
         Navigator.pop(context);
       } catch (e) {
-        print("Student ID: ${student.id}");
-        print("Parent ID: ${student.parentID}");
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error: $e')),
         );
@@ -121,78 +131,150 @@ class _AddEditStudentScreenState extends State<AddEditStudentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.student == null ? 'Add Student' : 'Edit Student'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: _fullNameController,
-                  decoration: InputDecoration(labelText: 'Full Name'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter full name' : null,
-                ),
-                TextFormField(
-                  controller: _classAssignedController,
-                  decoration: InputDecoration(labelText: 'Class Assigned'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter class assigned' : null,
-                ),
-                TextFormField(
-                  controller: _studentIdController,
-                  decoration: InputDecoration(labelText: 'Student ID'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Enter student ID' : null,
-                ),
-                TextFormField(
-                  controller: _addressController,
-                  decoration: InputDecoration(labelText: 'Address'),
-                  validator: (value) => value!.isEmpty ? 'Enter address' : null,
-                ),
-                TextFormField(
-                  controller: _genderController,
-                  decoration: InputDecoration(labelText: 'Gender'),
-                  validator: (value) => value!.isEmpty ? 'Enter gender' : null,
-                ),
-                SizedBox(height: 20),
-                CustomButton(
-                  label: "Select files",
-                  color: Colors.blue.shade100,
-                  onPressed: _pickMediaFiles,
-                ),
-                if (_image != null) ...[
-                  SizedBox(height: 10),
-                  ListTile(
-                    leading: Icon(_image!.extension == 'pdf'
-                        ? Icons.picture_as_pdf
-                        : Icons.image),
-                    title: Text(_image!.name),
-                    trailing: IconButton(
-                      icon: Icon(Icons.close, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          _image = null; // Remove the file
-                        });
-                      },
-                    ),
+    return CustomPageLayout(
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Card(
+            color: Colors.white,
+            elevation: 6.0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.85,
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        controller: _fullNameController,
+                        decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          prefixIcon: Icon(Icons.person),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Enter full name' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _classAssignedController,
+                        decoration: InputDecoration(
+                          labelText: 'Class Assigned',
+                          prefixIcon: Icon(Icons.class_),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Enter class assigned' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _studentIdController,
+                        decoration: InputDecoration(
+                          labelText: 'Student ID',
+                          prefixIcon: Icon(Icons.badge),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Enter student ID' : null,
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _addressController,
+                        decoration: InputDecoration(
+                          labelText: 'Address',
+                          prefixIcon: Icon(Icons.home),
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'Enter address' : null,
+                      ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Text(
+                          'Gender',
+                          style: TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Radio<Gender>(
+                            value: Gender.male,
+                            groupValue: _selectedGender,
+                            onChanged: (Gender? value) {
+                              setState(() {
+                                _selectedGender = value;
+                              });
+                            },
+                          ),
+                          Text('Male'),
+                          Radio<Gender>(
+                            value: Gender.female,
+                            groupValue: _selectedGender,
+                            onChanged: (Gender? value) {
+                              setState(() {
+                                _selectedGender = value;
+                              });
+                            },
+                          ),
+                          Text('Female'),
+                          Radio<Gender>(
+                            value: Gender.other,
+                            groupValue: _selectedGender,
+                            onChanged: (Gender? value) {
+                              setState(() {
+                                _selectedGender = value;
+                              });
+                            },
+                          ),
+                          Text('Other'),
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      CustomButton(
+                        label: "Select files",
+                        color: Colors.blue.shade100,
+                        onPressed: _pickMediaFiles,
+                      ),
+                      if (_image != null) ...[
+                        SizedBox(height: 10),
+                        ListTile(
+                          leading: Icon(
+                            _image!.extension == 'pdf'
+                                ? Icons.picture_as_pdf
+                                : Icons.image,
+                          ),
+                          title: Text(_image!.name),
+                          trailing: IconButton(
+                            icon: Icon(Icons.close, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                _image = null;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: 10),
+                      CustomButton(
+                          label: "Submit",
+                          color: Colors.green.withOpacity(0.2),
+                          onPressed: _saveStudent),
+                      SizedBox(height: 10),
+                      CustomButton(
+                          label: "Cancel",
+                          color: Colors.red.shade200,
+                          onPressed: () => Navigator.pop(context))
+                    ],
                   ),
-                ],
-                SizedBox(
-                  height: 10,
                 ),
-                ElevatedButton(
-                  onPressed: _saveStudent,
-                  child: Text('Save'),
-                ),
-              ],
+              ),
             ),
           ),
         ),

@@ -1,158 +1,125 @@
-import 'package:eskool/Screens/admin/admindashboard/components/customAppbar.dart';
 import 'package:eskool/Screens/admin/admindashboard/components/responsive_drawer_layout.dart';
+import 'package:eskool/constants/responsive.dart'; // Assumed package for checking desktop/mobile
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import '../../../models/Students_model.dart';
-import '../../../services/studentService.dart';
+import '../teacher/show_image.dart';
 
-// import '../billing/data/studentList.dart';
-import 'fullStudentDetail.dart';
+class StudentDetailPage extends StatelessWidget {
+  final Student student;
 
-import 'package:http/http.dart' as http;
-
-class StudentDetail extends StatefulWidget {
-  final String className;
-
-  const StudentDetail({super.key, required this.className});
-
-  @override
-  _StudentDetailState createState() => _StudentDetailState();
-}
-
-class _StudentDetailState extends State<StudentDetail> {
-  String searchQuery = "";
-  List<Student> students = [];
-  List<Student> filteredStudents = [];
-  bool isLoading = true;
-  late StudentService studentService = StudentService();
-
-  @override
-  void initState() {
-    super.initState();
-    fetchStudents();
-  }
-
-  void fetchStudents() async {
-    try {
-      final fetchedStudents =
-          await studentService.fetchStudentByClassName(widget.className);
-
-      // Check if any students were fetched
-      print("Fetched Students: $fetchedStudents");
-
-      fetchedStudents.sort((a, b) => a.fullName!.compareTo(b.fullName!));
-
-      setState(() {
-        students = fetchedStudents;
-        filteredStudents = students;
-        isLoading = false;
-      });
-    } catch (e) {
-      print("Error: $e");
-    }
-  }
-
-  void updateSearch(String query) {
-    setState(() {
-      searchQuery = query;
-      filteredStudents = students
-          .where((student) =>
-              student.fullName!.toLowerCase().contains(query.toLowerCase()) ||
-              student.studentId!.contains(query))
-          .toList();
-    });
-  }
-
-  void navigateToDetail(Student student) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FullStudentDetail(student: student),
-      ),
-    );
-  }
+  StudentDetailPage({required this.student});
 
   @override
   Widget build(BuildContext context) {
-    double columnSpacing = MediaQuery.of(context).size.width * 0.2;
-
     return ResponsiveDrawerLayout(
-      content: Column(
-        children: [
-          CustomAppbar(
-            hinttext: "Search Students",
-            showSearch: true,
-            onChanged: updateSearch,
-          ),
-          SizedBox(height: 20),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Background color of the table
-                    border: Border.all(
-                      color: Colors.transparent, // Border color
-                      width: 2.0, // Border width
-                    ),
-                    borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black
-                            .withOpacity(0.1), // Shadow color with opacity
-                        spreadRadius: 2, // How much the shadow spreads
-                        blurRadius: 10, // The blur intensity
-                        offset:
-                            Offset(4, 4), // The position of the shadow (x, y)
-                      ),
-                    ],
-                  ),
-                  child: DataTable(
-                    columnSpacing: columnSpacing,
-                    columns: const [
-                      DataColumn(
-                          label: Text('Name',
-                              style: TextStyle(fontWeight: FontWeight.bold))),
-                      DataColumn(
-                          label: Text('Grade',
-                              style: TextStyle(fontWeight: FontWeight.bold))),
-                      // DataColumn(
-                      //     label: Text('Parent Name',
-                      //         style: TextStyle(fontWeight: FontWeight.bold))),
-                    ],
-                    rows: filteredStudents
-                        .map(
-                          (student) => DataRow(
-                            cells: [
-                              // DataCell(
-                              //   Text(student.rollNumber!),
-                              //   onTap: () => navigateToDetail(student),
-                              // ),
-                              DataCell(
-                                Text(student.fullName!),
-                                onTap: () => navigateToDetail(student),
-                              ),
-                              DataCell(
-                                Text(student.classAssigned!),
-                                onTap: () => navigateToDetail(student),
-                              ),
-                              // DataCell(
-                              //   Text(student.parentName),
-                              //   onTap: () => navigateToDetail(student),
-                              // ),
-                            ],
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+        content: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color.fromARGB(255, 230, 238, 248),
+        title: Text("Hi ${student.fullName}!" ?? 'Student Details'),
       ),
-    );
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Responsive.isDesktop(context)
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: buildContent(context),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: buildContent(context),
+                ),
+        ),
+      ),
+    ));
+  }
+
+  // Helper function to return the list of widgets for both Row and Column
+  List<Widget> buildContent(BuildContext context) {
+    return [
+      SizedBox(height: 20),
+
+      // If student has an image
+      if (student.image != null) ...[
+        // For image files (only showing for images ending with jpg/png/jpeg)
+        if (student.image!.endsWith('.jpg') ||
+            student.image!.endsWith('.png') ||
+            student.image!.endsWith('.jpeg')) ...[
+          Container(
+              width: MediaQuery.of(context).size.height / 2,
+              height: MediaQuery.of(context).size.height / 2,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(width: 1, color: Colors.white),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.blueGrey.withOpacity(0.2),
+                      blurRadius: 12,
+                      spreadRadius: 8,
+                    ),
+                  ]),
+              child: showImage(student.image, "student")),
+        ]
+      ],
+
+      // Adding a SizedBox to provide some space between the content
+      if (Responsive.isDesktop(context)) SizedBox(width: 20),
+
+      // Vertical Divider only on Desktop
+      if (Responsive.isDesktop(context))
+        VerticalDivider(
+          color: Colors.black12,
+          thickness: 1,
+          width: 20,
+          indent: 10,
+          endIndent: 10,
+        ),
+
+      // student Details Container
+      Container(
+        padding: Responsive.isDesktop(context)
+            ? EdgeInsets.all(80)
+            : EdgeInsets.all(20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  'Full Name: ${student.fullName ?? 'N/A'}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            SizedBox(height: 10),
+
+            Text(
+              'Phone: ${student.classAssigned ?? 'N/A'}',
+              style: TextStyle(fontSize: 18),
+            ),
+
+            Text(
+              'Address: ${student.address ?? 'N/A'}',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'Qualifications: ${student.studentId ?? 'N/A'}',
+              style: TextStyle(fontSize: 18),
+            ),
+            Text(
+              'Qualifications: ${student.gender ?? 'N/A'}',
+              style: TextStyle(fontSize: 18),
+            ),
+
+            // Uncomment if you want to display enrolled status
+            // Text(
+            //   'Enrolled: ${student.enrolled! ? 'Yes' : 'No'}',
+            //   style: TextStyle(fontSize: 18),
+            // ),
+          ],
+        ),
+      ),
+    ];
   }
 }

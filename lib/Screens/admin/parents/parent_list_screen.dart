@@ -43,185 +43,216 @@ class _ParentListScreenState extends State<ParentListScreen> {
     return ResponsiveDrawerLayout(
       content: Column(
         children: [
-          CustomAppbar(
-            showBackButton: true,
-            showSearch: true,
-            hinttext: "Parent",
-          ),
-          CustomButton(
-            label: "Create",
-            color: Colors.blue,
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddEditParentScreen(
-                    onAddParent:
-                        _addParent, // Pass the callback to add a Parent
-                  ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
                 ),
-              ).then((_) {
-                // Correct syntax for the then method
-                setState(() {
-                  futureParents = parentService.fetchParents();
-                });
-              }).catchError((error) {
-                // Handle errors if needed
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Error: $error')),
-                );
-              });
-            },
-          ),
-          Expanded(
-            child: FutureBuilder<List<Parent>>(
-              future: futureParents,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No Parents found.'));
-                } else {
-                  final parents = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: parents.length,
-                    itemBuilder: (context, index) {
-                      final parent = parents[index];
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ParentDetailScreen(parent: parent),
-                            ),
-                          );
-                        },
-                        child: Card(
-                          elevation: 4,
-                          margin:
-                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  parent.fullName ?? 'No Name',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SizedBox(height: 8),
-                                Text(
-                                  'Email: ${parent.email ?? 'No Email'}',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(Icons.edit),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                AddEditParentScreen(
-                                              parent: parent,
-                                              onEditParent: (updatedParent) {
-                                                _editParent(
-                                                    updatedParent); // Call the edit method
-                                              },
-                                            ),
-                                          ),
-                                        ).then((_) {
-                                          // Optionally, you can refresh the state if needed
-                                          setState(() {
-                                            futureParents =
-                                                parentService.fetchParents();
-                                          });
-                                        });
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.delete),
-                                      onPressed: () async {
-                                        final confirm = await showDialog<bool>(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text('Confirm Deletion'),
-                                              content: Text(
-                                                  'Are you sure you want to delete this Parent?'),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context)
-                                                          .pop(false),
-                                                  child: Text('Cancel'),
-                                                ),
-                                                TextButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context)
-                                                          .pop(true),
-                                                  child: Text('Delete'),
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-
-                                        if (confirm == true) {
-                                          try {
-                                            print(
-                                                'Deleting Parent with ID: ${parent.id}');
-
-                                            // Call the deleteParent function
-                                            await parentService
-                                                .deleteParent(parent.id!);
-
-                                            // Show success message
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                  content: Text(
-                                                      'Parent deleted successfully!')),
-                                            );
-
-                                            // Refresh the list of Parents
-                                            setState(() {
-                                              futureParents = parentService
-                                                  .fetchParents(); // Refresh the list
-                                            });
-                                          } catch (e) {
-                                            // Show error message if the deletion fails
-                                            ScaffoldMessenger.of(context)
-                                                .showSnackBar(
-                                              SnackBar(
-                                                  content: Text('Error: $e')),
-                                            );
-                                          }
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Teacher",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                CustomButton(
+                  label: "Create",
+                  color: Colors.blue,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddEditParentScreen(
+                          onAddParent:
+                              _addParent, // Pass the callback to add a Parent
                         ),
+                      ),
+                    ).then((_) {
+                      // Correct syntax for the then method
+                      setState(() {
+                        futureParents = parentService.fetchParents();
+                      });
+                    }).catchError((error) {
+                      // Handle errors if needed
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: $error')),
                       );
-                    },
-                  );
-                }
-              },
+                    });
+                  },
+                ),
+              ],
             ),
           ),
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              child: FutureBuilder<List<Parent>>(
+                future: futureParents,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No Parents found.'));
+                  } else {
+                    final parents = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: parents.length,
+                      itemBuilder: (context, index) {
+                        final parent = parents[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ParentDetailScreen(parent: parent),
+                              ),
+                            );
+                          },
+                          child: Card(
+                            color: Colors.white,
+                            // elevation: 4,
+                            margin: EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 16),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    parent.fullName ?? 'No Name',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddEditParentScreen(
+                                                parent: parent,
+                                                onEditParent: (updatedParent) {
+                                                  _editParent(
+                                                      updatedParent); // Call the edit method
+                                                },
+                                              ),
+                                            ),
+                                          ).then((_) {
+                                            // Optionally, you can refresh the state if needed
+                                            setState(() {
+                                              futureParents =
+                                                  parentService.fetchParents();
+                                            });
+                                          });
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () async {
+                                          final confirm =
+                                              await showDialog<bool>(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text('Confirm Deletion'),
+                                                content: Text(
+                                                    'Are you sure you want to delete this Parent?'),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(false),
+                                                    child: Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(true),
+                                                    child: Text('Delete'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+
+                                          if (confirm == true) {
+                                            try {
+                                              print(
+                                                  'Deleting Parent with ID: ${parent.id}');
+
+                                              // Call the deleteParent function
+                                              await parentService
+                                                  .deleteParent(parent.id!);
+
+                                              // Show success message
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text(
+                                                        'Parent deleted successfully!')),
+                                              );
+
+                                              // Refresh the list of Parents
+                                              setState(() {
+                                                futureParents = parentService
+                                                    .fetchParents(); // Refresh the list
+                                              });
+                                            } catch (e) {
+                                              // Show error message if the deletion fails
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                SnackBar(
+                                                    content: Text('Error: $e')),
+                                              );
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
+          )
         ],
       ),
     );
