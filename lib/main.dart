@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 // import 'package:eskool/chat/Screens/login_screnn.dart';
-=======
 import 'package:eskool/Screens/admin/parents/parent_list_screen.dart';
 import 'package:eskool/Screens/admin/teacher/component/widget.dart';
 import 'package:eskool/Screens/admin/teacher/teacher_list_screen.dart';
->>>>>>> ui1
 import 'package:eskool/users/screen/teacherScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
