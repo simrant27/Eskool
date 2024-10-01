@@ -1,7 +1,11 @@
 import 'package:eskool/chat/Screens/homescreen.dart';
 import 'package:eskool/chat/Screens/login_screnn.dart';
+import 'package:eskool/users/component/SubjectList.dart';
 import 'package:eskool/users/screen/UploadStudyMaterial.dart';
+import 'package:eskool/users/screen/esewa.dart';
 import 'package:eskool/users/screen/material.dart';
+import 'package:eskool/users/screen/resultAssign.dart';
+import 'package:eskool/users/screen/seeResult.dart';
 import 'package:eskool/users/screen/teacher_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../services/loginService.dart';
@@ -88,17 +92,39 @@ Future<List<MenuItem>> menuItems(BuildContext context) async {
         // Handle the tap event
       },
     ),
+    // MenuItem(
+    //   icon: Icons.assignment,
+    //   title: 'Assignment',
+    //   onTap: () {
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => PaymentPage()),
+    //     );
+    //   },
+    // ),
     MenuItem(
-      icon: Icons.assignment,
-      title: 'Assignment',
-      onTap: () {
-        // Handle assignment navigation
-      },
-    ),
-    MenuItem(
-      icon: Icons.assignment,
+      icon: Icons.book,
       title: 'Result',
-      onTap: () {},
+      onTap: () {
+        if (userRole == 'parent') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => StudentListWidget(
+                onSelectRoute: (student) => Seeresult(
+                  studentId: student['id'],
+                  studentName: student['fullName'],
+                ),
+              ),
+            ),
+          );
+        } else if (userRole == 'teacher') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SubjectList()),
+          );
+        }
+      },
     ),
     MenuItem(
       icon: Icons.book_online_rounded,

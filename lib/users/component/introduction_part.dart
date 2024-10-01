@@ -16,7 +16,7 @@ Container Introduction_part(
 ) {
   return Container(
     width: double.infinity,
-    height: MediaQuery.of(context).size.height / 3,
+    height: MediaQuery.of(context).size.height / 4,
     decoration: boxDesign(),
     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
     child: Column(
