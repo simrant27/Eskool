@@ -289,7 +289,7 @@ class _ParentDetailScreenState extends State<ParentDetailScreen> {
                   ]))
             ],
           ),
-        ),
+git        ),
       ),
     );
   }
